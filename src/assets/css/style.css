@@ -411,7 +411,7 @@ header .logo {
 }
 header .logo img{
   width: auto;
-  height: 70px;
+  height: 50px;
 }
 header .logo i {
   font-size: 2.2rem;
@@ -547,23 +547,23 @@ header .navbar ul li a:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 .home .content h2 {
-  font-size: 5rem;
+  font-size: 3rem;
   font-weight: 800;
   color: #fff;
 }
 .home .content h2 span {
-  font-size: 5rem;
+  font-size: 3rem;
   font-weight: 800;
   color: #ff7b00;
 }
 .home .content p {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: #fff;
   font-weight: 600;
   padding: 1rem 0;
 }
 .home .content p span {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: #fff;
   font-weight: 600;
   padding: 1rem 0;
@@ -971,6 +971,7 @@ header .navbar ul li a:hover {
 /* work section starts */
 .work {
   /* background: #010124; */
+   position: relative;
   background: linear-gradient(to bottom, #000031, #00002c);
 }
 .work canvas {
@@ -978,8 +979,6 @@ header .navbar ul li a:hover {
   left: 0;
   height: 100%;
   width: 100%;
-  
-    
     pointer-events: none;
 }
 .work h2 {

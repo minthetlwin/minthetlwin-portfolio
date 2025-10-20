@@ -22,10 +22,10 @@ export default function Home() {
     const handleVisibilityChange = () => {
       const favicon = document.getElementById("favicon");
       if (document.visibilityState === "visible") {
-        document.title = "Min Thet Lwin - Portfolio";
+        document.title = "Min Thet Lwin | Portfolio";
         if (favicon) favicon.href = "assets/images/favicon.png";
       } else {
-        document.title = "Come Back To Portfolio";
+        document.title = "Min Thet Lwin | Portfolio";
         if (favicon) favicon.href = "assets/images/favhand.png";
       }
     };

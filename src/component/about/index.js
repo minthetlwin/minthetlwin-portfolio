@@ -2,6 +2,7 @@ import '../../assets/css/style.css';
 import profileImg from '../../assets/image/profile.png';
 import React, { useEffect, useRef } from "react";
 import VanillaTilt from "vanilla-tilt";
+import resume from '../../assets/minthetlwin_resume.pdf';
 
 export default function About(){
 
@@ -52,7 +53,7 @@ My goal is to continuously improve my skills and develop innovative web apps usi
         </div>
         
         <div className="resumebtn">
-            <a href="https://drive.google.com/file/d/1rZiXl562q7aVyk1kJ2nO85YBAq8ixTiw/view" target="_blank" className="btn"><span>Resume</span>
+            <a href={resume} target="_blank" className="btn"><span>Resume</span>
                 <i className="fas fa-chevron-right"></i>
             </a>
         </div>

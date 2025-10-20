@@ -1,0 +1,94 @@
+.floating-text {
+  position: absolute;
+  top: 15%; /* above robot */
+  right: 2%;
+  transform: translateY(0px);
+  animation: bounce-up 0.6s ease-out forwards;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 3px;
+  font-size: 12px;
+  color: #774f38;
+  background-color: #ece5ce;
+  padding: 10px;
+  border-radius: 11px;
+  box-shadow: 5px 5px #83af9b;
+  font-family: "Baloo 2", cursive;
+}
+
+.floating-text:after {
+  transform: translateY(0px);
+  animation: bounce-up 0.6s ease-out forwards;
+  content: ".";
+  font-weight: bold;
+  -webkit-text-fill-color: #ece5ce;
+  text-shadow: 5px 5px #83af9b;
+  text-align: left;
+  font-size: 55px;
+  width: 55px;
+  height: 11px;
+  line-height: 30px;
+  border-radius: 11px;
+  background-color: #ece5ce;
+  position: absolute;
+  display: block;
+  bottom: -30px;
+  left: 0;
+  box-shadow: 5px 5px #83af9b;
+  z-index: -2;
+}
+
+/* Bounce from bottom to top */
+@keyframes bounce-up {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .floating-text {
+  position: absolute;
+  top: 50%; /* above robot */
+  right: 3%;
+  animation: bounce-up 0.6s ease-out forwards;
+  letter-spacing: 3px;
+  font-size: 8px;
+  padding: 10px;
+  border-radius: 11px;
+  box-shadow: 5px 5px #83af9b;
+}
+
+.floating-text:after {
+  transform: translateY(0px);
+  text-shadow: 5px 5px #83af9b;
+  text-align: left;
+  font-size: 55px;
+  width: 55px;
+  height: 11px;
+  line-height: 30px;
+  border-radius: 11px;
+  background-color: #ece5ce;
+  position: absolute;
+  display: block;
+  bottom: -30px;
+  left: 0;
+  box-shadow: 5px 5px #83af9b;
+}
+}
+
+@media (max-width: 480px) {
+  .floating-text {
+    font-size: 0.8rem;
+    padding: 12px 15px;
+  }
+}

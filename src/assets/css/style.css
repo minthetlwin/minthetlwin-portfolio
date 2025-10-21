@@ -30,7 +30,7 @@ main {
     justify-content: center;
     align-items: center;
     /* background-image: radial-gradient(#04f,#000); */
-    /* z-index: 10000; */
+    z-index: 900;
 }
 
 #sketch-board-con {
@@ -516,7 +516,7 @@ header .navbar ul li a:hover {
   height: 100%;
   width: 100%;
   
-    z-index: 9999;
+    z-index: 99;
     pointer-events: none;
 }
 .home::before {

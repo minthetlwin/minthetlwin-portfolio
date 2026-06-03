@@ -16,54 +16,38 @@ export default function Contact() {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  if (!validateEmail(email)) {
-    setStatus("Please enter a valid email address.");
-    setTimeout(() => setStatus(""), 3000);
-    return;
-  }
-
   setLoading(true);
   setStatus("");
 
   try {
-    const response = await fetch(
-      "/.netlify/functions/sendTelegram",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          message,
-        }),
-      }
-    );
+    const res = await fetch("/.netlify/functions/sendEmail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        message,
+      }),
+    });
 
-    const data = await response.json();
+    const data = await res.json();
 
-    if (response.ok && data.success) {
+    if (res.ok) {
       setStatus("Message sent successfully!");
-
       setName("");
       setEmail("");
       setMessage("");
     } else {
-      setStatus(data.message || "Failed to send message.");
+      setStatus(data.message || "Failed to send message");
     }
   } catch (error) {
-    console.error("Contact form error:", error);
-
-    setStatus(
-      "Unable to send message. Please try again later."
-    );
+    console.error(error);
+    setStatus("Server error. Try again later.");
   } finally {
     setLoading(false);
-
-    setTimeout(() => {
-      setStatus("");
-    }, 3000);
+    setTimeout(() => setStatus(""), 3000);
   }
 };
 

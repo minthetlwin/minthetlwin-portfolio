@@ -715,60 +715,95 @@
         margin: -8rem 0;
     }
 }
+/* ==========================================================================
+   MOBILE & MOBILE SMALL FLUID OVERRIDES
+   ========================================================================== */
 
 @media screen and (max-width: 576px) {
     .header-container {
-        padding: 0 5rem;
-    }
-.hero-text-container {
-        align-items: center;
-        width: 55rem;
+        padding: 0 2rem; /* Reduced massive padding structural walls */
     }
 
     .modern-home-hero {
-        padding: 8rem 0% 4rem 0%;
+        padding: 10rem 1.5rem 4rem 1.5rem; /* Clean edge padding safely within viewport */
+        width: 100%;
+        overflow-x: hidden; /* Hard safety gate to stop horizontal document scrolling */
+    }
+
+    .hero-split-layout {
+        width: 100%;
+        gap: 1.5rem;
+    }
+
+    /* FIX 1: Removed static 'width: 55rem' which forced desktop expansion on phone views */
+    .hero-text-container {
+        align-items: center;
+        width: 100%; 
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .hero-main-title {
-        font-size: 3.2rem;
+        font-size: 2.6rem; /* Scaled down beautifully for small displays */
         letter-spacing: -0.05rem;
+        line-height: 1.2;
     }
 
     .dynamic-typing-row p {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
 
+    .hero-cta-group {
+        flex-direction: column; /* Stacks button and icons natively */
+        width: 100%;
+        gap: 2rem;
+    }
+
+    /* FIX 2: Optimized button layout bounds */
     .premium-hero-btn {
-        padding: 1.4rem 2.8rem;
-        font-size: 1.35rem;
-        width: 50%;
+        padding: 1.2rem 2.4rem;
+        font-size: 1.2rem;
+        width: 100%; /* Spans full safely manageable text row width */
+        max-width: 280px;
         justify-content: center;
     }
 
     .hero-social-strip {
-        gap: 1.4rem;
+        gap: 1.6rem;
     }
 
     .hero-social-strip a {
-        font-size: 1.9rem;
+        font-size: 1.8rem;
+    }
+
+    /* FIX 3: Solved Solar System DOM footprint bleed out */
+    .hero-avatar-container {
+        width: 100%;
+        overflow: hidden; /* Clips the invisible bounding layout track lines cleanly */
+        display: flex;
+        justify-content: center;
     }
 
     .solar-viewport {
-        transform: scale(0.45);
-        margin: -12rem 0;
+        transform: scale(0.42);
+        margin: -14rem 0; /* Tightens collapse space constraints */
+        pointer-events: none; /* Prevents accidentally scrolling/swiping mobile page on orbits */
     }
 
     .space-fact-overlay-box {
-        width: 95%;
-        padding: 1.5rem;
-        bottom: 5rem;
-        /* Pushes card higher above extreme transformation baselines */
+        width: 90%;
+        padding: 1.25rem;
+        bottom: 2rem;
     }
 }
 
 @media screen and (max-width: 400px) {
+    .hero-main-title {
+        font-size: 2.2rem;
+    }
+
     .solar-viewport {
-        transform: scale(0.38);
-        margin: -15rem 0;
+        transform: scale(0.33);
+        margin: -16rem 0;
     }
 }

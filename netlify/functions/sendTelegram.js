@@ -1,9 +1,48 @@
-import axios from "axios";
-
 export const handler = async (event) => {
-  try {
-    const { name, email, message } = JSON.parse(event.body);
+  // Allow only POST requests
+  if (event.httpMethod !== "POST") {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({
+        success: false,
+        message: "Method Not Allowed",
+      }),
+    };
+  }
 
+  try {
+    // Parse request body safely
+    const body = JSON.parse(event.body || "{}");
+    const { name, email, message } = body;
+
+    // Validate input
+    if (!name || !email || !message) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          success: false,
+          message: "Name, email, and message are required",
+        }),
+      };
+    }
+
+    // Check environment variables
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+
+    if (!token || !chatId) {
+      console.error("Missing environment variables");
+
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          success: false,
+          message: "Server configuration error",
+        }),
+      };
+    }
+
+    // Format message
     const text = `
 📩 New Portfolio Message
 
@@ -14,14 +53,38 @@ export const handler = async (event) => {
 ${message}
 `;
 
-    await axios.post(
-      `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
-      {
-        chat_id: process.env.TELEGRAM_CHAT_ID,
-        text,
-      }
-    );
+    // Telegram API call
+    const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage`;
 
+    const response = await fetch(telegramUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text,
+        parse_mode: "HTML",
+      }),
+    });
+
+    const data = await response.json();
+
+    // Handle Telegram API failure
+    if (!response.ok) {
+      console.error("Telegram API Error:", data);
+
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          success: false,
+          message: "Failed to send message to Telegram",
+          error: data,
+        }),
+      };
+    }
+
+    // Success response
     return {
       statusCode: 200,
       body: JSON.stringify({
@@ -30,13 +93,14 @@ ${message}
       }),
     };
   } catch (error) {
-    console.error(error);
+    console.error("Function Error:", error);
 
     return {
       statusCode: 500,
       body: JSON.stringify({
         success: false,
-        message: "Failed to send message",
+        message: "Internal Server Error",
+        error: error.message,
       }),
     };
   }

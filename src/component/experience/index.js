@@ -1,87 +1,146 @@
 import React from "react";
 import '../../assets/css/style.css';
-export default function Experience(){
-    return(
-        <section class="experience" id="experience">
+import '../../assets/css/experience.css';
 
-  <h2 class="heading"><i class="fas fa-briefcase"></i> Experience</h2>
+export default function Experience() {
+  return (
+    <section className="modern-experience-section" id="experience">
+      <div className="section-ambient-glow"></div>
 
-  <div class="timeline">
-
-    <div class="container left">
-      <div class="content">
-        <div class="tag">
-          <h2>Self Employed</h2>
+      <div className="experience-max-container">
+        <div className="section-header">
+          <span className="section-subtitle">Road Map</span>
+          <h2 className="section-main-title"><i className="fas fa-briefcase"></i> Professional <span>Journey</span></h2>
+          <div className="title-bar"></div>
         </div>
-        <div class="desc">
-            <h3>Full Stack Developer</h3>
-            <p>Oct 2021 - present</p>
-        </div>
-      </div>
-    </div>
 
-    <div class="container right">
-        <div class="content">
-          <div class="tag">
-            <h2>University Project Competition</h2>
+        {/* Clean, Non-Alternating Roadmap Track */}
+        <div className="roadmap-track">
+
+          {/* Node 1: Present */}
+          <div className="roadmap-step active-node">
+            <div className="roadmap-marker">
+              <span className="marker-core"></span>
+            </div>
+            <div className="roadmap-info-grid">
+              <div className="roadmap-meta">
+                <span className="roadmap-duration-badge">Oct 2021 — Present</span>
+                <span className="roadmap-org-type">Independent</span>
+              </div>
+              <div className="roadmap-details">
+                <h3 className="roadmap-role-title">Full Stack Developer</h3>
+                <h4 className="roadmap-company-name">Self Employed</h4>
+                <p className="roadmap-brief">
+                  Architecting and shipping responsive web apps, managing end-to-end delivery pipelines, and consulting on modern architecture design patterns.
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="desc">
-              <h3>First Prize</h3>
-              <p>2023-2024 Academic Year</p>
+
+          {/* Node 2: 2023-2024 Competition */}
+          <div className="roadmap-step">
+            <div className="roadmap-marker">
+              <span className="marker-core"></span>
+            </div>
+            <div className="roadmap-info-grid">
+              <div className="roadmap-meta">
+                <span className="roadmap-duration-badge">2023 — 2024</span>
+                <span className="roadmap-org-type font-award">Award Winner</span>
+              </div>
+              <div className="roadmap-details">
+                <h3 className="roadmap-role-title">First Prize Winner</h3>
+                <h4 className="roadmap-company-name">University Project Competition</h4>
+                <p className="roadmap-brief">
+                  Recognized for technical execution and interface design excellence, achieving first place in the annual university exhibition.
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div class="container left">
-        <div class="content">
-          <div class="tag">
-            <h2>University Project Competition</h2>
+          {/* Node 3: Gov Literacy Project */}
+          <div className="roadmap-step">
+            <div className="roadmap-marker">
+              <span className="marker-core"></span>
+            </div>
+            <div className="roadmap-info-grid">
+              <div className="roadmap-meta">
+                <span className="roadmap-duration-badge">2023 — 2024</span>
+                <span className="roadmap-org-type">Public Sector</span>
+              </div>
+              <div className="roadmap-details">
+                <h3 className="roadmap-role-title">Website Developer</h3>
+                <h4 className="roadmap-company-name">Government's Basic Literacy Project</h4>
+                <p className="roadmap-brief">
+                  Developed an accessible, highly legible information system web portal aimed at helping citizens access public educational resources.
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="desc">
-              <h3>First Prize</h3>
-              <p>2024-2025 Academic Year</p>
+
+          {/* Node 4: 2024-2025 Competition */}
+          <div className="roadmap-step">
+            <div className="roadmap-marker">
+              <span className="marker-core"></span>
+            </div>
+            <div className="roadmap-info-grid">
+              <div className="roadmap-meta">
+                <span className="roadmap-duration-badge">2024 — 2025</span>
+                <span className="roadmap-org-type font-award">Award Winner</span>
+              </div>
+              <div className="roadmap-details">
+                <h3 className="roadmap-role-title">First Prize Winner</h3>
+                <h4 className="roadmap-company-name">University Project Competition</h4>
+                <p className="roadmap-brief">
+                  Engineered an innovative system that secured top honors among peer engineering entries during the academic year.
+                </p>
+              </div>
+            </div>
           </div>
+
+          {/* Node 5: Registration System */}
+          <div className="roadmap-step">
+            <div className="roadmap-marker">
+              <span className="marker-core"></span>
+            </div>
+            <div className="roadmap-info-grid">
+              <div className="roadmap-meta">
+                <span className="roadmap-duration-badge">2024 — 2025</span>
+                <span className="roadmap-org-type">Academic System</span>
+              </div>
+              <div className="roadmap-details">
+                <h3 className="roadmap-role-title">Full Stack Developer</h3>
+                <h4 className="roadmap-company-name">University Student Registration System</h4>
+                <p className="roadmap-brief">
+                  Designed, developed, and optimized a secure, high-throughput student portal application handling registration and user records data management.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Node 6: Internship */}
+          <div className="roadmap-step">
+            <div className="roadmap-marker">
+              <span className="marker-core"></span>
+            </div>
+            <div className="roadmap-info-grid">
+              <div className="roadmap-meta">
+                <span className="roadmap-duration-badge">2026</span>
+                <span className="roadmap-org-type">Internship</span>
+              </div>
+              <div className="roadmap-details">
+                <h3 className="roadmap-role-title">Full Stack Developer Intern</h3>
+                <h4 className="roadmap-company-name">Myanmar DCR Co., Ltd.</h4>
+                <p className="roadmap-brief">
+                  Developed scalable web architectures using Java Spring Boot and modern frontend frameworks.
+                  Engineered robust RESTful APIs, optimized database queries, and implemented secure
+                  authentication protocols to deliver seamless, high-performance user experiences.
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-
-    <div class="container right">
-      <div class="content">
-        <div class="tag">
-          <h2>University Student Registration System</h2>
-        </div>
-        <div class="desc">
-            <h3>Full Stack Developer</h3>
-            <p>2024-2025</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="container left">
-      <div class="content">
-        <div class="tag">
-          <h2>Government's Basic Literacy Project</h2>
-        </div>
-        <div class="desc">
-            <h3>Website Developer</h3>
-            <p>2023-2024</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="container right">
-      <div class="content">
-        <div class="tag">
-          <h2>Myanmar Cybersecurity Challenge</h2>
-        </div>
-        <div class="desc">
-            <h3>Cryptography</h3>
-            <p>2023-2024</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-</section>
-    )
+    </section>
+  );
 }

@@ -1,7 +1,7 @@
 
 import './App.css';
 import React from 'react';
-import { useRef, useEffect } from "react";
+import { useRef, useEffect,useState } from "react";
 import ScrollReveal from "scrollreveal";
 import Navbar from './component/navbar/index';
 import Home from './component/home/index';
@@ -12,9 +12,33 @@ import Project from './component/project/index';
 import Experience from './component/experience/index';
 import Contact from './component/contact/index';
 import Footer from './component/footer/index';
+import Preloader from './assets/js/preloder';
 
 
 function App() {
+const [loading, setLoading] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.add('no-scroll');
+
+    const triggerFadeTimer = setTimeout(() => {
+      setFadeOut(true); 
+      
+      const unmountTimer = setTimeout(() => {
+        setLoading(false);
+        document.body.classList.remove('no-scroll');
+      }, 400); // Wait for fade-out transition to complete
+      
+      return () => clearTimeout(unmountTimer);
+    }, 3500); // Total display timeline duration reduced for efficiency
+
+    return () => {
+      clearTimeout(triggerFadeTimer);
+      document.body.classList.remove('no-scroll');
+    };
+  }, []);
+
    useEffect(() => {
     const srtop = ScrollReveal({
       origin: "top",
@@ -61,8 +85,14 @@ function App() {
     srtop.reveal(".contact .container .form-group", { delay: 400 });
     }, 300); // slight delay (300ms)
 }, []);
+
   return (
     <>
+    {/* Name Preloader Screen Engine */}
+      {loading && <Preloader isFadingOut={fadeOut} />}
+      
+      {/* Core Main Portfolio Layout Container */}
+      {/* <main className="app-content-wrapper"> */}
       <Navbar/>
       <Home/>
       <About/>
@@ -72,6 +102,7 @@ function App() {
       <Experience/>
       <Contact/>
       <Footer/>
+      {/* </main> */}
     </>
   );
 }

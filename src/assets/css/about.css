@@ -1,0 +1,217 @@
+/* ==========================================================================
+   PRODUCTION MODERN BIO / ABOUT ME INTERFACE
+   ========================================================================== */
+
+.modern-about-section {
+  position: relative;
+  padding: 0 7% 0rem 7%;
+  overflow: hidden;
+}
+
+.about-dashboard-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 7rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+/* Avatar Frame Geometry Layout (Eliminates sizing bugs) */
+.about-avatar-pane {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+}
+
+.tilt-avatar-frame {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  border-radius: 3rem;
+  overflow: hidden;
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+  transform-style: preserve-3d;
+}
+
+.tilt-avatar-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(20px); /* Creates structural depth on hover tilt */
+}
+
+.avatar-glass-tint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(2, 6, 23, 0.4) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Content Details Panel styling */
+.about-content-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+.bio-intro {
+  margin-bottom: 2.5rem;
+}
+
+.bio-intro h3 {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #f8fafc;
+  letter-spacing: -0.05rem;
+  text-transform: none;
+  margin-bottom: 0.5rem;
+}
+
+.professional-tag {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #06b6d4; /* Matching Cyan accent color used across sections */
+  letter-spacing: 0.05rem;
+}
+
+.bio-description {
+  font-size: 1.55rem;
+  color: #94a3b8;
+  line-height: 1.75;
+  font-weight: 400;
+  text-transform: none;
+  margin-bottom: 4rem;
+}
+
+.bio-description strong {
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+/* Dynamic Information Grid Elements */
+.personal-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  padding: 3rem;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2rem;
+  margin-bottom: 4rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.meta-icon {
+  font-size: 1.8rem;
+  color: #3b82f6; /* Blue dashboard color highlight */
+  width: 4rem;
+  height: 4rem;
+  background: rgba(59, 130, 246, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+}
+
+.meta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.meta-label {
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.meta-value {
+  font-size: 1.45rem;
+  color: #cbd5e1;
+  font-weight: 500;
+  text-transform: none;
+}
+
+.link-value {
+  transition: color 0.2s ease;
+  text-decoration: none;
+}
+
+.link-value:hover {
+  color: #06b6d4;
+}
+
+/* Action Execution Layout Row (CV Button) */
+.about-actions-row {
+  display: flex;
+}
+
+.premium-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.5rem 3rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-radius: 1.2rem;
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+}
+
+.premium-resume-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.6);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.premium-resume-btn i {
+  font-size: 1.3rem;
+  transition: transform 0.3s ease;
+}
+
+.premium-resume-btn:hover i {
+  transform: translateX(4px);
+}
+
+/* Responsive Adaptive Sizing Media Overrides */
+@media screen and (max-width: 992px) {
+  .about-dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 5rem;
+  }
+  
+  .about-avatar-pane {
+    order: -1; /* Pushes profile photo back above headers on mobile viewports */
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .personal-meta-grid {
+    grid-template-columns: 1fr; /* Transforms into single rows on ultra small phone viewports */
+    padding: 2rem;
+    gap: 2rem;
+  }
+  
+  .bio-intro h3 {
+    font-size: 2.6rem;
+  }
+}

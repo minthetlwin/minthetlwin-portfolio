@@ -1,0 +1,225 @@
+/* Premium Glassmorphic Navigation Design */
+.premium-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5000;
+  padding: 24px 0;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Scroll Active Micro-State transformation */
+.header-scrolled {
+  padding: 14px 0;
+  background: rgba(10, 10, 12, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.header-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Premium Text Logo Typography Architecture */
+.text-logo-wrapper {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+  letter-spacing: -0.03em;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+/* Stylized Initial Character */
+.logo-accent-initial {
+  color: #3b82f6; /* Matches your --accent-glow variable */
+  position: relative;
+  margin-right: 1px;
+}
+
+/* Subtle architectural code dot at the end */
+.logo-terminal-dot {
+  color: #3b82f6;
+  font-weight: 900;
+}
+
+/* Hover Micro-interaction */
+.text-logo-wrapper:hover {
+  transform: scale(1.02);
+  color: #ffffff; /* Prevents default browser link flashes */
+}
+
+/* Nav links desktop rendering matrix */
+.nav-links-list {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #94a3b8; /* var(--text-muted) */
+  padding: 8px 0;
+  transition: color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+}
+
+/* High clarity active route visual indicator */
+.nav-link.active-route {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.active-tracker-dot {
+  position: absolute;
+  bottom: -4px;
+  width: 5px;
+  height: 5px;
+  background: #3b82f6; /* var(--accent-glow) */
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-link.active-route .active-tracker-dot {
+  transform: scale(1);
+  box-shadow: 0 0 10px #3b82f6;
+}
+
+/* Premium Mobile Burger Menu Toggle Buttons Configuration */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 5100;
+}
+
+.burger-line {
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Transformation animations on toggle execution triggers */
+.toggle-active .burger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.toggle-active .burger-line:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.toggle-active .burger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile Media Adaptations Viewports rules */
+@media (max-width: 868px) {
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .navbar-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background: #0a0a0c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 4900;
+  }
+
+  .navbar-overlay.overlay-open {
+    transform: translateX(0);
+  }
+
+  .nav-links-list {
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .nav-link {
+    font-size: 1.5rem;
+  }
+  
+  .active-tracker-dot {
+    bottom: -10px;
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Premium Dashboard Floating Return Button Control */
+.scroll-top-action {
+  position: fixed;
+  bottom: 30px;
+  left: 93%; /* Kept aligned with your custom left anchoring style definitions */
+  width: 46px;
+  height: 46px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 4000;
+}
+
+.scroll-top-action.reveal-action {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-top-action:hover {
+  background: #3b82f6; /* Transition over to brand identity focus color code */
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+  transform: translateY(-4px);
+}

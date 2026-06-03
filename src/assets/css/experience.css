@@ -1,0 +1,222 @@
+/* ==========================================================================
+   PRODUCTION READY MODERN MINIMALIST EXP ROADMAP
+   ========================================================================== */
+
+.modern-experience-section {
+  position: relative; 
+  width: 100%;
+  padding: 10rem 7% 0rem 7%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Subtle corner neon background ambient filter glow */
+.section-ambient-glow {
+  position: absolute;
+  top: 25%;
+  right: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.04) 0%, rgba(0,0,0,0) 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.experience-max-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+
+.section-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #6b7280;
+  margin-top: 1.5rem;
+}
+
+/* Single Vertical Navigation Stream Line Track */
+.roadmap-track {
+  position: relative;
+  padding-left: 3rem;
+}
+
+.roadmap-track::before {
+  content: '';
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 3.5px;
+  width: 1px;
+  background: linear-gradient(to bottom, #1f2937 0%, #1f2937 80%, rgba(31, 41, 55, 0) 100%);
+}
+
+/* Main Step Row Grid Structuring */
+.roadmap-step {
+  position: relative;
+  display: flex;
+  margin-bottom: 5.5rem;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.roadmap-step:last-child {
+  margin-bottom: 0;
+}
+
+/* Glowing Indicator Markers */
+.roadmap-marker {
+  position: absolute;
+  left: -3rem;
+  top: 0.2rem;
+  width: 8px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marker-core {
+  width: 8px;
+  height: 8px;
+  background-color: #374151; /* Default inactive slate dot */
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* Active Highlight Styling States for Top-of-Stack Items */
+.active-node .marker-core {
+  background-color: #3b82f6;
+  box-shadow: 0 0 15px #3b82f6, 0 0 5px #3b82f6;
+}
+
+/* Content Grid Segregation Matrix */
+.roadmap-info-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 3rem;
+  width: 100%;
+}
+
+/* Left Metadata Column (Timestamps and Taxonomy Labels) */
+.roadmap-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: flex-start;
+  padding-top: 0.1rem;
+}
+
+.roadmap-duration-badge {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f3f4f6;
+  letter-spacing: -0.01rem;
+}
+
+.roadmap-org-type {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  font-weight: 700;
+  color: #4b5563;
+  padding: 0.2rem 0.6rem;
+  background-color: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 0.4rem;
+}
+
+.font-award {
+  color: #10b981;
+  background-color: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.15);
+}
+
+/* Right Core Information Text Blocks */
+.roadmap-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.roadmap-role-title {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #f9fafb;
+  margin: 0 0 0.4rem 0;
+  letter-spacing: -0.02rem;
+}
+
+.roadmap-company-name {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #9ca3af;
+  margin: 0 0 1rem 0;
+}
+
+.roadmap-brief {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #6b7280;
+  margin: 0;
+  max-width: 620px;
+  transition: color 0.2s ease;
+}
+
+/* Micro-Interaction Transitions on User Hover States */
+.roadmap-step:hover .marker-core {
+  background-color: #06b6d4;
+  box-shadow: 0 0 15px #06b6d4;
+  transform: scale(1.2);
+}
+
+.roadmap-step:hover .roadmap-brief {
+  color: #9ca3af; /* Text brightens clean when row targeted */
+}
+
+.roadmap-step:hover {
+  transform: translateX(4px); /* Clean typographic push animation */
+}
+
+/* ==========================================================================
+   MOBILE & TABLET VIEWPORT RESPONSIVE BREAKDOWN
+   ========================================================================== */
+
+@media screen and (max-width: 768px) {
+  .modern-experience-section {
+    padding: 6rem 1.5rem;
+  }
+
+  .section-header-container {
+    margin-bottom: 5rem;
+  }
+
+  .roadmap-track {
+    padding-left: 2rem;
+  }
+
+  .roadmap-marker {
+    left: -2rem;
+  }
+
+  /* Collapse the dual column layout into a unified simple row vertical architecture */
+  .roadmap-info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .roadmap-meta {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .roadmap-role-title {
+    font-size: 1.35rem;
+  }
+
+  .roadmap-company-name {
+    font-size: 1.05rem;
+    margin-bottom: 0.6rem;
+  }
+}

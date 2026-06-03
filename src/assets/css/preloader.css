@@ -1,0 +1,157 @@
+/* ==========================================================================
+   MIN THET LWIN - DRAW-ONCE INITIALS WITH INFINITE TRACKING BAR
+   ========================================================================== */
+
+.no-scroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+.portfolio-preloader-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #020617; 
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  contain: strict;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.portfolio-preloader-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ==========================================================================
+   GEOMETRIC CORE ENGINE
+   ========================================================================== */
+.loader {
+  display: flex;
+  flex-direction: column; /* Vertically aligns the text row and the track bar */
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(20px, 3.5vw, 42px); 
+  gap: 0.8em; /* Clean structural gap between text base and progress tracker */
+  padding: 1em;
+}
+
+.name-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15em;
+  row-gap: 0.6em;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.word-block {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.04em;
+}
+
+.word-spacer {
+  width: 0.5em;
+}
+
+.inline-block {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: none;
+  will-change: filter, transform;
+}
+
+/* Lighting Maps */
+.glow-purple { filter: drop-shadow(0 0 10px rgba(151, 61, 237, 0.45)); }
+.glow-gold { filter: drop-shadow(0 0 14px rgba(255, 0, 255, 0.55)); }
+.glow-cyan { filter: drop-shadow(0 0 10px rgba(0, 224, 237, 0.45)); }
+
+/* ==========================================================================
+   SMOOTH RUNNING LOADING BAR LAYER
+   ========================================================================== */
+.track-bar {
+  position: relative;
+  overflow: hidden;
+  height: 4px;
+  width: 6.5em; /* Perfectly proportional width base matching the text tracking limits */
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.08); /* Dim translucent base runway track */
+}
+
+/* The fluid moving core */
+.track-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  /* Tri-color gradient matching the text segments */
+  background: linear-gradient(90deg, #973BED, #06b6d4, #00DA72);
+  border-radius: 4px;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.75);
+  transform: translateX(-100%);
+  will-change: transform;
+  /* Smooth alternating left-to-right animation curve loop */
+  animation: smoothWobble 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* ==========================================================================
+   ANIMATION MATRIX
+   ========================================================================== */
+.dash {
+  stroke-dasharray: 0 360;
+  stroke-dashoffset: 365;
+  animation: singleDrawStroke 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.spin {
+  stroke-dasharray: 0 360;
+  stroke-dashoffset: 365;
+  animation: singleDrawStroke 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+             singleSpinTrack 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  transform-origin: 32px 34px;
+}
+
+@keyframes singleDrawStroke {
+  0% {
+    stroke-dasharray: 0 360;
+    stroke-dashoffset: 365;
+  }
+  100% {
+    stroke-dasharray: 360 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* @keyframes singleSpinTrack {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} */
+
+/* Left-to-Right layout ping-pong translation timeline */
+@keyframes smoothWobble {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

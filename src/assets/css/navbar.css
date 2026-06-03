@@ -145,6 +145,7 @@
   transform: translateY(-8px) rotate(-45deg);
 }
 
+
 /* Mobile Media Adaptations Viewports rules */
 @media (max-width: 868px) {
   .mobile-menu-toggle {
@@ -191,7 +192,7 @@
 .scroll-top-action {
   position: fixed;
   bottom: 30px;
-  left: 93%; /* Kept aligned with your custom left anchoring style definitions */
+  right: 4%; /* Kept aligned with your custom left anchoring style definitions */
   width: 46px;
   height: 46px;
   background: #ffffff;

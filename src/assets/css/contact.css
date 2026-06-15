@@ -15,6 +15,7 @@
   color: var(--text-main);
   min-height: 100vh;
   font-family: "Poppins", sans-serif;
+  margin-bottom: 5rem;
 }
 
 /* Sync Layout with Education Dashboard Grid */

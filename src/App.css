@@ -1,38 +1,85 @@
-.App {
-  text-align: center;
+/* ==========================================================================
+   GLOBAL CONFIGURATIONS & HARDWARE MOUSE SPOTLIGHT
+   ========================================================================== */
+
+/* Hide standard system cursors across all interactive elements */
+html, body, a, button, input, textarea, select {
+  cursor: none !important;
 }
 
-.App-logo {
-  height: 40vmin;
+body {
+  position: relative;
+  background-color: #030712; /* Deep background theme base */
+  overflow-x: hidden;
+}
+
+/* Bright ambient lighting layer around the cursor position */
+.global-mouse-spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
+  z-index: 0; /* Sits behind text and cards to illuminate them from underneath */
+  will-change: background;
+  
+  /* Modern radial light beam. Change 'rgba(6, 182, 212, 0.15)' to change glow color/intensity */
+  background: radial-gradient(
+    600px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px),
+    rgba(6, 182, 212, 0.12) 0%,
+    rgba(99, 102, 241, 0.05) 40%,
+    transparent 80%
+  );
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* ==========================================================================
+   CURSOR RENDER LAYER ELEMENTS (DOT + RING)
+   ========================================================================== */
+
+/* Clean Centerpiece Pointer Dot */
+.smooth-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background-color: #06b6d4; /* Vibrant neon cyan pin */
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100000; /* Stays fixed directly over all content layers */
+  margin-left: -3px;
+  margin-top: -3px;
+  will-change: transform;
+}
+
+/* Surrounding Geometric Halo Tracking Ring */
+.smooth-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(6, 182, 212, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  margin-left: -18px;
+  margin-top: -18px;
+  will-change: transform;
+  
+  /* Creates an organic, elastic lag trail behind the pinpoint dot */
+  transition: transform 0.06s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Gracefully turn off layout alterations on mobile touchscreen displays */
+@media (max-width: 1024px) {
+  .smooth-cursor-dot,
+  .smooth-cursor-ring,
+  .global-mouse-spotlight {
+    display: none !important;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+  html, body, a, button {
+    cursor: auto !important;
   }
 }

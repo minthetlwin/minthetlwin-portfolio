@@ -68,12 +68,10 @@
         transform: scale(0.95);
         box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
     }
-
     70% {
         transform: scale(1);
         box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
     }
-
     100% {
         transform: scale(0.95);
         box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
@@ -182,16 +180,14 @@
 
 .solar-viewport {
     position: relative;
-    /* CHANGED: Swapped static pixel sizes for fluid rem sizing based on max-track constraints */
     width: 56rem;
     height: 56rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 2000px;
+    perspective: 2500px; /* Deep perspective value for stronger depth translations */
     overflow: visible;
     line-height: 0;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .solar-system-stage {
@@ -202,7 +198,13 @@
     justify-content: center;
     align-items: center;
     transform-style: preserve-3d;
-    transform: rotateX(68deg) rotateY(-8deg);
+    
+    /* MODIFIED: Base fallback properties mapped to inline script engine overrides */
+    transform: rotateX(68deg) rotateY(-8deg); 
+    
+    /* UPDATED: Cubic-bezier interpolation allows stage movement tracking to catch up elegantly */
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
 }
 
 /* Universal Track Blueprint */
@@ -269,7 +271,7 @@
     background: radial-gradient(circle at 30% 30%, #fff7ed 0%, #f97316 60%, #ea580c 100%);
     border-radius: 50%;
     box-shadow: 0 0 40px 15px rgba(249, 115, 22, 0.4),
-        0 0 80px 30px rgba(234, 88, 12, 0.15);
+                0 0 80px 30px rgba(234, 88, 12, 0.15);
     transform: rotateX(-68deg);
     z-index: 10;
     cursor: pointer;
@@ -291,7 +293,6 @@
         transform: scale(0.9);
         opacity: 1;
     }
-
     100% {
         transform: scale(1.4);
         opacity: 0;
@@ -309,20 +310,17 @@
     animation: loopPlanet 3.5s linear infinite;
     z-index: 18;
 }
-
 .planet-mercury {
     width: 0.9rem;
     height: 0.9rem;
     margin-left: -0.45rem;
     margin-top: -0.45rem;
 }
-
 .planet-mercury::before {
     background: #a8a29e;
     box-shadow: 0 0 8px #a8a29e;
     animation: counterLoopPlanet 3.5s linear infinite;
 }
-
 .planet-mercury .cosmic-label {
     animation: counterLoopPlanet 3.5s linear infinite;
 }
@@ -334,20 +332,17 @@
     animation: loopPlanet 6.5s linear infinite;
     z-index: 17;
 }
-
 .planet-venus {
     width: 1.3rem;
     height: 1.3rem;
     margin-left: -0.65rem;
     margin-top: -0.65rem;
 }
-
 .planet-venus::before {
     background: #fdba74;
     box-shadow: 0 0 10px #f59e0b;
     animation: counterLoopPlanet 6.5s linear infinite;
 }
-
 .planet-venus .cosmic-label {
     animation: counterLoopPlanet 6.5s linear infinite;
 }
@@ -359,20 +354,17 @@
     animation: loopPlanet 9s linear infinite;
     z-index: 16;
 }
-
 .planet-earth {
     width: 1.4rem;
     height: 1.4rem;
     margin-left: -0.7rem;
     margin-top: -0.7rem;
 }
-
 .planet-earth::before {
     background: #3b82f6;
     box-shadow: 0 0 12px #06b6d4;
     animation: counterLoopPlanet 9s linear infinite;
 }
-
 .planet-earth .cosmic-label {
     animation: counterLoopPlanet 9s linear infinite;
 }
@@ -384,20 +376,17 @@
     animation: loopPlanet 13s linear infinite;
     z-index: 15;
 }
-
 .planet-mars {
     width: 1.1rem;
     height: 1.1rem;
     margin-left: -0.55rem;
     margin-top: -0.55rem;
 }
-
 .planet-mars::before {
     background: #ef4444;
     box-shadow: 0 0 10px #f87171;
     animation: counterLoopPlanet 13s linear infinite;
 }
-
 .planet-mars .cosmic-label {
     animation: counterLoopPlanet 13s linear infinite;
 }
@@ -409,20 +398,17 @@
     animation: loopPlanet 22s linear infinite;
     z-index: 14;
 }
-
 .planet-jupiter {
     width: 3.2rem;
     height: 3.2rem;
     margin-left: -1.6rem;
     margin-top: -1.6rem;
 }
-
 .planet-jupiter::before {
     background: radial-gradient(circle at 35% 35%, #fed7aa, #b45309);
     box-shadow: 0 0 18px rgba(217, 119, 6, 0.5);
     animation: counterLoopPlanet 22s linear infinite;
 }
-
 .planet-jupiter .cosmic-label {
     animation: counterLoopPlanet 22s linear infinite;
 }
@@ -434,24 +420,20 @@
     animation: loopPlanet 34s linear infinite;
     z-index: 13;
 }
-
 .planet-saturn {
     width: 2.8rem;
     height: 2.8rem;
     margin-left: -1.4rem;
     margin-top: -1.4rem;
 }
-
 .planet-saturn::before {
     background: #fbbf24;
     box-shadow: 0 0 14px rgba(251, 191, 36, 0.5);
     animation: counterLoopPlanet 34s linear infinite;
 }
-
 .planet-saturn .cosmic-label {
     animation: counterLoopPlanet 34s linear infinite;
 }
-
 .saturn-ring-system {
     position: absolute;
     top: 50%;
@@ -472,20 +454,17 @@
     animation: loopPlanet 48s linear infinite;
     z-index: 12;
 }
-
 .planet-uranus {
     width: 2rem;
     height: 2rem;
     margin-left: -1rem;
     margin-top: -1rem;
 }
-
 .planet-uranus::before {
     background: #22d3ee;
     box-shadow: 0 0 12px #0891b2;
     animation: counterLoopPlanet 48s linear infinite;
 }
-
 .planet-uranus .cosmic-label {
     animation: counterLoopPlanet 48s linear infinite;
 }
@@ -497,20 +476,17 @@
     animation: loopPlanet 64s linear infinite;
     z-index: 11;
 }
-
 .planet-neptune {
     width: 1.9rem;
     height: 1.9rem;
     margin-left: -0.95rem;
     margin-top: -0.95rem;
 }
-
 .planet-neptune::before {
     background: #2563eb;
     box-shadow: 0 0 14px #1d4ed8;
     animation: counterLoopPlanet 64s linear infinite;
 }
-
 .planet-neptune .cosmic-label {
     animation: counterLoopPlanet 64s linear infinite;
 }
@@ -518,33 +494,18 @@
 /*CORE COSMIC MATRIX LOOPS*/
 
 @keyframes loopPlanet {
-    0% {
-        transform: rotateZ(0deg);
-    }
-
-    100% {
-        transform: rotateZ(360deg);
-    }
+    0% { transform: rotateZ(0deg); }
+    100% { transform: rotateZ(360deg); }
 }
 
 @keyframes counterLoopPlanet {
-    0% {
-        transform: rotateZ(0deg) rotateY(8deg) rotateX(-68deg);
-    }
-
-    100% {
-        transform: rotateZ(-360deg) rotateY(8deg) rotateX(-68deg);
-    }
+    0% { transform: rotateZ(0deg) rotateY(8deg) rotateX(-68deg); }
+    100% { transform: rotateZ(-360deg) rotateY(8deg) rotateX(-68deg); }
 }
 
 @keyframes counterLoopPlanetRing {
-    0% {
-        transform: translate(-50%, -50%) rotateZ(0deg) rotateY(8deg) rotateX(-43deg);
-    }
-
-    100% {
-        transform: translate(-50%, -50%) rotateZ(-360deg) rotateY(8deg) rotateX(-43deg);
-    }
+    0% { transform: translate(-50%, -50%) rotateZ(0deg) rotateY(8deg) rotateX(-43deg); }
+    100% { transform: translate(-50%, -50%) rotateZ(-360deg) rotateY(8deg) rotateX(-43deg); }
 }
 
 /*INTERACTIVE FLOATING FACT BOX PANEL OVERLAY*/
@@ -573,7 +534,6 @@
         opacity: 0;
         transform: translate(-50%, 15px);
     }
-
     100% {
         opacity: 1;
         transform: translate(-50%, 0);
@@ -633,22 +593,26 @@
     align-items: center;
     width: 100%;
     overflow: visible;
-    /* Changed to visible so labels/rings don't get clipped cropped */
 }
 
-/* Responsive */
-@media screen and (max-width: 1400px) {
-    
-}
-
+/* Responsive Scaling Overrides */
 @media screen and (max-width: 1200px) {
     .hero-main-title {
         font-size: 4.8rem;
     }
-
     .solar-viewport {
         transform: scale(0.7);
         margin: -6rem 0;
+    }
+}
+
+@media screen {
+    /* ── SHUT OFF PARALLAX TRANSFORMS SAFELY ON TABLET AND PHONE VIEWS ── */
+    @media (max-width: 992px) {
+        .solar-system-stage {
+            transform: rotateX(68deg) rotateY(-8deg) !important;
+            transition: none !important;
+        }
     }
 }
 
@@ -656,37 +620,30 @@
     .header-container {
         padding: 0 5rem;
     }
-
     .modern-home-hero {
         padding: 10rem 5% 6rem 5%;
         align-items: flex-start;
         min-height: auto;
     }
-
     .hero-split-layout {
         grid-template-columns: 1fr;
         gap: 2rem;
         text-align: center;
     }
-
     .hero-text-container {
         align-items: center;
     }
-
     .welcome-tag {
         margin: 5rem auto 2rem auto;
     }
-
     .hero-cta-group {
         justify-content: center;
         gap: 2.5rem;
     }
-
     .hero-avatar-container {
         order: 2;
         margin-top: -2rem;
     }
-
     .solar-viewport {
         margin: -4rem 0;
     }
@@ -696,21 +653,19 @@
     .header-container {
         padding: 0 5rem;
     }
-
     .hero-main-title {
         font-size: 4rem;
         letter-spacing: -0.1rem;
     }
-
     .dynamic-typing-row {
         margin-bottom: 3rem;
     }
-
     .solar-viewport {
         transform: scale(0.6);
         margin: -8rem 0;
     }
 }
+
 /* ==========================================================================
    MOBILE & MOBILE SMALL FLUID OVERRIDES
    ========================================================================== */
@@ -720,75 +675,60 @@
         height: 40rem;
     }
     .header-container {
-        padding: 0 2rem; /* Reduced massive padding structural walls */
+        padding: 0 2rem;
     }
-
     .modern-home-hero {
-        padding: 10rem 1.5rem 4rem 1.5rem; /* Clean edge padding safely within viewport */
+        padding: 10rem 1.5rem 4rem 1.5rem;
         width: 100%;
-        overflow-x: hidden; /* Hard safety gate to stop horizontal document scrolling */
+        overflow-x: hidden;
     }
-
     .hero-split-layout {
         width: 100%;
         gap: 1.5rem;
     }
-
-    /* FIX 1: Removed static 'width: 55rem' which forced desktop expansion on phone views */
     .hero-text-container {
         align-items: center;
         width: 100%; 
         max-width: 100%;
         box-sizing: border-box;
     }
-
     .hero-main-title {
-        font-size: 3.6rem; /* Scaled down beautifully for small displays */
+        font-size: 3.6rem;
         letter-spacing: -0.05rem;
         line-height: 1.2;
     }
-
     .dynamic-typing-row p {
         font-size: 1.2rem;
     }
-
     .hero-cta-group {
-        flex-direction: column; /* Stacks button and icons natively */
+        flex-direction: column;
         width: 100%;
         gap: 2rem;
         margin-top: 3rem;
     }
-
-    /* FIX 2: Optimized button layout bounds */
     .premium-hero-btn {
         padding: 1.2rem 2.4rem;
         font-size: 1.2rem;
-        width: 100%; /* Spans full safely manageable text row width */
+        width: 100%;
         max-width: 280px;
         justify-content: center;
     }
-
     .hero-social-strip {
         gap: 1.6rem;
     }
-
     .hero-social-strip a {
         font-size: 1.8rem;
     }
-
-    /* FIX 3: Solved Solar System DOM footprint bleed out */
     .hero-avatar-container {
         width: 100%;
-        overflow: hidden; /* Clips the invisible bounding layout track lines cleanly */
+        overflow: hidden;
         display: flex;
         justify-content: center;
     }
-
     .solar-viewport {
-        margin: -14rem 0; /* Tightens collapse space constraints */
-        pointer-events: none; /* Prevents accidentally scrolling/swiping mobile page on orbits */
+        margin: -14rem 0;
+        pointer-events: none;
     }
-
     .space-fact-overlay-box {
         width: 90%;
         padding: 1.25rem;
@@ -800,7 +740,6 @@
     .hero-main-title {
         font-size: 3.2rem;
     }
-
     .solar-viewport {
         margin: -16rem 0;
     }

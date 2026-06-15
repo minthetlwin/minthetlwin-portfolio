@@ -6,7 +6,7 @@ import '../../assets/css/home.css';
 
 // Local planet encyclopedia database with Sun integrated
 const PLANET_FACTS = {
-  Sun: { color: "#fca400", title: "Sun", speed: "Solar Core", note: "The luminous star at the heart of our system, containing 99.8% of its total mass." },
+  Sun: { color: "#ea580c", title: "Sun", speed: "Solar Core", note: "The luminous star at the heart of our system, containing 99.8% of its total mass." },
   Mercury: { color: "#a8a29e", title: "Mercury", speed: "Fastest Orbit", note: "The smallest planet in our solar system and closest to the Sun." },
   Venus: { color: "#fdba74", title: "Venus", speed: "Extremely Hot", note: "Thick atmosphere traps heat in a runaway greenhouse effect." },
   Earth: { color: "#3b82f6", title: "Earth", speed: "Life Oasis", note: "Our home planet is the only place known to harbor living ecosystems." },
@@ -14,14 +14,16 @@ const PLANET_FACTS = {
   Jupiter: { color: "#b45309", title: "Jupiter", speed: "Gas Giant", note: "More than twice as massive than all other planets combined." },
   Saturn: { color: "#fbbf24", title: "Saturn", speed: "Ringed World", note: "Adorned with a dazzling, complex system of icy rings." },
   Uranus: { color: "#22d3ee", title: "Uranus", speed: "Ice Giant", note: "An ice giant that uniquely rotates on an extreme 90-degree tilt." },
-  Neptune: { color: "#2563eb", title: "Neptune", speed: "Windy Planet", note: "The most distant major planet orbiting our solar system core." },
-  Sun: { color: "#ea580c", title: "Sun", speed: "Solar Core", note: "The luminous star at the heart of our system, containing 99.8% of its total mass." }
+  Neptune: { color: "#2563eb", title: "Neptune", speed: "Windy Planet", note: "The most distant major planet orbiting our solar system core." }
 };
 
 export default function Home() {
   const [activePlanet, setActivePlanet] = useState(null);
   const canvasRef = useRef(null);
   const typeRef = useRef(null);
+  
+  // ── PARALLAX ACCELERATOR REFS ──
+  const solarStageRef = useRef(null);
 
   const handlePlanetSelect = (planetKey, e) => {
     e.stopPropagation(); // Prevents layout bubbling conflict triggers
@@ -33,6 +35,7 @@ export default function Home() {
     setActivePlanet(null);
   };
 
+  // 1. Core Dynamic Interactions (Typed & Favicon)
   useEffect(() => {
     const handleVisibilityChange = () => {
       const favicon = document.getElementById("favicon");
@@ -61,6 +64,28 @@ export default function Home() {
     };
   }, []);
 
+  // 2. High Performance Cursor 3D Parallax Engine
+  useEffect(() => {
+    const handleStageParallax = (e) => {
+      if (!solarStageRef.current || window.innerWidth <= 992) return;
+
+      // Locate cursor deviation from center viewport anchor points
+      const centerDeltaX = e.clientX - window.innerWidth / 2;
+      const centerDeltaY = e.clientY - window.innerHeight / 2;
+
+      // Map deviations smoothly onto your layout's core spatial angles: rotateX(68deg) rotateY(-8deg)
+      const targetTiltX = 68 - (centerDeltaY * 0.018); 
+      const targetTiltY = -8 + (centerDeltaX * 0.018);
+
+      // Direct GPU transformation injection bypassing React rendering cycles
+      solarStageRef.current.style.transform = `rotateX(${targetTiltX}deg) rotateY(${targetTiltY}deg)`;
+    };
+
+    window.addEventListener("mousemove", handleStageParallax, { passive: true });
+    return () => window.removeEventListener("mousemove", handleStageParallax);
+  }, []);
+
+  // 3. Ambient Canvas Geometry Animation Engine
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -180,7 +205,8 @@ export default function Home() {
           <div className="interactive-stage-card">
 
             <main className="solar-viewport">
-              <div className="solar-system-stage">
+              {/* Linked ref directly here for Parallax engine updates */}
+              <div className="solar-system-stage" ref={solarStageRef}>
 
                 {/* The Solar Core (Sun) */}
                 <div className="solar-sun-core" onClick={(e) => handlePlanetSelect("Sun", e)}>

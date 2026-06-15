@@ -1,150 +1,147 @@
 import React, { useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { projectList } from "./projectData";
 import '../../assets/css/style.css';
 import '../../assets/css/project.css';
-import Portfolio from '../../assets/image/project/portfolio.png';
-import StudentRegistration from '../../assets/image/project/studentRegistration.png';
-import WaHtaKa from '../../assets/image/project/wahtakalatha.png';
-import RemoteCode from '../../assets/image/project/remoteCode.png';
-import JobFinder from '../../assets/image/project/jobFinder.png';
-import Chronocraft from '../../assets/image/project/chronocraft.png';
-import Restaurant from '../../assets/image/project/restaurant.png';
-import Music from '../../assets/image/project/music.png';
 
 export default function Project() {
-  const canvasRef = useRef(null);
-  const stars = [];
-  const numStars = 100; // Optimized for performance
+  const cardRefs = useRef([]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const cards = cardRefs.current;
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    const handleMouseMove = (e, card) => {
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
 
-    for (let i = 0; i < numStars; i++) {
-      stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 1.2 + 0.4,
-        alpha: Math.random(),
-        delta: Math.random() * 0.015,
-      });
-    }
+      // Subtle 3-D tilt: max ±5 degrees keeps the grid elegant
+      const rotateX = ((y - cy) / cy) * -5;
+      const rotateY = ((x - cx) / cx) * 5;
 
-    const draw = () => {
-      ctx.clearRect(0, 0, width, height);
-      for (let star of stars) {
-        star.alpha += star.delta;
-        if (star.alpha <= 0 || star.alpha >= 1) star.delta *= -1;
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-        ctx.fill();
-      }
-      requestAnimationFrame(draw);
+      // Parallax depth: background image shifts slightly opposite the tilt
+      const parallaxX = ((x - cx) / cx) * -8;
+      const parallaxY = ((y - cy) / cy) * -8;
+
+      card.style.setProperty("--mouse-x", `${x}px`);
+      card.style.setProperty("--mouse-y", `${y}px`);
+      card.style.setProperty("--rotate-x", `${rotateX}deg`);
+      card.style.setProperty("--rotate-y", `${rotateY}deg`);
+      card.style.setProperty("--parallax-x", `${parallaxX}px`);
+      card.style.setProperty("--parallax-y", `${parallaxY}px`);
+      card.style.setProperty("--spotlight-opacity", "1");
     };
 
-    const animFrame = requestAnimationFrame(draw);
-
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+    const handleMouseLeave = (card) => {
+      if (!card) return;
+      card.style.transition =
+        "transform 0.65s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease";
+      card.style.setProperty("--rotate-x", "0deg");
+      card.style.setProperty("--rotate-y", "0deg");
+      card.style.setProperty("--parallax-x", "0px");
+      card.style.setProperty("--parallax-y", "0px");
+      card.style.setProperty("--spotlight-opacity", "0");
     };
-    window.addEventListener("resize", handleResize);
+
+    const handleMouseEnter = (card) => {
+      if (!card) return;
+      card.style.transition =
+        "transform 0.12s linear, border-color 0.4s ease, box-shadow 0.4s ease";
+    };
+
+    cards.forEach((card) => {
+      if (!card) return;
+      const move = (e) => handleMouseMove(e, card);
+      const leave = () => handleMouseLeave(card);
+      const enter = () => handleMouseEnter(card);
+      card.addEventListener("mousemove", move);
+      card.addEventListener("mouseleave", leave);
+      card.addEventListener("mouseenter", enter);
+      card._handlers = { move, leave, enter };
+    });
 
     return () => {
-      cancelAnimationFrame(animFrame);
-      window.removeEventListener("resize", handleResize);
+      cards.forEach((card) => {
+        if (!card || !card._handlers) return;
+        card.removeEventListener("mousemove", card._handlers.move);
+        card.removeEventListener("mouseleave", card._handlers.leave);
+        card.removeEventListener("mouseenter", card._handlers.enter);
+      });
     };
   }, []);
 
-  // Project data array to clean up rendering and easily scale features
-  const projectList = [
-    {
-      title: "Portfolio Website",
-      img: Portfolio,
-      desc: "A high-end personal presentation platform engineered with specialized modern components to display dynamic web development growth and functional interface frameworks.",
-      tags: ["React", "CSS3", "Canvas API", "UI/UX"]
-    },
-    {
-      title: "UCS(MDY) Student Registration System",
-      img: StudentRegistration,
-      desc: "An enterprise-grade online enrollment solution featuring complex administrative workflows, payment processing systems, and role-based validation filters.",
-      tags: ["Node.js", "MongoDB", "JWT Token","Express.js","React Framework"]
-    },
-    {
-  title: "Basic Literacy Project – Wa Hta Ka La Tha",
-  img: WaHtaKa,
-  desc: "Government-backed digital education platform designed to support literacy learning, featuring a custom canvas-based Myanmar alphabet writing system (Ah Thone Lone Course) and tools for coordinating learning resources across regions.",
-  tags: ["Full Stack", "Canvas API", "Social Impact", "Government Project"]
-},
-    // {
-    //   title: "RemoteCode Execution & Compiler",
-    //   img: RemoteCode,
-    //   desc: "A distributed Java RMI architecture supporting sandbox remote compilation. Upgraded with a secure Spring Boot microservices bridge for modern browser execution.",
-    //   tags: ["Java RMI", "Spring Boot", "Sandbox Execution"]
-    // },
-    {
-      title: "JobFinder Platform",
-      img: JobFinder,
-      desc: "A multi-dashboard gig marketplace optimizing workspace channels for freelancers, corporate partners, and structural back-office moderation.",
-      tags: ["Java EE", "Dynamic Web", "Database Architecture"]
-    },
-    {
-      title: "ChronoCraft - EventManager",
-      img: Chronocraft,
-      desc: "An advanced desktop operations hub built using C# leveraging asynchronous micro-events to trigger persistent operational alerts and cross-user planning streams.",
-      tags: ["C#", ".NET Core", "Event-Driven", "UI Automation"]
-    },
-    // {
-    //   title: "Music Streaming Hub",
-    //   img: Music,
-    //   desc: "A responsive media streaming site managing live buffers, state persistence, audio context nodes, and personalized relational discovery queues.",
-    //   tags: ["Web Audio API", "JavaScript", "Cloud Systems"]
-    // },
-    {
-      title: "Restaurant QR Ordering Architecture",
-      img: Restaurant,
-      desc: "A transactional contactless checkout system matching tables directly to kitchen pipelines using automated localized query parameters and dynamic routing.",
-      tags: ["Real-time Networking", "Node.js", "QR Architecture"]
-    }
-  ];
-
   return (
     <section className="modern-projects-section" id="work">
-      {/* <canvas ref={canvasRef} className="stars-canvas"></canvas> */}
-      
+      {/* Section header */}
       <div className="section-header">
         <span className="section-subtitle">My Creative Lab</span>
-        <h2 className="section-main-title"><i className="fas fa-laptop-code"></i> Engineering Masterpieces</h2>
+        <h2 className="section-main-title">
+          <i className="fas fa-laptop-code" aria-hidden="true"></i>
+          Engineering Masterpieces
+        </h2>
         <div className="title-bar"></div>
       </div>
 
-      <div className="modern-bento-grid">
+      {/* Bento grid */}
+      <div className="modern-compact-bento-grid">
         {projectList.map((project, idx) => (
-          <div className="bento-card" key={idx}>
-            <div className="card-media-wrapper">
-              <img draggable="false" src={project.img} alt={project.title} loading="lazy" />
-              <div className="media-overlay-glow"></div>
-            </div>
-            <div className="card-body-content">
-              <div className="tech-badge-container">
-                {project.tags.map((tag, tIdx) => (
-                  <span className="tech-badge" key={tIdx}>{tag}</span>
-                ))}
+          <Link
+            to={`/project/${project.id}`}
+            className="bento-card-link"
+            key={project.id}
+            aria-label={`View details for ${project.title}`}
+          >
+            <div
+              className="compact-glass-card"
+              ref={(el) => (cardRefs.current[idx] = el)}
+            >
+              {/* Background parallax image */}
+              <div
+                className="card-bg-parallax-wrapper"
+                style={{
+                  transform:
+                    "scale(1.14) translate(var(--parallax-x, 0px), var(--parallax-y, 0px))",
+                  transition: "transform 0.12s linear",
+                }}
+              >
+                <img
+                  draggable="false"
+                  src={project.img}
+                  alt=""
+                  loading="lazy"
+                />
+                <div className="card-darkening-overlay" />
               </div>
-              <h3 className="project-card-title">{project.title}</h3>
-              <p className="project-card-description">{project.desc}</p>
-              {/* <div className="project-card-actions">
-                <a href="#work" className="action-link view-demo">
-                  <span>Explore Architecture</span> <i className="fas fa-arrow-right"></i>
-                </a>
-              </div> */}
+
+              {/* Frosted glass info panel */}
+              <div className="card-glass-content-panel">
+                {/* Tech badge row — capped at 3 */}
+                <div className="tech-badge-container">
+                  {project.tags.slice(0, 3).map((tag, tIdx) => (
+                    <span className="tech-badge" key={tIdx}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <h3 className="project-card-title">{project.title}</h3>
+                <p className="project-card-description">{project.desc}</p>
+
+                <div className="project-card-actions">
+                  <span className="action-link">
+                    <span>View Case Study</span>
+                    <i className="fas fa-arrow-right arrow-icon" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+
+              {/* Mouse-tracking specular glow */}
+              <div className="glass-specular-glow" aria-hidden="true" />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>

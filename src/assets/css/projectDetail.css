@@ -1,0 +1,362 @@
+:root {
+  --bg-deep-slate: #03071200;
+  
+  /* Ultra-Premium Translucent UI Design Tokens */
+  --glass-panel-fill: rgba(17, 24, 39, 0.35);
+  --glass-panel-border: rgba(255, 255, 255, 0.06);
+  --glass-panel-blur: blur(24px) saturate(170%);
+  
+  --text-pure: #f8fafc;
+  --text-muted: #94a3b8;
+  --sky-active: #38bdf8;
+  --purple-glow: #c084fc;
+  
+  /* Live sync property configuration hook */
+  --scroll-progress: 0%;
+}
+
+.project-detail-page-section {
+  background-color: var(--bg-deep-slate);
+  min-height: 100vh;
+  padding: 10rem 4rem 6rem 4rem;
+  box-sizing: border-box;
+  color: var(--text-pure);
+}
+
+.detail-navigation-header {
+  max-width: 1200px;
+  margin: 0 auto 4rem auto;
+}
+
+.back-to-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
+}
+
+.back-to-home-link:hover {
+  color: var(--sky-active);
+  transform: translateX(-4px);
+}
+
+.project-detail-row {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.project-info-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-detail-title {
+  font-size: 3.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 1.8rem 0;
+  background: linear-gradient(135deg, var(--text-pure) 40%, #64748b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.detail-badge-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 4rem;
+}
+
+.detail-tech-badge {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  padding: 0.5rem 1.4rem;
+  border-radius: 5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  backdrop-filter: blur(5px);
+}
+
+.info-blocks-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.detail-info-glass-card {
+  position: relative;
+  background: var(--glass-panel-fill);
+  backdrop-filter: var(--glass-panel-blur);
+  -webkit-backdrop-filter: var(--glass-panel-blur);
+  border: 1px solid var(--glass-panel-border);
+  border-radius: 1.6rem;
+  padding: 3rem;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.detail-info-glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4);
+}
+
+.detail-info-glass-card h4 {
+  margin: 0 0 1.4rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  color: var(--text-pure);
+  letter-spacing: -0.01em;
+}
+
+.detail-info-glass-card h4 i {
+  color: var(--sky-active);
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+}
+
+.detail-info-glass-card p {
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.tech-highlight-strings {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  color: #e2e8f0 !important;
+  font-size: 1.3rem !important;
+  background: rgba(2, 6, 23, 0.4);
+  padding: 1.6rem;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.detail-links-action-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 4rem;
+  flex-wrap: wrap;
+}
+
+.action-button-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  text-decoration: none;
+  padding: 1.4rem 2.6rem;
+  border-radius: 1.2rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.action-button-glass.primary {
+  background: var(--text-pure);
+  color: #030712;
+}
+
+.action-button-glass.primary:hover {
+  background: var(--sky-active);
+  box-shadow: 0 12px 25px -8px rgba(56, 189, 248, 0.5);
+  transform: translateY(-2px);
+}
+
+.action-button-glass.secondary {
+  background: var(--glass-panel-fill);
+  border: 1px solid var(--glass-panel-border);
+  color: var(--text-pure);
+  backdrop-filter: blur(10px);
+}
+
+.action-button-glass.secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ── RIGHT PINNED STICKY FRAME ENGINE ── */
+
+.project-sticky-media-column {
+  position: sticky;
+  top: 14rem; /* Keeps layout completely anchored to stop jumps near footer */
+  z-index: 10;
+}
+
+.media-and-tracker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Premium Restructured Unified Glass Grid */
+.premium-glass-media-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1.2rem; /* Clean asymmetrical alignment map */
+  gap: 1.6rem;
+  border-radius: 2.4rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-panel-border);
+  padding: 1.4rem;
+  backdrop-filter: var(--glass-panel-blur);
+  -webkit-backdrop-filter: var(--glass-panel-blur);
+  box-shadow: 0 40px 100px -40px rgba(0, 0, 0, 0.8),
+              inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+.media-inner-frame {
+  position: relative;
+  border-radius: 1.4rem;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: #0b0f19;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.media-inner-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── THE INTEGRATED MINIMALIST CRYSTAL TRACK RAIL ── */
+
+.integrated-glass-rail {
+  position: relative;
+  width: 0.2rem; /* Hairline glass groove wireframe */
+  height: calc(100% - 1.6rem);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10rem;
+  margin: auto 0; /* Vertically center aligned within right edge channel grid layout */
+}
+
+/* Gradient Background Trail matching slider depth */
+.rail-glow-trail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--scroll-progress, 0%);
+  background: linear-gradient(to bottom, var(--sky-active), var(--purple-glow));
+  border-radius: 10rem;
+  opacity: 0.35;
+  transition: height 0.1s linear;
+}
+
+/* The High-End Neon Filament Stick Indicator */
+.neon-filament-indicator {
+  position: absolute;
+  left: 50%;
+  top: var(--scroll-progress, 0%);
+  transform: translate(-50%, -50%);
+  
+  /* Sophisticated micro-dash stick dimensions */
+  width: 1.2rem; 
+  height: 0.4rem; 
+  border-radius: 10rem;
+  
+  background: linear-gradient(90deg, var(--sky-active), var(--purple-glow));
+  /* Double layer glow styling makes it pop cleanly over deep backgrounds */
+  box-shadow: 0 0 10px var(--sky-active), 
+              0 0 20px rgba(192, 132, 252, 0.6);
+              
+  will-change: top;
+  transition: top 0.12s cubic-bezier(0.215, 0.610, 0.355, 1);
+}
+
+.media-lighting-shield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 60%, rgba(3, 7, 18, 0.5) 100%);
+  pointer-events: none;
+}
+
+.detail-meta-glass-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.8rem 2.4rem;
+  background: var(--glass-panel-fill);
+  border: 1px solid var(--glass-panel-border);
+  border-radius: 1.4rem;
+  backdrop-filter: var(--glass-panel-blur);
+  -webkit-backdrop-filter: var(--glass-panel-blur);
+}
+
+.meta-label {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.meta-value {
+  font-size: 1.4rem;
+  color: var(--text-pure);
+  font-weight: 700;
+}
+
+/* Update or add this in projectDetail.css to normalize the navigation button link */
+.back-to-home-link-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 1.2rem;
+    color: #64748b; /* Adjust to match your link theme default */
+    font-size: 1.4rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 0;
+    font-family: inherit;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.back-to-home-link-btn:hover {
+    color: #06b6d4; /* Neon cyan focus transition match */
+    transform: translateX(-4px);
+}
+
+.back-to-home-link-btn i {
+    font-size: 1.2rem;
+}
+
+/* Responsive Structural Breakpoints */
+@media screen and (max-width: 968px) {
+  .project-detail-page-section {
+    padding: 8rem 2rem 4rem 2rem;
+  }
+  
+  .project-detail-row {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+  
+  .project-sticky-media-column {
+    position: static;
+  }
+  
+  /* Collapses right side tracker safely into full-width layout profile on touch screens */
+  .premium-glass-media-wrapper {
+    grid-template-columns: 1fr;
+  }
+  
+  .integrated-glass-rail {
+    display: none;
+  }
+}

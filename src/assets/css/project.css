@@ -1,221 +1,315 @@
+/* ===================================================
+   GLASS PORTFOLIO — project.css
+   Covers: Project grid cards + Project detail page
+   =================================================== */
+
+/* ---------- SHARED TOKENS ---------- */
 :root {
-  --bg-deep-dark: #020617;
-  --card-bg-glass: rgba(15, 23, 42, 0.65);
-  --accent-neon-blue: #3b82f6;
-  --accent-neon-cyan: #06b6d4;
-  --text-primary: #f8fafc;
-  --text-muted: #94a3b8;
-  --border-glass: rgba(255, 255, 255, 0.06);
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-bg-hover: rgba(255, 255, 255, 0.11);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-hover: rgba(255, 255, 255, 0.30);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --glass-shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.55);
+  --glow-primary: rgba(99, 102, 241, 0.45);
+  --glow-accent: rgba(139, 92, 246, 0.35);
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-muted: rgba(255, 255, 255, 0.40);
+  --accent-indigo: #6366f1;
+  --accent-violet: #8b5cf6;
+  --accent-cyan: #22d3ee;
+  --badge-bg: rgba(99, 102, 241, 0.18);
+  --badge-border: rgba(99, 102, 241, 0.35);
+  --badge-text: #a5b4fc;
+  --card-radius: 20px;
+  --transition-smooth: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* ====================================================
+   SECTION HEADER
+   ==================================================== */
 .modern-projects-section {
+  padding: 80px 5vw 100px;
   position: relative;
-  padding: 10rem 5rem 0rem 5rem;
-  min-height: 100vh;
   overflow: hidden;
 }
 
-.modern-projects-section .stars-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Header Component Typography */
 .section-header {
-  position: relative;
   text-align: center;
-  margin-bottom: 7rem;
-  z-index: 2;
+  margin-bottom: 64px;
 }
 
 .section-subtitle {
-  display: block;
-  font-size: 1.4rem;
-  font-weight: 700;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  letter-spacing: 0.3rem;
-  color: var(--accent-neon-cyan);
-  margin-bottom: 1rem;
+  color: var(--accent-indigo);
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 100px;
+  padding: 6px 16px;
+  margin-bottom: 20px;
 }
 
 .section-main-title {
-  font-size: 3rem;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
   color: var(--text-primary);
-  font-weight: 800;
-  letter-spacing: -0.05rem;
+  margin: 0 0 18px;
+  line-height: 1.15;
+}
+
+.section-main-title i {
+  margin-right: 12px;
+  background: linear-gradient(135deg, var(--accent-indigo), var(--accent-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .title-bar {
-  width: 6rem;
-  height: 0.4rem;
-  background: linear-gradient(90deg, var(--accent-neon-blue), var(--accent-neon-cyan));
-  margin: 1.5rem auto 0 auto;
-  border-radius: 1rem;
-}
-
-/* Bento Grid Architecture */
-.modern-bento-grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(35rem, 1fr));
-  gap: 3rem;
-  max-width: 1300px;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-indigo), var(--accent-cyan));
+  border-radius: 2px;
   margin: 0 auto;
-  z-index: 2;
 }
 
-/* Elegant Card Elements */
-.bento-card {
-  background: var(--card-bg-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-glass);
-  border-radius: 2.4rem;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+/* ====================================================
+   BENTO GRID LAYOUT
+   ==================================================== */
+.modern-compact-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
-.bento-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(6, 182, 212, 0.3);
-  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8),
-              0 0 50px -10px rgba(6, 182, 212, 0.15);
+/* ====================================================
+   GLASS CARD — the main hero unit
+   ==================================================== */
+.bento-card-link {
+  text-decoration: none;
+  display: block;
+  outline: none;
 }
 
-/* Image Wrapper: Locks aspect ratio to fix layout bugs */
-.card-media-wrapper {
+.compact-glass-card {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10; /* Fixed standard ratio prevents distortion */
+  border-radius: var(--card-radius);
   overflow: hidden;
-  background: #0b0f19;
+  height: 380px;
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  background: var(--glass-bg);
+  transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) translateZ(0);
+  transition: transform 0.6s var(--transition-smooth), border-color 0.4s ease, box-shadow 0.4s ease;
+  will-change: transform;
 }
 
-.card-media-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensures screenshots adapt nicely without warping */
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+.compact-glass-card:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-hover);
 }
 
-.bento-card:hover .card-media-wrapper img {
-  transform: scale(1.05);
-}
-
-/* Subtle glow layer overlay on images */
-.media-overlay-glow {
+/* --- Background Parallax Image --- */
+.card-bg-parallax-wrapper {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: -12px;
+  z-index: 0;
+  transform: scale(1.06);
+  transition: transform 0.6s var(--transition-smooth);
+  will-change: transform;
+}
+
+.compact-glass-card:hover .card-bg-parallax-wrapper {
+  transform: scale(1.12) translateY(-6px);
+}
+
+.card-bg-parallax-wrapper img {
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, transparent 40%, rgba(2, 6, 23, 0.8) 100%);
+  object-fit: cover;
+  display: block;
   pointer-events: none;
+  user-select: none;
 }
 
-/* Content Layout inside Card Body */
-.card-body-content {
-  padding: 3rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1; /* Pushes action buttons uniformly to the card bottom */
+/* Multi-layer overlay: bottom dark gradient + top noise veil */
+.card-darkening-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(5, 5, 18, 0.92) 0%,
+      rgba(5, 5, 18, 0.55) 50%,
+      rgba(5, 5, 18, 0.20) 100%
+    );
 }
 
-/* Technology Badges styling */
+/* --- Frosted glass content panel anchored bottom --- */
+.card-glass-content-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 24px 24px 26px;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 30, 0.85) 0%,
+    rgba(10, 10, 30, 0.60) 60%,
+    transparent 100%
+  );
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transform: translateY(4px);
+  transition: transform 0.45s var(--transition-smooth);
+}
+
+.compact-glass-card:hover .card-glass-content-panel {
+  transform: translateY(0px);
+}
+
+/* --- Tech badges --- */
 .tech-badge-container {
   display: flex;
+  gap: 6px;
   flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-bottom: 2rem;
+  margin-bottom: 12px;
 }
 
 .tech-badge {
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.15);
-  color: #93c5fd;
-  padding: 0.4rem 1.2rem;
-  border-radius: 10rem;
-  font-size: 1.1rem;
+  font-size: 10.5px;
   font-weight: 600;
-  letter-spacing: 0.02rem;
-  text-transform: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--badge-text);
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-border);
+  border-radius: 100px;
+  padding: 3px 10px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-/* Card Typography */
+/* --- Card title --- */
 .project-card-title {
-  font-size: 2.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 1.2rem;
-  line-height: 1.3;
-  text-transform: none;
+  margin: 0 0 8px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
+/* --- Card description --- */
 .project-card-description {
-  font-size: 1.45rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  font-weight: 400;
-  text-transform: none;
-  margin-bottom: 3rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0 0 16px;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* Dynamic Links/Buttons Row */
+/* --- CTA link --- */
 .project-card-actions {
-  margin-top: auto; /* Aligns footer elements perfectly along the bottom row */
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
 }
 
 .action-link {
   display: inline-flex;
   align-items: center;
-  gap: 1rem;
-  font-size: 1.4rem;
+  gap: 7px;
+  font-size: 0.82rem;
   font-weight: 600;
-  color: var(--text-primary);
-  transition: color 0.3s ease;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-indigo);
+  transition: color 0.3s ease, gap 0.3s ease;
 }
 
-.action-link i {
-  font-size: 1.2rem;
-  transition: transform 0.3s ease;
-  color: var(--accent-neon-cyan);
+.compact-glass-card:hover .action-link {
+  color: var(--accent-cyan);
+  gap: 10px;
 }
 
-.bento-card:hover .action-link {
-  color: var(--accent-neon-cyan);
+.action-link .arrow-icon {
+  transition: transform 0.3s var(--transition-smooth);
 }
 
-.bento-card:hover .action-link i {
-  transform: translateX(6px);
+.compact-glass-card:hover .arrow-icon {
+  transform: translateX(4px);
 }
 
-/* Responsive Media Controls */
-@media screen and (max-width: 768px) {
-  .modern-projects-section {
-    padding: 8rem 4% 8rem 4%;
+/* --- Specular spotlight glow (follows cursor) --- */
+.glass-specular-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: var(--spotlight-opacity, 0);
+  background: radial-gradient(
+    320px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.07) 0%,
+    transparent 70%
+  );
+  transition: opacity 0.4s ease;
+}
+
+/* Top-edge glass sheen line */
+.compact-glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.30), transparent);
+  z-index: 4;
+  border-radius: 0;
+}
+
+/* Focus ring for accessibility */
+.bento-card-link:focus-visible .compact-glass-card {
+  outline: 2px solid var(--accent-indigo);
+  outline-offset: 3px;
+}
+
+/* ====================================================
+   RESPONSIVE
+   ==================================================== */
+
+@media (max-width: 600px) {
+  .modern-compact-bento-grid {
+    grid-template-columns: 1fr;
   }
 
-  .section-main-title {
-    font-size: 3.2rem;
+  .compact-glass-card {
+    height: 320px;
   }
+}
 
-  .modern-bento-grid {
-    grid-template-columns: 1fr; /* Drops neatly down into a clean vertical stack on mobile devices */
-    gap: 2.5rem;
-  }
-
-  .card-body-content {
-    padding: 2.5rem;
+/* ====================================================
+   REDUCED MOTION
+   ==================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .compact-glass-card,
+  .card-bg-parallax-wrapper,
+  .card-glass-content-panel,
+  .sticky-box-wrapper img {
+    transition: none !important;
+    transform: none !important;
   }
 }

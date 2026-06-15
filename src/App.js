@@ -1,110 +1,247 @@
-
 import './App.css';
-import React from 'react';
-import { useRef, useEffect,useState } from "react";
+
+import React, { useEffect, useState } from "react";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import ScrollReveal from "scrollreveal";
+
+
+
+// Layout & Navigation Components
+
 import Navbar from './component/navbar/index';
-import Home from './component/home/index';
-import About from './component/about/index';
-import Skill from './component/skill/index';
-import Education from './component/education/index';
-import Project from './component/project/index';
-import Experience from './component/experience/index';
-import Contact from './component/contact/index';
+
 import Footer from './component/footer/index';
+
 import Preloader from './assets/js/preloder';
 
 
-function App() {
-const [loading, setLoading] = useState(true);
-  const [fadeOut, setFadeOut] = useState(false);
+
+// Main Portfolio Sections
+
+import Home from './component/home/index';
+
+import About from './component/about/index';
+
+import Skill from './component/skill/index';
+
+import Education from './component/education/index';
+
+import Project from './component/project/index';
+
+import Experience from './component/experience/index';
+
+import Contact from './component/contact/index';
+
+import ScrollToHash from './scrollToHash';
+
+import ProjectDetail from './component/project/projectDetail';
+
+
+
+function MainPortfolio() {
 
   useEffect(() => {
+
+    const srtop = ScrollReveal({
+
+      origin: "top",
+
+      distance: "80px",
+
+      duration: 1000,
+
+      reset: true,
+
+    });
+
+
+
+    const timer = setTimeout(() => {
+
+      srtop.reveal(".home .content h3", { delay: 200 });
+
+      srtop.reveal(".home .content p", { delay: 200 });
+
+      srtop.reveal(".skills .container", { interval: 200 });
+
+      srtop.reveal(".work .box", { interval: 200 });
+
+    }, 300);
+
+
+
+    return () => clearTimeout(timer);
+
+  }, []);
+
+
+
+  return (
+
+    <>
+
+      <Home />
+
+      <About />
+
+      <Skill />
+
+      <Education />
+
+      <Project />
+
+      <Experience />
+
+      <Contact />
+
+    </>
+
+  );
+
+}
+
+
+
+function App() {
+
+  const [loading, setLoading] = useState(true);
+
+  const [fadeOut, setFadeOut] = useState(false);
+
+ 
+
+  // High-performance real-time pointer location state coordinates
+
+  const [coords, setCoords] = useState({ x: -100, y: -100 });
+
+
+
+  useEffect(() => {
+
+    const handleMouseMove = (e) => {
+
+      setCoords({ x: e.clientX, y: e.clientY });
+
+
+
+      // Synchronize the mouse positions directly to the CSS engine for the spotlight backdrop
+
+      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+
+      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+
+    };
+
+
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+
+  }, []);
+
+
+
+  useEffect(() => {
+
     document.body.classList.add('no-scroll');
 
     const triggerFadeTimer = setTimeout(() => {
-      setFadeOut(true); 
-      
+
+      setFadeOut(true);
+
       const unmountTimer = setTimeout(() => {
+
         setLoading(false);
+
         document.body.classList.remove('no-scroll');
-      }, 400); // Wait for fade-out transition to complete
-      
+
+      }, 400);
+
       return () => clearTimeout(unmountTimer);
-    }, 3500); // Total display timeline duration reduced for efficiency
+
+    }, 3500);
+
+
 
     return () => {
+
       clearTimeout(triggerFadeTimer);
+
       document.body.classList.remove('no-scroll');
+
     };
+
   }, []);
 
-   useEffect(() => {
-    const srtop = ScrollReveal({
-      origin: "top",
-      distance: "80px",
-      duration: 1000,
-      reset: true,
-    });
-  const timer = setTimeout(() => {
-    /* ===== HOME ===== */
-    srtop.reveal(".home .content h3", { delay: 200 });
-    srtop.reveal(".home .content p", { delay: 200 });
-    srtop.reveal(".home .content .btn", { delay: 200 });
-    srtop.reveal(".home .image", { delay: 400 });
-    srtop.reveal(".home .linkedin", { interval: 600 });
-    srtop.reveal(".home .github", { interval: 800 });
-    srtop.reveal(".home .twitter", { interval: 1000 });
-    srtop.reveal(".home .telegram", { interval: 600 });
-    srtop.reveal(".home .instagram", { interval: 600 });
-    srtop.reveal(".home .dev", { interval: 600 });
 
-     /* ===== ABOUT ===== */
-    srtop.reveal(".about .content h3", { delay: 200 });
-    srtop.reveal(".about .content .tag", { delay: 200 });
-    srtop.reveal(".about .content p", { delay: 200 });
-    srtop.reveal(".about .content .box-container", { delay: 200 });
-    srtop.reveal(".about .content .resumebtn", { delay: 200 });
-
-    /* ===== SKILLS ===== */
-    srtop.reveal(".skills .container", { interval: 200 });
-    srtop.reveal(".skills .container .bar", { delay: 400 });
-
-    /* ===== EDUCATION ===== */
-    srtop.reveal(".education .box", { interval: 200 });
-
-    /* ===== PROJECTS ===== */
-    srtop.reveal(".work .box", { interval: 200 });
-
-    /* ===== EXPERIENCE ===== */
-    srtop.reveal(".experience .timeline", { delay: 400 });
-    srtop.reveal(".experience .timeline .container", { interval: 400 });
-
-    /* ===== CONTACT ===== */
-    srtop.reveal(".contact .container", { delay: 400 });
-    srtop.reveal(".contact .container .form-group", { delay: 400 });
-    }, 300); // slight delay (300ms)
-}, []);
 
   return (
-    <>
-    {/* Name Preloader Screen Engine */}
+
+    <Router>
+
+      <ScrollToHash />
+
+     
+
+      {/* 1. BRIGHT SPOTLIGHT GLOW BACKGROUND LAYER */}
+
+      <div className="global-mouse-spotlight" aria-hidden="true" />
+
+     
+
+      {/* 2. DEAD CENTER TRACKING PINPOINT PIN */}
+
+      <div
+
+        className="smooth-cursor-dot"
+
+        style={{ transform: `translate3d(${coords.x}px, ${coords.y}px, 0)` }}
+
+      />
+
+     
+
+      {/* 3. MATTE GEOMETRIC RING HALO TRAIL */}
+
+      <div
+
+        className="smooth-cursor-ring"
+
+        style={{ transform: `translate3d(${coords.x}px, ${coords.y}px, 0)` }}
+
+      />
+
+
+
       {loading && <Preloader isFadingOut={fadeOut} />}
-      
-      {/* Core Main Portfolio Layout Container */}
-      {/* <main className="app-content-wrapper"> */}
-      <Navbar/>
-      <Home/>
-      <About/>
-      <Skill/>
-      <Education/>
-      <Project/>
-      <Experience/>
-      <Contact/>
-      <Footer/>
-      {/* </main> */}
-    </>
+
+     
+
+      <Navbar />
+
+
+
+      <Routes>
+
+        <Route path="/" element={<MainPortfolio />} />
+
+        <Route path="/project/:id" element={<ProjectDetail />} />
+
+      </Routes>
+
+
+
+      <Footer />
+
+    </Router>
+
   );
+
 }
 
-export default App;
+
+
+export default App; 

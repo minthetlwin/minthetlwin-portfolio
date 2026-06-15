@@ -137,7 +137,7 @@ const handleSubmit = async (e) => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    placeholder="e.g. John Doe"
+                    placeholder=""
                   />
                 </div>
               </div>
@@ -152,7 +152,7 @@ const handleSubmit = async (e) => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    placeholder="name@example.com"
+                    placeholder=""
                   />
                 </div>
               </div>
@@ -166,7 +166,7 @@ const handleSubmit = async (e) => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
-                    placeholder="Write details about your project specifications or inquiries..."
+                    placeholder=""
                     rows="5"
                   ></textarea>
                 </div>

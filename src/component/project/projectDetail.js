@@ -1,172 +1,180 @@
-import React, { useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { projectList } from "./projectData";
-import '../../assets/css/style.css';
-import '../../assets/css/projectDetail.css';
+import React, { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import "../../assets/css/projectDetail.css";
+import Reveal from "../common/Reveal";
+import SplitText from "../common/SplitText";
+import DeviceFrame from "../common/DeviceFrame";
+import ProjectCover from "../common/ProjectCover";
+import { projectList } from "../../data/projects";
+import { profile } from "../../data/profile";
 
-const INFO_SECTIONS = [
-  { icon: "fas fa-bullseye",   label: "Purpose",      key: "purpose"      },
-  { icon: "fas fa-star",       label: "Features",     key: "features"     },
-  { icon: "fas fa-code",       label: "Technologies", key: "technologies", tech: true },
-  { icon: "fas fa-user-tag",   label: "Your Role",    key: "role"         },
-  { icon: "fas fa-chart-line", label: "Outcome",      key: "outcome"      },
-];
+function CheckList({ items, icon = "fas fa-check" }) {
+  return (
+    <ul className="case__list">
+      {items.map((item, i) => (
+        <li key={item} data-reveal="up" style={{ "--i": i % 6 }}>
+          <i className={icon} aria-hidden="true"></i>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export default function ProjectDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const leftColumnRef = useRef(null);
-  const trackRef = useRef(null);
-
-  const project = projectList.find((p) => p.id === id);
+  const index = projectList.findIndex((p) => p.id === id);
+  const project = projectList[index];
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [id]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!leftColumnRef.current || !trackRef.current) return;
-
-      const rect = leftColumnRef.current.getBoundingClientRect();
-      const totalHeight = rect.height - window.innerHeight;
-      const scrolledPast = -rect.top;
-      
-      let progress = 0;
-      if (totalHeight > 0) {
-        progress = Math.max(0, Math.min(1, scrolledPast / totalHeight));
-      } else {
-        const pageScrolled = window.scrollY;
-        const totalPageScroll = document.documentElement.scrollHeight - window.innerHeight;
-        progress = totalPageScroll > 0 ? pageScrolled / totalPageScroll : 0;
-      }
-
-      trackRef.current.style.setProperty("--scroll-progress", `${progress * 100}%`);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
-    setTimeout(handleScroll, 100);
-
+    document.title = project ? `${project.title} · ${profile.name}` : `Project not found · ${profile.name}`;
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      document.title = `${profile.name} | Portfolio`;
     };
   }, [project]);
 
-  // Combined routine to route home and find target section smoothly
-  const handleBackToProjects = (e) => {
-    e.preventDefault();
-    
-    // Navigate home with the anchor fragment attached
-    navigate("/#work");
-
-    // Fallback: If already home or router delays rendering, force element viewport scroll focus
-    setTimeout(() => {
-      const targetSection = document.getElementById("projects");
-      if (targetSection) {
-        targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 80);
-  };
-
   if (!project) {
     return (
-      <div className="error-container">
-        <div className="error-glass-panel">
-          <h2>Project not found</h2>
-          <p>The system profile you are tracking down doesn't exist.</p>
-          <button onClick={() => navigate("/#work")} className="back-home-btn">
-            <i className="fas fa-home"></i> Return Home
-          </button>
+      <section className="case case--empty">
+        <div className="container">
+          <h1 className="case__title">Project not found</h1>
+          <p className="case__lead">The project you're looking for doesn't exist or has moved.</p>
+          <Link to={{ pathname: "/", hash: "#work" }} className="btn btn--primary">
+            <i className="fas fa-arrow-left" aria-hidden="true"></i> All projects
+          </Link>
         </div>
-      </div>
+      </section>
     );
   }
 
+  const prev = projectList[(index - 1 + projectList.length) % projectList.length];
+  const next = projectList[(index + 1) % projectList.length];
+
   return (
-    <section className="project-detail-page-section">
-      <div className="detail-navigation-header">
-        {/* Changed from Link to a dynamic semantic button handler */}
-        <button onClick={handleBackToProjects} className="back-to-home-link-btn">
-          <i className="fas fa-arrow-left" aria-hidden="true"></i>
-          <span>Back to Engineering Masterpieces</span>
-        </button>
-      </div>
+    <article className="case" aria-labelledby="case-title" style={{ "--tone": project.accent }}>
+      <div className="container">
+        <Link to={{ pathname: "/", hash: "#work" }} className="case__back">
+          <i className="fas fa-chevron-left" aria-hidden="true"></i> All projects
+        </Link>
 
-      <div className="project-detail-row">
-        {/* LEFT COMPONENT — Scrollable Content Elements */}
-        <div className="project-info-column" ref={leftColumnRef}>
-          <h1 className="project-detail-title">{project.title}</h1>
-
-          {project.tags && (
-            <div className="detail-badge-container">
-              {project.tags.map((tag, i) => (
-                <span className="detail-tech-badge" key={i}>{tag}</span>
+        <header className="case__header">
+          <Reveal as="span" className="case__category">
+            <i className={project.icon} aria-hidden="true"></i> {project.category}
+            {project.group === "earlier" && " · Earlier project"}
+          </Reveal>
+          <SplitText as="h1" className="case__title" id="case-title" text={project.title} />
+          <Reveal as="p" index={3} className="case__lead">{project.tagline}</Reveal>
+          {project.links && (
+            <Reveal index={4} className="case__links">
+              {project.links.map((link, i) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`btn ${i === 0 ? "btn--primary" : "btn--secondary"}`}
+                >
+                  <i className={link.icon} aria-hidden="true"></i> {link.label}
+                </a>
               ))}
-            </div>
+            </Reveal>
           )}
+        </header>
 
-          <div className="info-blocks-stack">
-            {INFO_SECTIONS.map(({ icon, label, key, tech }) => {
-              const value = project[key];
-              if (!value) return null;
-              return (
-                <div className="detail-info-glass-card" key={key}>
-                  <h4>
-                    <i className={icon} aria-hidden="true"></i>
-                    <span>{label}</span>
-                  </h4>
-                  <p className={tech ? "tech-highlight-strings" : undefined}>
-                    {value}
-                  </p>
-                </div>
-              );
-            })}
+        <Reveal variant="mask" index={2} className={`case__stage tile ${project.img ? "case__stage--device" : ""}`}>
+          <div className="case__device" data-scrub="tilt">
+            {project.img ? (
+              <DeviceFrame project={project} alt={`${project.title} screenshot`} eager />
+            ) : (
+              <ProjectCover project={project} size="page" />
+            )}
           </div>
+        </Reveal>
 
-          {(project.liveUrl || project.repoUrl) && (
-            <div className="detail-links-action-row">
-              {project.liveUrl && (
-                <a href={project.liveUrl} target="_blank" rel="noreferrer" className="action-button-glass primary">
-                  <i className="fas fa-external-link-alt" aria-hidden="true"></i>
-                  <span>Launch Live Deployment</span>
-                </a>
+        {project.stats.length > 0 && (
+          <dl className="case__stats" data-stagger>
+            {project.stats.map((s) => (
+              <div className="case__stat" key={s.label}>
+                <dt>{s.label}</dt>
+                <dd data-count>{s.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+
+        <div className="case__grid">
+          <Reveal as="aside" className="case__aside tile" aria-label="Project facts">
+            <dl>
+              {project.role && (
+                <div>
+                  <dt>Role</dt>
+                  <dd>{project.role}</dd>
+                </div>
               )}
-              {project.repoUrl && (
-                <a href={project.repoUrl} target="_blank" rel="noreferrer" className="action-button-glass secondary">
-                  <i className="fab fa-github" aria-hidden="true"></i>
-                  <span>Inspect Source Code</span>
-                </a>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* RIGHT COMPONENT — Glass Container + Right Edge Laser Bar Tracker */}
-        <div className="project-sticky-media-column">
-          <div className="media-and-tracker-container">
-            <div className="premium-glass-media-wrapper">
-              <div className="media-inner-frame">
-                <img draggable="false" src={project.img} alt={project.title} />
-                <div className="media-lighting-shield" aria-hidden="true" />
+              <div>
+                <dt>Category</dt>
+                <dd>{project.category}</dd>
               </div>
-
-              <div className="integrated-glass-rail" ref={trackRef}>
-                <div className="rail-glow-trail"></div>
-                <div className="neon-filament-indicator"></div>
+              <div>
+                <dt>Tech stack</dt>
+                <dd>
+                  <ul className="chip-list">
+                    {project.stack.map((tech) => (
+                      <li className="chip" key={tech}>{tech}</li>
+                    ))}
+                  </ul>
+                </dd>
               </div>
-            </div>
+            </dl>
+          </Reveal>
 
-            {project.year && (
-              <div className="detail-meta-glass-strip">
-                <span className="meta-label">Temporal Window</span>
-                <span className="meta-value">{project.year}</span>
-              </div>
+          <div className="case__body">
+            <Reveal as="section" className="case__section">
+              <h2>Overview</h2>
+              {project.overview.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+              ))}
+            </Reveal>
+
+            <Reveal as="section" className="case__section">
+              <h2>Key features</h2>
+              <CheckList items={project.features} />
+            </Reveal>
+
+            {project.highlights && (
+              <Reveal as="section" className="case__section case__panel">
+                <h2>{project.highlightsTitle || "Engineering highlights"}</h2>
+                <CheckList items={project.highlights} icon="fas fa-bolt" />
+              </Reveal>
+            )}
+
+            {project.learned && (
+              <Reveal as="section" className="case__section">
+                <h2>What I learned</h2>
+                <CheckList items={project.learned} icon="fas fa-lightbulb" />
+              </Reveal>
+            )}
+
+            {project.outcome && (
+              <Reveal as="section" className="case__section case__panel">
+                <h2>Outcome</h2>
+                <p>{project.outcome}</p>
+              </Reveal>
             )}
           </div>
         </div>
+
+        <nav className="case__pager" aria-label="More projects" data-stagger>
+          <Link to={`/project/${prev.id}`} className="case__pager-link tile">
+            <span className="case__pager-label"><i className="fas fa-arrow-left" aria-hidden="true"></i> Previous</span>
+            <span className="case__pager-title">{prev.title}</span>
+          </Link>
+          <Link to={`/project/${next.id}`} className="case__pager-link case__pager-link--next tile">
+            <span className="case__pager-label">Next <i className="fas fa-arrow-right" aria-hidden="true"></i></span>
+            <span className="case__pager-title">{next.title}</span>
+          </Link>
+        </nav>
       </div>
-    </section>
+    </article>
   );
 }

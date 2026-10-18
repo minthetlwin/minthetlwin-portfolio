@@ -1,362 +1,329 @@
-:root {
-  --bg-deep-slate: #03071200;
-  
-  /* Ultra-Premium Translucent UI Design Tokens */
-  --glass-panel-fill: rgba(17, 24, 39, 0.35);
-  --glass-panel-border: rgba(255, 255, 255, 0.06);
-  --glass-panel-blur: blur(24px) saturate(170%);
-  
-  --text-pure: #f8fafc;
-  --text-muted: #94a3b8;
-  --sky-active: #38bdf8;
-  --purple-glow: #c084fc;
-  
-  /* Live sync property configuration hook */
-  --scroll-progress: 0%;
+.case {
+  padding-block: 32px clamp(72px, 10vw, 120px);
 }
 
-.project-detail-page-section {
-  background-color: var(--bg-deep-slate);
-  min-height: 100vh;
-  padding: 10rem 4rem 6rem 4rem;
-  box-sizing: border-box;
-  color: var(--text-pure);
+.case--empty {
+  padding-block: clamp(96px, 16vw, 180px);
+  text-align: center;
 }
 
-.detail-navigation-header {
-  max-width: 1200px;
-  margin: 0 auto 4rem auto;
+.case--empty .case__lead {
+  margin: 16px auto 32px;
 }
 
-.back-to-home-link {
+.case__back {
   display: inline-flex;
   align-items: center;
-  gap: 1.2rem;
-  text-decoration: none;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
-}
-
-.back-to-home-link:hover {
-  color: var(--sky-active);
-  transform: translateX(-4px);
-}
-
-.project-detail-row {
-  display: grid;
-  grid-template-columns: 1.25fr 1fr;
-  gap: 5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  align-items: start;
-}
-
-.project-info-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.project-detail-title {
-  font-size: 3.8rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin: 0 0 1.8rem 0;
-  background: linear-gradient(135deg, var(--text-pure) 40%, #64748b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.detail-badge-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-bottom: 4rem;
-}
-
-.detail-tech-badge {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  color: #cbd5e1;
-  padding: 0.5rem 1.4rem;
-  border-radius: 5rem;
-  font-size: 1.1rem;
+  gap: 8px;
+  color: var(--accent);
+  font-size: 15px;
   font-weight: 500;
-  backdrop-filter: blur(5px);
 }
 
-.info-blocks-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+.case__back i {
+  font-size: 11px;
 }
 
-.detail-info-glass-card {
-  position: relative;
-  background: var(--glass-panel-fill);
-  backdrop-filter: var(--glass-panel-blur);
-  -webkit-backdrop-filter: var(--glass-panel-blur);
-  border: 1px solid var(--glass-panel-border);
-  border-radius: 1.6rem;
-  padding: 3rem;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+.case__back:hover {
+  text-decoration: underline;
 }
 
-.detail-info-glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4);
+.case__header {
+  max-width: 860px;
+  margin-top: clamp(28px, 4vw, 48px);
 }
 
-.detail-info-glass-card h4 {
-  margin: 0 0 1.4rem 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  color: var(--text-pure);
-  letter-spacing: -0.01em;
-}
-
-.detail-info-glass-card h4 i {
-  color: var(--sky-active);
-  text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
-}
-
-.detail-info-glass-card p {
-  margin: 0;
-  font-size: 1.4rem;
-  color: var(--text-muted);
-  line-height: 1.7;
-}
-
-.tech-highlight-strings {
-  font-family: 'SFMono-Regular', Consolas, monospace;
-  color: #e2e8f0 !important;
-  font-size: 1.3rem !important;
-  background: rgba(2, 6, 23, 0.4);
-  padding: 1.6rem;
-  border-radius: 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.03);
-}
-
-.detail-links-action-row {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 4rem;
-  flex-wrap: wrap;
-}
-
-.action-button-glass {
+.case__category {
   display: inline-flex;
   align-items: center;
-  gap: 1.2rem;
-  text-decoration: none;
-  padding: 1.4rem 2.6rem;
-  border-radius: 1.2rem;
-  font-size: 1.35rem;
+  gap: 8px;
+  color: color-mix(in srgb, var(--tone) 80%, var(--text));
+  font-size: 15px;
   font-weight: 600;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.action-button-glass.primary {
-  background: var(--text-pure);
-  color: #030712;
+.case__title {
+  margin-top: 12px;
+  font-size: clamp(34px, 5.4vw, 60px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
 }
 
-.action-button-glass.primary:hover {
-  background: var(--sky-active);
-  box-shadow: 0 12px 25px -8px rgba(56, 189, 248, 0.5);
-  transform: translateY(-2px);
+.case__lead {
+  max-width: 720px;
+  margin-top: 18px;
+  color: var(--text-3);
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.45;
 }
 
-.action-button-glass.secondary {
-  background: var(--glass-panel-fill);
-  border: 1px solid var(--glass-panel-border);
-  color: var(--text-pure);
-  backdrop-filter: blur(10px);
+.case__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
 }
 
-.action-button-glass.secondary:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+/* Tinted stage with the framed screenshot or generated cover */
+.case__stage {
+  margin-top: clamp(36px, 5vw, 56px);
+  padding: clamp(20px, 6vw, 72px) clamp(16px, 6vw, 72px) 0;
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--tone) 28%, transparent), transparent 55%),
+    radial-gradient(circle at 100% 100%, color-mix(in srgb, var(--tone) 18%, transparent), transparent 50%),
+    color-mix(in srgb, var(--tone) 10%, var(--surface));
 }
 
-/* ── RIGHT PINNED STICKY FRAME ENGINE ── */
+.case__stage .cover {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 
-.project-sticky-media-column {
+/* A laptop or monitor sits fully inside the stage instead of bleeding off its bottom edge */
+.case__stage--device {
+  padding-bottom: clamp(24px, 6vw, 72px);
+}
+
+.case__stage--device .laptop,
+.case__stage--device .desktop,
+.case__stage--device .tablet {
+  max-width: 1040px;
+  margin-inline: auto;
+}
+
+/* Headline numbers */
+.case__stats {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.case__stat {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 22px 24px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.case__stat dd {
+  color: color-mix(in srgb, var(--tone) 85%, var(--text));
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.case__stat dt {
+  color: var(--text-3);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.case__grid {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(32px, 5vw, 64px);
+  margin-top: clamp(48px, 6vw, 72px);
+}
+
+.case__aside {
   position: sticky;
-  top: 14rem; /* Keeps layout completely anchored to stop jumps near footer */
-  z-index: 10;
+  top: calc(var(--nav-height) + 24px);
+  padding: 24px;
 }
 
-.media-and-tracker-container {
+.case__aside dl {
+  display: grid;
+  gap: 18px;
+}
+
+.case__aside dl > div + div {
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.case__aside dt {
+  margin-bottom: 6px;
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.case__aside dd {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.case__body {
+  display: grid;
+  gap: clamp(36px, 5vw, 52px);
+}
+
+.case__section h2 {
+  margin-bottom: 16px;
+  font-size: clamp(24px, 2.6vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.case__section p {
+  color: var(--text-2);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.case__section p + p {
+  margin-top: 14px;
+}
+
+.case__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.case__list li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.case__list i {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--tone) 14%, transparent);
+  color: var(--tone);
+  font-size: 11px;
+}
+
+/* Tinted panel for highlights and outcome */
+.case__panel {
+  padding: clamp(24px, 3vw, 36px);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--tone) 10%, var(--surface));
+}
+
+.case__panel p {
+  color: var(--text);
+}
+
+.case__panel .case__list {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.case__panel .case__list li {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--text);
+}
+
+.case__pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: clamp(64px, 8vw, 96px);
+}
+
+.case__pager-link {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 6px;
+  padding: 24px;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 
-/* Premium Restructured Unified Glass Grid */
-.premium-glass-media-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1.2rem; /* Clean asymmetrical alignment map */
-  gap: 1.6rem;
-  border-radius: 2.4rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--glass-panel-border);
-  padding: 1.4rem;
-  backdrop-filter: var(--glass-panel-blur);
-  -webkit-backdrop-filter: var(--glass-panel-blur);
-  box-shadow: 0 40px 100px -40px rgba(0, 0, 0, 0.8),
-              inset 0 1px 1px rgba(255, 255, 255, 0.05);
+.case__pager-link:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
-.media-inner-frame {
-  position: relative;
-  border-radius: 1.4rem;
-  overflow: hidden;
-  aspect-ratio: 16 / 10;
-  background: #0b0f19;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+.case__pager-link--next {
+  text-align: right;
 }
 
-.media-inner-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.case__pager-label {
+  color: var(--text-3);
+  font-size: 13px;
 }
 
-/* ── THE INTEGRATED MINIMALIST CRYSTAL TRACK RAIL ── */
-
-.integrated-glass-rail {
-  position: relative;
-  width: 0.2rem; /* Hairline glass groove wireframe */
-  height: calc(100% - 1.6rem);
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 10rem;
-  margin: auto 0; /* Vertically center aligned within right edge channel grid layout */
+.case__pager-label i {
+  font-size: 11px;
 }
 
-/* Gradient Background Trail matching slider depth */
-.rail-glow-trail {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--scroll-progress, 0%);
-  background: linear-gradient(to bottom, var(--sky-active), var(--purple-glow));
-  border-radius: 10rem;
-  opacity: 0.35;
-  transition: height 0.1s linear;
+.case__pager-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
 }
 
-/* The High-End Neon Filament Stick Indicator */
-.neon-filament-indicator {
-  position: absolute;
-  left: 50%;
-  top: var(--scroll-progress, 0%);
-  transform: translate(-50%, -50%);
-  
-  /* Sophisticated micro-dash stick dimensions */
-  width: 1.2rem; 
-  height: 0.4rem; 
-  border-radius: 10rem;
-  
-  background: linear-gradient(90deg, var(--sky-active), var(--purple-glow));
-  /* Double layer glow styling makes it pop cleanly over deep backgrounds */
-  box-shadow: 0 0 10px var(--sky-active), 
-              0 0 20px rgba(192, 132, 252, 0.6);
-              
-  will-change: top;
-  transition: top 0.12s cubic-bezier(0.215, 0.610, 0.355, 1);
-}
-
-.media-lighting-shield {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, transparent 60%, rgba(3, 7, 18, 0.5) 100%);
-  pointer-events: none;
-}
-
-.detail-meta-glass-strip {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.8rem 2.4rem;
-  background: var(--glass-panel-fill);
-  border: 1px solid var(--glass-panel-border);
-  border-radius: 1.4rem;
-  backdrop-filter: var(--glass-panel-blur);
-  -webkit-backdrop-filter: var(--glass-panel-blur);
-}
-
-.meta-label {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 700;
-}
-
-.meta-value {
-  font-size: 1.4rem;
-  color: var(--text-pure);
-  font-weight: 700;
-}
-
-/* Update or add this in projectDetail.css to normalize the navigation button link */
-.back-to-home-link-btn {
-    background: transparent;
-    border: none;
-    outline: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 1.2rem;
-    color: #64748b; /* Adjust to match your link theme default */
-    font-size: 1.4rem;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    padding: 0;
-    font-family: inherit;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.back-to-home-link-btn:hover {
-    color: #06b6d4; /* Neon cyan focus transition match */
-    transform: translateX(-4px);
-}
-
-.back-to-home-link-btn i {
-    font-size: 1.2rem;
-}
-
-/* Responsive Structural Breakpoints */
-@media screen and (max-width: 968px) {
-  .project-detail-page-section {
-    padding: 10rem 2rem 4rem 2rem;
+@media (max-width: 900px) {
+  .case__grid {
+    grid-template-columns: minmax(0, 1fr);
   }
-  
-  .project-detail-row {
-    grid-template-columns: 1fr;
-    gap: 4rem;
-  }
-  
-  .project-sticky-media-column {
+
+  .case__aside {
     position: static;
   }
-  
-  /* Collapses right side tracker safely into full-width layout profile on touch screens */
-  .premium-glass-media-wrapper {
-    grid-template-columns: 1fr;
+
+  .case__stats {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  
-  .integrated-glass-rail {
-    display: none;
+}
+
+@media (max-width: 640px) {
+  .case__list,
+  .case__pager {
+    grid-template-columns: minmax(0, 1fr);
   }
+
+  .case__stage {
+    border-radius: var(--radius-lg);
+  }
+
+  .case__stats {
+    gap: 10px;
+  }
+
+  .case__stat {
+    padding: 16px;
+  }
+}
+
+/* Phone on the case page: large but fits a laptop viewport */
+.case__stage--device .phone {
+  font-size: clamp(12px, 1.5vw, 17px);
+}
+
+.case__stage--device .phone-group {
+  font-size: clamp(12px, 1.5vw, 17px);
+}
+
+@media (max-width: 640px) {
+  .case__stage--device .phone-group {
+    font-size: 8.5px;
+  }
+}
+
+.case__stage--device .phone-group .phone {
+  font-size: inherit;
 }

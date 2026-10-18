@@ -1,144 +1,136 @@
 import React from "react";
-import '../../assets/css/style.css';
-import '../../assets/css/experience.css';
+import { Link } from "react-router-dom";
+import "../../assets/css/experience.css";
+import Reveal from "../common/Reveal";
+import SectionHeader from "../common/SectionHeader";
+import CompanyMark from "../common/CompanyMark";
+import {
+  roles,
+  milestones,
+  parseMonth,
+  formatRange,
+  formatDuration,
+  MONTH_INITIALS,
+} from "../../data/experience";
+
+// 12 squares for the role's year; filled months are the ones worked.
+function MonthStrip({ start, end }) {
+  const from = parseMonth(start);
+  const to = parseMonth(end);
+  const now = parseMonth(null);
+  const year = from.year;
+
+  return (
+    <div className="months" aria-hidden="true">
+      <span className="months__year">{year}</span>
+      <ol className="months__grid">
+        {MONTH_INITIALS.map((initial, m) => {
+          const idx = year * 12 + m;
+          const active = idx >= from.year * 12 + from.month && idx <= to.year * 12 + to.month;
+          const isNow = !end && year === now.year && m === now.month;
+          const future = year * 12 + m > now.year * 12 + now.month;
+          return (
+            <li
+              key={initial + m}
+              className={`months__cell ${active ? "is-active" : ""} ${isNow ? "is-now" : ""} ${future ? "is-future" : ""}`}
+              style={{ "--m": m }}
+            >
+              {initial}
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
+
+function JobCard({ role, index }) {
+  const isCurrent = role.end === null;
+
+  return (
+    <Reveal as="article" variant="scale" index={index} className="job tile" style={{ "--tone": role.accent, "--tone-2": role.accent2 || role.accent }}>
+      <header className="job__cover">
+        <div className="job__cover-top">
+          <CompanyMark role={role} className="job__mark" />
+          <span className={`job__badge ${isCurrent ? "job__badge--live" : ""}`}>
+            {isCurrent && <span className="status-dot" aria-hidden="true"></span>}
+            {isCurrent ? "Current role" : role.type}
+          </span>
+        </div>
+        <h3 className="job__role">{role.role}</h3>
+        <p className="job__company">{role.company}</p>
+      </header>
+
+      <div className="job__body">
+        <div className="job__when">
+          <div>
+            <span className="job__range">{formatRange(role.start, role.end)}</span>
+            <span className="job__duration">{formatDuration(role.start, role.end)}</span>
+          </div>
+          <MonthStrip start={role.start} end={role.end} />
+        </div>
+
+        <p className="job__summary">{role.summary}</p>
+
+        <ul className="job__highlights" data-stagger>
+          {role.highlights.map((item) => (
+            <li key={item}>
+              <i className="fas fa-check" aria-hidden="true"></i>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+
+        {role.stack.length > 0 && (
+          <ul className="chip-list job__stack" aria-label="Tech stack" data-stagger>
+            {role.stack.map((tech) => (
+              <li className="chip" key={tech}>{tech}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </Reveal>
+  );
+}
 
 export default function Experience() {
   return (
-    <section className="modern-experience-section" id="experience">
-      <div className="section-ambient-glow"></div>
+    <section className="section" id="experience" aria-labelledby="experience-title">
+      <div className="container">
+        <SectionHeader
+          id="experience-title"
+          eyebrow="Experience"
+          title="Where I've worked."
+          lead="A software developer internship at Myanmar DCR, then straight into a mid-senior full stack role at Property Lab Myanmar."
+        />
 
-      <div className="experience-max-container">
-        <div className="section-header">
-          <span className="section-subtitle">Road Map</span>
-          <h2 className="section-main-title"><i className="fas fa-briefcase"></i> Professional <span>Journey</span></h2>
-          <div className="title-bar"></div>
+        <div className="jobs">
+          {roles.map((role, i) => (
+            <JobCard role={role} key={role.id} index={i} />
+          ))}
         </div>
 
-        {/* Clean, Non-Alternating Roadmap Track */}
-        <div className="roadmap-track">
-
-          {/* Node 1: Present */}
-          <div className="roadmap-step active-node">
-            <div className="roadmap-marker">
-              <span className="marker-core"></span>
-            </div>
-            <div className="roadmap-info-grid">
-              <div className="roadmap-meta">
-                <span className="roadmap-duration-badge">Oct 2021 — Present</span>
-                <span className="roadmap-org-type">Independent</span>
-              </div>
-              <div className="roadmap-details">
-                <h3 className="roadmap-role-title">Full Stack Developer</h3>
-                <h4 className="roadmap-company-name">Self Employed</h4>
-                <p className="roadmap-brief">
-                  Architecting and shipping responsive web apps, managing end-to-end delivery pipelines, and consulting on modern architecture design patterns.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Node 2: 2023-2024 Competition */}
-          <div className="roadmap-step">
-            <div className="roadmap-marker">
-              <span className="marker-core"></span>
-            </div>
-            <div className="roadmap-info-grid">
-              <div className="roadmap-meta">
-                <span className="roadmap-duration-badge">2023 — 2024</span>
-                <span className="roadmap-org-type font-award">Award Winner</span>
-              </div>
-              <div className="roadmap-details">
-                <h3 className="roadmap-role-title">First Prize Winner</h3>
-                <h4 className="roadmap-company-name">University Project Competition</h4>
-                <p className="roadmap-brief">
-                  Recognized for technical execution and interface design excellence, achieving first place in the annual university exhibition.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Node 3: Gov Literacy Project */}
-          <div className="roadmap-step">
-            <div className="roadmap-marker">
-              <span className="marker-core"></span>
-            </div>
-            <div className="roadmap-info-grid">
-              <div className="roadmap-meta">
-                <span className="roadmap-duration-badge">2023 — 2024</span>
-                <span className="roadmap-org-type">Public Sector</span>
-              </div>
-              <div className="roadmap-details">
-                <h3 className="roadmap-role-title">Website Developer</h3>
-                <h4 className="roadmap-company-name">Government's Basic Literacy Project</h4>
-                <p className="roadmap-brief">
-                  Developed an accessible, highly legible information system web portal aimed at helping citizens access public educational resources.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Node 4: 2024-2025 Competition */}
-          <div className="roadmap-step">
-            <div className="roadmap-marker">
-              <span className="marker-core"></span>
-            </div>
-            <div className="roadmap-info-grid">
-              <div className="roadmap-meta">
-                <span className="roadmap-duration-badge">2024 — 2025</span>
-                <span className="roadmap-org-type font-award">Award Winner</span>
-              </div>
-              <div className="roadmap-details">
-                <h3 className="roadmap-role-title">First Prize Winner</h3>
-                <h4 className="roadmap-company-name">University Project Competition</h4>
-                <p className="roadmap-brief">
-                  Engineered an innovative system that secured top honors among peer engineering entries during the academic year.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Node 5: Registration System */}
-          <div className="roadmap-step">
-            <div className="roadmap-marker">
-              <span className="marker-core"></span>
-            </div>
-            <div className="roadmap-info-grid">
-              <div className="roadmap-meta">
-                <span className="roadmap-duration-badge">2024 — 2025</span>
-                <span className="roadmap-org-type">Academic System</span>
-              </div>
-              <div className="roadmap-details">
-                <h3 className="roadmap-role-title">Full Stack Developer</h3>
-                <h4 className="roadmap-company-name">University Student Registration System</h4>
-                <p className="roadmap-brief">
-                  Designed, developed, and optimized a secure, high-throughput student portal application handling registration and user records data management.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Node 6: Internship */}
-          <div className="roadmap-step">
-            <div className="roadmap-marker">
-              <span className="marker-core"></span>
-            </div>
-            <div className="roadmap-info-grid">
-              <div className="roadmap-meta">
-                <span className="roadmap-duration-badge">2026</span>
-                <span className="roadmap-org-type">Internship</span>
-              </div>
-              <div className="roadmap-details">
-                <h3 className="roadmap-role-title">Full Stack Developer Intern</h3>
-                <h4 className="roadmap-company-name">Myanmar DCR Co., Ltd.</h4>
-                <p className="roadmap-brief">
-                  Developed scalable web architectures using Java Spring Boot and modern frontend frameworks.
-                  Engineered robust RESTful APIs, optimized database queries, and implemented secure
-                  authentication protocols to deliver seamless, high-performance user experiences.
-                </p>
-              </div>
-            </div>
-          </div>
-
+        <div className="journey-wrap">
+          <Reveal as="h3" className="journey__heading">The journey so far</Reveal>
+          <ol className="journey" data-scrub="draw">
+            {milestones.map((m, i) => (
+              <Reveal as="li" variant={i % 2 ? "right" : "left"} className={`journey__item journey__item--${m.kind}`} key={m.title + m.when}>
+                <span className="journey__icon" aria-hidden="true">
+                  <i className={m.icon}></i>
+                </span>
+                <div className="journey__card tile">
+                  <span className="journey__when">{m.when}</span>
+                  <h4 className="journey__title">{m.title}</h4>
+                  <p className="journey__text">{m.text}</p>
+                  {m.link && (
+                    <Link to={m.link} className="link-arrow journey__link">
+                      View project <i className="fas fa-arrow-right" aria-hidden="true"></i>
+                    </Link>
+                  )}
+                </div>
+              </Reveal>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

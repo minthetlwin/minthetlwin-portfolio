@@ -1,196 +1,210 @@
-import React, { useState } from "react";
-import '../../assets/css/style.css';
-import '../../assets/css/contact.css';
+import React, { useEffect, useState } from "react";
+import "../../assets/css/contact.css";
+import Reveal from "../common/Reveal";
+import SplitText from "../common/SplitText";
+import { profile, socials } from "../../data/profile";
+
+const PRIMARY = [
+  { id: "email", icon: "fas fa-envelope", label: "Email", value: profile.email, href: `mailto:${profile.email}`, copy: profile.email },
+  { id: "phone", icon: "fas fa-phone-alt", label: "Phone", value: profile.phone, href: profile.phoneHref, copy: profile.phone },
+];
+
+const SOCIAL = socials.filter((s) => ["GitHub", "LinkedIn", "Telegram"].includes(s.label));
+
+const TOPICS = ["Full-time role", "Freelance project", "Collaboration", "Just saying hi"];
+
+const TIME_ZONE = "Asia/Yangon";
+
+function useLocalTime() {
+  const format = () =>
+    new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: TIME_ZONE }).format(new Date());
+  const [time, setTime] = useState(format);
+  useEffect(() => {
+    const id = setInterval(() => setTime(format()), 30000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
 
 export default function Contact() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ topic: TOPICS[0], name: "", email: "", message: "" });
+  const [status, setStatus] = useState({ type: "idle", text: "" });
+  const [copied, setCopied] = useState("");
+  const localTime = useLocalTime();
 
+  const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  const validateEmail = (emailStr) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailStr);
-  };
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  setLoading(true);
-  setStatus("");
-
-  try {
-    const res = await fetch("/.netlify/functions/sendEmail", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        message,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      setStatus("Message sent successfully!");
-      setName("");
-      setEmail("");
-      setMessage("");
-    } else {
-      setStatus(data.message || "Failed to send message");
+  const copy = async (item) => {
+    try {
+      await navigator.clipboard.writeText(item.copy);
+      setCopied(item.id);
+      setTimeout(() => setCopied(""), 1800);
+    } catch (e) {
+      // Clipboard can be blocked (insecure context, permissions); the row itself still links.
     }
-  } catch (error) {
-    console.error(error);
-    setStatus("Server error. Try again later.");
-  } finally {
-    setLoading(false);
-    setTimeout(() => setStatus(""), 3000);
-  }
-};
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus({ type: "loading", text: "" });
+
+    try {
+      const res = await fetch("/.netlify/functions/sendEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: form.name, email: form.email, message: `[${form.topic}] ${form.message}` }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        setStatus({ type: "success", text: "Thanks — your message is on its way. I'll reply within 24 hours." });
+        setForm((f) => ({ ...f, name: "", email: "", message: "" }));
+      } else {
+        setStatus({ type: "error", text: data.message || "Something went wrong. Please try again." });
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus({ type: "error", text: `Couldn't reach the server. You can email me directly at ${profile.email}.` });
+    }
+  };
+
+  const loading = status.type === "loading";
 
   return (
-    <section className="modern-contact-section" id="contact">
-      {/* Structural Header Section */}
-      <div className="section-header">
-        <span className="section-subtitle">Get In Touch</span>
-        <h2 className="section-main-title">
-          <i className="fas fa-envelope-open-text"></i> Contact Me
-        </h2>
-        <div className="title-bar"></div>
-      </div>
+    <section className="section" id="contact" aria-labelledby="contact-title">
+      <div className="container">
+        <div className="contact__grid">
+          {/* Left: who, how to reach, where */}
+          <Reveal variant="scale" className="contact__cta tile">
+            <span className="contact__availability">
+              <span className="status-dot" aria-hidden="true"></span> Available for new opportunities
+            </span>
+            <SplitText as="h2" className="contact__title" id="contact-title" text="Let's build something together." />
+            <p className="contact__lead">Open to full-time roles, freelance projects and collaborations.</p>
 
-      {/* Synchronized Dashboard Grid */}
-      <div className="contact-dashboard-layout">
-        {/* Left Column: Premium Enhanced Info Pane */}
-        <div className="contact-info-pane">
-          <blockquote className="premium-quote">
-            <i className="fas fa-quote-left quote-icon"></i>
-            <p>Let's build something exceptional together.</p>
-          </blockquote>
-          {/* Fixed Academic-style Connected Tracker Timeline */}
-          <div className="contact-details-timeline">
-            <div className="timeline-connector-line"></div>
+            <ul className="contact__primary" data-stagger>
+              {PRIMARY.map((item) => (
+                <li key={item.id} className="contact__row">
+                  <a href={item.href} className="contact__row-link">
+                    <span className="contact__row-icon" aria-hidden="true">
+                      <i className={item.icon}></i>
+                    </span>
+                    <span className="contact__row-text">
+                      <span className="contact__row-label">{item.label}</span>
+                      <span className="contact__row-value">{item.value}</span>
+                    </span>
+                  </a>
+                  <button
+                    type="button"
+                    className="contact__copy"
+                    onClick={() => copy(item)}
+                    aria-label={`Copy ${item.label.toLowerCase()}`}
+                  >
+                    <i className={copied === item.id ? "fas fa-check" : "far fa-copy"} aria-hidden="true"></i>
+                    <span className="contact__copy-tip" role="status">{copied === item.id ? "Copied" : ""}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
 
-            <div className="timeline-node-item">
-              <div className="node-marker-glow"></div>
-              <div className="node-details">
-                <span className="node-date">Availability Status</span>
-                <h4 className="node-milestone">Global / Remote Workspace</h4>
-                <p className="node-summary">
-                  Currently accepting selective freelance contracts, full-time remote roles, and architectural design consultations.
+            <ul className="contact__socials" aria-label="Elsewhere" data-stagger>
+              {SOCIAL.map((s) => (
+                <li key={s.label}>
+                  <a href={s.href} target="_blank" rel="noreferrer" className="contact__social">
+                    <i className={s.icon} aria-hidden="true"></i>
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <dl className="contact__meta" data-stagger>
+              <div>
+                <dt>Based in</dt>
+                <dd>{profile.location}</dd>
+              </div>
+              <div>
+                <dt>Local time</dt>
+                <dd>{localTime} · MMT</dd>
+              </div>
+              <div>
+                <dt>Response</dt>
+                <dd>Within 24 hours</dd>
+              </div>
+            </dl>
+          </Reveal>
+
+          {/* Right: the form; the message box grows so both cards end together */}
+          <Reveal variant="scale" index={1} className="contact__form-card tile">
+            <form onSubmit={handleSubmit} className="contact__form">
+              <div className="contact__form-head">
+                <h3 className="contact__form-title">Send a message</h3>
+                <p className="contact__form-sub">Tell me what you're working on.</p>
+              </div>
+
+              <fieldset className="topics">
+                <legend className="topics__legend">What's this about?</legend>
+                <div className="topics__options">
+                  {TOPICS.map((topic) => (
+                    <label key={topic} className={`topic ${form.topic === topic ? "is-selected" : ""}`}>
+                      <input type="radio" name="topic" value={topic} checked={form.topic === topic} onChange={update("topic")} />
+                      {topic}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <div className="field-row">
+                <div className="field">
+                  <label htmlFor="contact-name">Name</label>
+                  <input id="contact-name" type="text" autoComplete="name" placeholder="Jane Doe" value={form.name} onChange={update("name")} required />
+                </div>
+                <div className="field">
+                  <label htmlFor="contact-email">Email</label>
+                  <input id="contact-email" type="email" autoComplete="email" placeholder="jane@company.com" value={form.email} onChange={update("email")} required />
+                </div>
+              </div>
+
+              <div className="field field--grow">
+                <label htmlFor="contact-message">Message</label>
+                <textarea
+                  id="contact-message"
+                  value={form.message}
+                  onChange={update("message")}
+                  placeholder="A few lines about the role, project or idea…"
+                  maxLength={2000}
+                  required
+                ></textarea>
+                <span className="field__count" aria-hidden="true">{form.message.length} / 2000</span>
+              </div>
+
+              <div className="contact__form-foot">
+                <button type="submit" className="btn btn--primary contact__submit" disabled={loading}>
+                  {loading ? (
+                    <>
+                      <span className="spinner" aria-hidden="true"></span> Sending…
+                    </>
+                  ) : (
+                    <>
+                      Send message <i className="fas fa-paper-plane" aria-hidden="true"></i>
+                    </>
+                  )}
+                </button>
+                <p className={`contact__status contact__status--${status.type}`} role="status" aria-live="polite">
+                  {status.text ? (
+                    <>
+                      <i className={status.type === "success" ? "fas fa-check-circle" : "fas fa-exclamation-circle"} aria-hidden="true"></i>
+                      {status.text}
+                    </>
+                  ) : (
+                    <span className="contact__privacy">
+                      <i className="fas fa-lock" aria-hidden="true"></i> Your details are only used to reply to you.
+                    </span>
+                  )}
                 </p>
               </div>
-            </div>
-
-            <div className="timeline-node-item matching-node">
-              <div className="node-marker-glow passive-glow"></div>
-              <div className="node-details">
-                <span className="node-date">Response Framework</span>
-                <h4 className="node-milestone">Fast Turnaround Guaranteed</h4>
-                <p className="node-summary">
-                  Whether you leave a project proposal or a simple inquiry, your transmission routes directly to my live personal feed. Expect an active response within 24 hours.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Extra Component Layer: Modern Minimal Communication Grid */}
-          <div className="contact-meta-channels">
-            <div className="channel-pill">
-              <i className="fas fa-bolt channel-icon-active"></i>
-              <div className="channel-text">
-                <span className="channel-label">Current local time</span>
-                <span className="channel-value">Available Now</span>
-              </div>
-            </div>
-            <div className="channel-pill">
-              <i className="fas fa-shield-alt channel-icon-active"></i>
-              <div className="channel-text">
-                <span className="channel-label">Encryption Protocol</span>
-                <span className="channel-value">Telegram API End-to-End</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Right Side Pane: High-Clarity Modern Form Box */}
-        <div className="contact-display-card">
-          <div className="contact-card-header">
-            <div className="form-badge">Secure API Channel</div>
-            <h3 className="form-card-title">Send A Message</h3>
-          </div>
-
-          <div className="contact-body-content">
-            <form onSubmit={handleSubmit} className="modern-form">
-
-              <div className="form-field-group">
-                <label htmlFor="name" className="field-label">Your Name</label>
-                <div className="input-wrapper">
-                  <i className="fas fa-user input-icon"></i>
-                  <input
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    placeholder=""
-                  />
-                </div>
-              </div>
-
-              <div className="form-field-group">
-                <label htmlFor="email" className="field-label">Email Address</label>
-                <div className="input-wrapper">
-                  <i className="fas fa-envelope input-icon"></i>
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    placeholder=""
-                  />
-                </div>
-              </div>
-
-              <div className="form-field-group">
-                <label htmlFor="message" className="field-label">Your Message</label>
-                <div className="input-wrapper field-textarea">
-                  <i className="fas fa-comment-alt input-icon textarea-icon"></i>
-                  <textarea
-                    id="message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    required
-                    placeholder=""
-                    rows="5"
-                  ></textarea>
-                </div>
-              </div>
-
-              <button type="submit" className="submit-btn" disabled={loading}>
-                <span className="btn-text">{loading ? "Transmitting..." : "Send Secure Message"}</span>
-                {!loading ? (
-                  <i className="fas fa-paper-plane action-arrow-icon"></i>
-                ) : (
-                  <div className="loading-spinner-circle"></div>
-                )}
-              </button>
             </form>
-          </div>
-        </div>
-
-      </div>
-
-      {/* Toast Notification Popups */}
-      <div className={`toast-notification ${status ? "active" : ""}`}>
-        <div className="toast-content-wrapper">
-          <i className={`fas ${status.includes("successfully") ? "fa-check-circle success" : "fa-exclamation-triangle error"}`}></i>
-          <p>{status}</p>
+          </Reveal>
         </div>
       </div>
     </section>

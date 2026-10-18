@@ -1,148 +1,106 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { projectList } from "./projectData";
-import '../../assets/css/style.css';
-import '../../assets/css/project.css';
+import "../../assets/css/project.css";
+import Reveal from "../common/Reveal";
+import SectionHeader from "../common/SectionHeader";
+import DeviceFrame from "../common/DeviceFrame";
+import ProjectCover from "../common/ProjectCover";
+import { featuredList, earlierList, projectCategories } from "../../data/projects";
 
 export default function Project() {
-  const cardRefs = useRef([]);
-
-  useEffect(() => {
-    const cards = cardRefs.current;
-
-    const handleMouseMove = (e, card) => {
-      if (!card) return;
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
-
-      // Subtle 3-D tilt: max ±5 degrees keeps the grid elegant
-      const rotateX = ((y - cy) / cy) * -5;
-      const rotateY = ((x - cx) / cx) * 5;
-
-      // Parallax depth: background image shifts slightly opposite the tilt
-      const parallaxX = ((x - cx) / cx) * -8;
-      const parallaxY = ((y - cy) / cy) * -8;
-
-      card.style.setProperty("--mouse-x", `${x}px`);
-      card.style.setProperty("--mouse-y", `${y}px`);
-      card.style.setProperty("--rotate-x", `${rotateX}deg`);
-      card.style.setProperty("--rotate-y", `${rotateY}deg`);
-      card.style.setProperty("--parallax-x", `${parallaxX}px`);
-      card.style.setProperty("--parallax-y", `${parallaxY}px`);
-      card.style.setProperty("--spotlight-opacity", "1");
-    };
-
-    const handleMouseLeave = (card) => {
-      if (!card) return;
-      card.style.transition =
-        "transform 0.65s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease";
-      card.style.setProperty("--rotate-x", "0deg");
-      card.style.setProperty("--rotate-y", "0deg");
-      card.style.setProperty("--parallax-x", "0px");
-      card.style.setProperty("--parallax-y", "0px");
-      card.style.setProperty("--spotlight-opacity", "0");
-    };
-
-    const handleMouseEnter = (card) => {
-      if (!card) return;
-      card.style.transition =
-        "transform 0.12s linear, border-color 0.4s ease, box-shadow 0.4s ease";
-    };
-
-    cards.forEach((card) => {
-      if (!card) return;
-      const move = (e) => handleMouseMove(e, card);
-      const leave = () => handleMouseLeave(card);
-      const enter = () => handleMouseEnter(card);
-      card.addEventListener("mousemove", move);
-      card.addEventListener("mouseleave", leave);
-      card.addEventListener("mouseenter", enter);
-      card._handlers = { move, leave, enter };
-    });
-
-    return () => {
-      cards.forEach((card) => {
-        if (!card || !card._handlers) return;
-        card.removeEventListener("mousemove", card._handlers.move);
-        card.removeEventListener("mouseleave", card._handlers.leave);
-        card.removeEventListener("mouseenter", card._handlers.enter);
-      });
-    };
-  }, []);
+  const [filter, setFilter] = useState("All");
+  const visible = filter === "All" ? featuredList : featuredList.filter((p) => p.category === filter);
 
   return (
-    <section className="modern-projects-section" id="work">
-      {/* Section header */}
-      <div className="section-header">
-        <span className="section-subtitle">My Creative Lab</span>
-        <h2 className="section-main-title">
-          <i className="fas fa-laptop-code" aria-hidden="true"></i>
-          Engineering Masterpieces
-        </h2>
-        <div className="title-bar"></div>
-      </div>
+    <section className="section work" id="work" data-scrub="sheet" aria-labelledby="work-title">
+      <div className="container">
+        <SectionHeader
+          id="work-title"
+          eyebrow="Selected work"
+          title="Things I've built."
+          lead="Production apps used every day by sales, marketing and engineering teams, plus websites and a mobile app on the App Store and Google Play."
+        />
 
-      {/* Bento grid */}
-      <div className="modern-compact-bento-grid">
-        {projectList.map((project, idx) => (
-          <Link
-            to={`/project/${project.id}`}
-            className="bento-card-link"
-            key={project.id}
-            aria-label={`View details for ${project.title}`}
-          >
-            <div
-              className="compact-glass-card"
-              ref={(el) => (cardRefs.current[idx] = el)}
-            >
-              {/* Background parallax image */}
-              <div
-                className="card-bg-parallax-wrapper"
-                style={{
-                  transform:
-                    "scale(1.14) translate(var(--parallax-x, 0px), var(--parallax-y, 0px))",
-                  transition: "transform 0.12s linear",
-                }}
+        <div className="work__filters" role="group" aria-label="Filter projects by type" data-stagger>
+          {projectCategories.map((cat) => {
+            const count = cat === "All" ? featuredList.length : featuredList.filter((p) => p.category === cat).length;
+            return (
+              <button
+                type="button"
+                key={cat}
+                className={`work__filter ${filter === cat ? "is-active" : ""}`}
+                aria-pressed={filter === cat}
+                onClick={() => setFilter(cat)}
               >
-                <img
-                  draggable="false"
-                  src={project.img}
-                  alt=""
-                  loading="lazy"
-                />
-                <div className="card-darkening-overlay" />
-              </div>
+                {cat}
+                <span className="work__filter-count">{count}</span>
+              </button>
+            );
+          })}
+        </div>
 
-              {/* Frosted glass info panel */}
-              <div className="card-glass-content-panel">
-                {/* Tech badge row — capped at 3 */}
-                <div className="tech-badge-container">
-                  {project.tags.slice(0, 3).map((tag, tIdx) => (
-                    <span className="tech-badge" key={tIdx}>
-                      {tag}
+        <ul className="work__grid" data-scrub="drift">
+          {visible.map((project, i) => {
+            // Two-column grid: the lead project under "All", and any leftover last card, span the full row.
+            const lead = filter === "All";
+            const rest = visible.length - (lead ? 1 : 0);
+            const wide = (lead && i === 0) || (rest % 2 === 1 && i === visible.length - 1);
+            return (
+              <Reveal
+                as="li"
+                variant="scale"
+                index={wide ? 0 : (i - (lead ? 1 : 0)) % 2}
+                key={project.id}
+                className={`work__item ${wide ? "work__item--wide" : ""} ${!wide && (i - (lead ? 1 : 0)) % 2 === 1 ? "work__item--right" : ""}`}
+              >
+                <Link to={`/project/${project.id}`} className="project-card tile" style={{ "--tone": project.accent }}>
+                  <div className="project-card__text">
+                    <span className="project-card__category">{project.category}</span>
+                    <h3 className="project-card__title">{project.title}</h3>
+                    <p className="project-card__desc">{project.tagline}</p>
+                    <ul className="chip-list project-card__tags" aria-label="Technologies">
+                      {(project.tags || project.stack).slice(0, 4).map((tag) => (
+                        <li className="chip" key={tag}>{tag}</li>
+                      ))}
+                    </ul>
+                    <span className="link-arrow project-card__cta">
+                      View case study <i className="fas fa-arrow-right" aria-hidden="true"></i>
                     </span>
-                  ))}
-                </div>
+                  </div>
+                  <div className={`project-card__shot ${project.img ? "project-card__shot--device" : ""}`} data-scrub="tilt">
+                    {project.img ? <DeviceFrame project={project} /> : <ProjectCover project={project} />}
+                  </div>
+                </Link>
+              </Reveal>
+            );
+          })}
+        </ul>
 
-                <h3 className="project-card-title">{project.title}</h3>
-                <p className="project-card-description">{project.desc}</p>
-
-                <div className="project-card-actions">
-                  <span className="action-link">
-                    <span>View Case Study</span>
-                    <i className="fas fa-arrow-right arrow-icon" aria-hidden="true"></i>
-                  </span>
-                </div>
-              </div>
-
-              {/* Mouse-tracking specular glow */}
-              <div className="glass-specular-glow" aria-hidden="true" />
-            </div>
-          </Link>
-        ))}
+        <div className="earlier">
+          <Reveal as="header" className="earlier__header">
+            <h3 className="earlier__title">Earlier projects</h3>
+            <p className="earlier__lead">University and personal projects, where it all started.</p>
+          </Reveal>
+          <ul className="earlier__grid" data-scrub="drift">
+            {earlierList.map((project, i) => (
+              <Reveal as="li" index={i % 3} key={project.id}>
+                <Link to={`/project/${project.id}`} className="mini-card tile" style={{ "--tone": project.accent }}>
+                  <div className="mini-card__media">
+                    {project.img ? (
+                      <img src={project.img} alt="" loading="lazy" draggable="false" />
+                    ) : (
+                      <i className={project.icon} aria-hidden="true"></i>
+                    )}
+                  </div>
+                  <div className="mini-card__body">
+                    <h4 className="mini-card__title">{project.title}</h4>
+                    <p className="mini-card__desc">{project.tagline}</p>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

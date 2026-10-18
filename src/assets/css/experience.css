@@ -1,222 +1,370 @@
 /* ==========================================================================
-   PRODUCTION READY MODERN MINIMALIST EXP ROADMAP
+   COMPANY CARDS
    ========================================================================== */
-
-.modern-experience-section {
-  position: relative; 
-  width: 100%;
-  padding: 10rem 7% 0rem 7%;
-  box-sizing: border-box;
-  overflow: hidden;
+.jobs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
 }
 
-/* Subtle corner neon background ambient filter glow */
-.section-ambient-glow {
-  position: absolute;
-  top: 25%;
-  right: -10%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.04) 0%, rgba(0,0,0,0) 70%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.experience-max-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
-}
-
-
-.section-subtitle {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  color: #6b7280;
-  margin-top: 1.5rem;
-}
-
-/* Single Vertical Navigation Stream Line Track */
-.roadmap-track {
-  position: relative;
-  padding-left: 3rem;
-}
-
-.roadmap-track::before {
-  content: '';
-  position: absolute;
-  top: 0.5rem;
-  bottom: 0.5rem;
-  left: 3.5px;
-  width: 1px;
-  background: linear-gradient(to bottom, #1f2937 0%, #1f2937 80%, rgba(31, 41, 55, 0) 100%);
-}
-
-/* Main Step Row Grid Structuring */
-.roadmap-step {
-  position: relative;
+.job {
   display: flex;
-  margin-bottom: 5.5rem;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-direction: column;
 }
 
-.roadmap-step:last-child {
-  margin-bottom: 0;
+/* Cover: brand-tinted surface with a soft two-colour wash and a fine dot texture */
+.job {
+  /* Brand tone for text/icons (ink) and solid fills; lifted in dark mode so dark brands stay visible */
+  --tone-ink: var(--tone);
+  --tone-fill: var(--tone);
 }
 
-/* Glowing Indicator Markers */
-.roadmap-marker {
+:root[data-theme="dark"] .job {
+  --tone-ink: color-mix(in srgb, var(--tone) 45%, #fff);
+  --tone-fill: color-mix(in srgb, var(--tone) 70%, #fff);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .job {
+    --tone-ink: color-mix(in srgb, var(--tone) 45%, #fff);
+    --tone-fill: color-mix(in srgb, var(--tone) 70%, #fff);
+  }
+}
+
+.job__cover {
+  position: relative;
+  padding: 26px 28px 28px;
+  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--tone-2) 26%, transparent), transparent 60%),
+    radial-gradient(90% 80% at 0% 100%, color-mix(in srgb, var(--tone) 16%, transparent), transparent 65%),
+    color-mix(in srgb, var(--tone) 6%, var(--surface));
+  isolation: isolate;
+}
+
+.job__cover::before {
+  content: "";
   position: absolute;
-  left: -3rem;
-  top: 0.2rem;
-  width: 8px;
-  height: 8px;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(color-mix(in srgb, var(--tone) 22%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+  mask-image: linear-gradient(to bottom left, #000, transparent 70%);
+  -webkit-mask-image: linear-gradient(to bottom left, #000, transparent 70%);
+}
+
+/* Brand stripe along the top edge */
+.job__cover::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--tone), var(--tone-2));
+}
+
+.job__cover-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.job__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
+  box-shadow: inset 0 0 0 1px var(--border);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.job__badge--live {
+  color: var(--positive);
+}
+
+.job__role {
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.job__company {
+  margin-top: 4px;
+  color: var(--tone-ink);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.job__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 24px 28px 28px;
+}
+
+.job__when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.job__range {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.job__duration {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-3);
+  font-size: 14px;
+}
+
+/* 12-month strip */
+.months {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
 }
 
-.marker-core {
-  width: 8px;
-  height: 8px;
-  background-color: #374151; /* Default inactive slate dot */
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
-
-/* Active Highlight Styling States for Top-of-Stack Items */
-.active-node .marker-core {
-  background-color: #3b82f6;
-  box-shadow: 0 0 15px #3b82f6, 0 0 5px #3b82f6;
-}
-
-/* Content Grid Segregation Matrix */
-.roadmap-info-grid {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 3rem;
-  width: 100%;
-}
-
-/* Left Metadata Column (Timestamps and Taxonomy Labels) */
-.roadmap-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  align-items: flex-start;
-  padding-top: 0.1rem;
-}
-
-.roadmap-duration-badge {
-  font-size: 1.05rem;
+.months__year {
+  color: var(--text-3);
+  font-size: 12px;
   font-weight: 600;
-  color: #f3f4f6;
-  letter-spacing: -0.01rem;
+  font-variant-numeric: tabular-nums;
 }
 
-.roadmap-org-type {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
-  font-weight: 700;
-  color: #4b5563;
-  padding: 0.2rem 0.6rem;
-  background-color: #111827;
-  border: 1px solid #1f2937;
-  border-radius: 0.4rem;
+.months__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 18px);
+  gap: 3px;
 }
 
-.font-award {
-  color: #10b981;
-  background-color: rgba(16, 185, 129, 0.05);
-  border-color: rgba(16, 185, 129, 0.15);
+.months__cell {
+  display: grid;
+  place-items: center;
+  height: 24px;
+  border-radius: 5px;
+  background: var(--surface-2);
+  color: var(--text-3);
+  font-size: 10px;
+  font-weight: 600;
 }
 
-/* Right Core Information Text Blocks */
-.roadmap-details {
-  display: flex;
-  flex-direction: column;
+.months__cell.is-future {
+  opacity: 0.45;
 }
 
-.roadmap-role-title {
-  font-size: 1.55rem;
-  font-weight: 700;
-  color: #f9fafb;
-  margin: 0 0 0.4rem 0;
-  letter-spacing: -0.02rem;
+.months__cell.is-active {
+  background: var(--tone-fill);
+  color: #fff;
+  opacity: 1;
 }
 
-.roadmap-company-name {
-  font-size: 1.15rem;
+.months__cell.is-now {
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px color-mix(in srgb, var(--tone) 45%, transparent);
+}
+
+.job__summary {
+  margin-top: 20px;
+  color: var(--text);
+  font-size: 17px;
   font-weight: 500;
-  color: #9ca3af;
-  margin: 0 0 1rem 0;
+  line-height: 1.45;
 }
 
-.roadmap-brief {
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: #6b7280;
-  margin: 0;
-  max-width: 620px;
-  transition: color 0.2s ease;
+.job__highlights {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
 }
 
-/* Micro-Interaction Transitions on User Hover States */
-.roadmap-step:hover .marker-core {
-  background-color: #06b6d4;
-  box-shadow: 0 0 15px #06b6d4;
-  transform: scale(1.2);
+.job__highlights li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.45;
 }
 
-.roadmap-step:hover .roadmap-brief {
-  color: #9ca3af; /* Text brightens clean when row targeted */
+.job__highlights i {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--tone-ink) 14%, transparent);
+  color: var(--tone-ink);
+  font-size: 10px;
 }
 
-.roadmap-step:hover {
-  transform: translateX(4px); /* Clean typographic push animation */
+.job__stack {
+  margin-top: auto;
+  padding-top: 22px;
+}
+
+@media (max-width: 900px) {
+  .jobs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .job__cover,
+  .job__body {
+    padding-inline: 22px;
+  }
+
+  .job__mark {
+    height: 48px;
+  }
+
+  .months__grid {
+    grid-template-columns: repeat(12, 16px);
+    gap: 2px;
+  }
 }
 
 /* ==========================================================================
-   MOBILE & TABLET VIEWPORT RESPONSIVE BREAKDOWN
+   JOURNEY TIMELINE
    ========================================================================== */
+.journey-wrap {
+  margin-top: clamp(64px, 8vw, 104px);
+}
 
-@media screen and (max-width: 768px) {
-  .modern-experience-section {
-    padding: 6rem 1.5rem;
+.journey__heading {
+  margin-bottom: 36px;
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  text-align: center;
+}
+
+.journey {
+  position: relative;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.journey::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #0071e3, #af52de 45%, #30b158);
+  opacity: 0.35;
+  transform: translateX(-50%);
+}
+
+.journey__item {
+  --kind: #0071e3;
+  position: relative;
+  width: 50%;
+  padding: 0 44px 20px 0;
+}
+
+.journey__item:nth-child(even) {
+  margin-left: 50%;
+  padding: 0 0 20px 44px;
+}
+
+.journey__item--project { --kind: #af52de; }
+.journey__item--award { --kind: #ff9f0a; }
+.journey__item--education { --kind: #30b158; }
+
+.journey__icon {
+  position: absolute;
+  top: 18px;
+  right: -21px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--kind);
+  box-shadow: 0 0 0 5px var(--bg), 0 6px 18px color-mix(in srgb, var(--kind) 40%, transparent);
+  color: #fff;
+  font-size: 16px;
+}
+
+.journey__item:nth-child(even) .journey__icon {
+  right: auto;
+  left: -21px;
+}
+
+.journey__card {
+  padding: 20px 22px;
+  border-radius: var(--radius-md);
+}
+
+.journey__when {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--kind) 14%, transparent);
+  color: color-mix(in srgb, var(--kind) 75%, var(--text));
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.journey__title {
+  margin-top: 10px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+}
+
+.journey__text {
+  margin-top: 4px;
+  color: var(--text-3);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.journey__link {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+@media (max-width: 760px) {
+  .journey::before {
+    left: 21px;
   }
 
-  .section-header-container {
-    margin-bottom: 5rem;
+  .journey__item,
+  .journey__item:nth-child(even) {
+    width: 100%;
+    margin-left: 0;
+    padding: 0 0 16px 60px;
   }
 
-  .roadmap-track {
-    padding-left: 2rem;
-  }
-
-  .roadmap-marker {
-    left: -2rem;
-  }
-
-  /* Collapse the dual column layout into a unified simple row vertical architecture */
-  .roadmap-info-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .roadmap-meta {
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .roadmap-role-title {
-    font-size: 1.35rem;
-  }
-
-  .roadmap-company-name {
-    font-size: 1.05rem;
-    margin-bottom: 0.6rem;
+  .journey__icon,
+  .journey__item:nth-child(even) .journey__icon {
+    right: auto;
+    left: 0;
   }
 }

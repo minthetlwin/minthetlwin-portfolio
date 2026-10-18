@@ -1,746 +1,389 @@
-/*HERO SECTION*/
-
-.modern-home-hero {
-    position: relative;
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0 5rem;
-    overflow: hidden;
+.hero {
+  padding-top: 16px;
 }
 
-.hero-geometry-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
+.bento {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-areas:
+    "intro intro photo now"
+    "intro intro photo prev"
+    "stack stack projects awards";
+  gap: 16px;
 }
 
-/* Fluid Layout Configuration Matrix */
-.hero-split-layout {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 4rem;
-    width: 100%;
-    max-width: 1300px;
-    margin: 0 auto;
-    align-items: center;
-    position: relative;
-    z-index: 2;
+.bento > .tile {
+  padding: 28px;
 }
 
-/* Left Typography Column */
-.hero-text-container {
-    display: flex;
-    flex-direction: column;
+a.tile {
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
 }
 
-.welcome-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    background: rgba(16, 185, 129, 0.08);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    color: #34d399;
-    padding: 0.6rem 1.6rem;
-    border-radius: 10rem;
-    font-size: 1.25rem;
-    font-weight: 600;
-    width: fit-content;
-    margin-bottom: 2.5rem;
-    letter-spacing: 0.02rem;
+a.tile:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-lg);
 }
 
-.pulse-dot {
-    width: 0.8rem;
-    height: 0.8rem;
-    background: #10b981;
-    border-radius: 50%;
-    animation: beaconPulse 2s infinite;
+.bento__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-3);
+  font-size: 13px;
+  font-weight: 600;
 }
 
-@keyframes beaconPulse {
-    0% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
-    }
-    70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
-    }
-    100% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-    }
+/* ---------- Intro ---------- */
+.bento__intro {
+  grid-area: intro;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(28px, 4vw, 48px) !important;
+  isolation: isolate;
 }
 
-.hero-main-title {
-    font-size: 4.6rem;
-    font-weight: 900;
-    color: #f8fafc;
-    line-height: 1.15;
-    letter-spacing: -0.15rem;
-    margin-bottom: 2rem;
-    text-transform: none;
+/* Soft mesh gradient in the corner */
+.bento__intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(0, 113, 227, 0.16), transparent 42%),
+    radial-gradient(circle at 80% 100%, rgba(191, 90, 242, 0.12), transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(48, 209, 88, 0.08), transparent 35%);
 }
 
-.gradient-name {
-    background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.bento__location {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
 }
 
-.dynamic-typing-row {
-    margin-bottom: 4.5rem;
+.bento__location i {
+  color: #ff375f;
 }
 
-.dynamic-typing-row p {
-    font-size: 1.5rem;
-    color: #94a3b8;
-    font-weight: 400;
-    text-transform: none;
+.bento__title {
+  margin-top: 20px;
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
 }
 
-.typing-text {
-    color: #f8fafc;
-    font-weight: 600;
-    border-bottom: 2px solid #06b6d4;
-    padding-bottom: 0.2rem;
+.bento__hi,
+.bento__name {
+  display: block;
 }
 
-/* Call-To-Action Layout Strip */
-.hero-cta-group {
-    display: flex;
-    align-items: center;
-    gap: 4rem;
-    flex-wrap: wrap;
+.bento__hi {
+  color: var(--text-3);
 }
 
-.premium-hero-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 1.2rem;
-    padding: 1.6rem 3.5rem;
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: #ffffff;
-    font-size: 1.55rem;
-    font-weight: 600;
-    border-radius: 1.4rem;
-    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.35);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    text-decoration: none;
+.bento__name {
+  background: linear-gradient(120deg, #0071e3 0%, #5e5ce6 55%, #bf5af2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
 }
 
-.premium-hero-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.5);
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+@media (max-width: 420px) {
+  .bento__name {
+    white-space: normal;
+  }
 }
 
-.premium-hero-btn i {
-    transition: transform 0.3s ease;
+.bento__lead {
+  max-width: 540px;
+  margin-top: 18px;
+  color: var(--text-2);
+  font-size: clamp(17px, 1.7vw, 20px);
+  line-height: 1.5;
 }
 
-.premium-hero-btn:hover i {
-    transform: translateY(3px);
+.bento__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
 }
 
-/* Minimalist Social Icon Rack */
-.hero-social-strip {
-    display: flex;
-    gap: 1.8rem;
+.bento__socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 24px;
 }
 
-.hero-social-strip a {
-    font-size: 2.2rem;
-    color: #64748b;
-    transition: color 0.3s ease, transform 0.3s ease;
+.bento__socials a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--text-3);
+  font-size: 17px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.hero-social-strip a:hover {
-    color: #06b6d4;
-    transform: translateY(-2px);
+.bento__socials a:hover {
+  background: var(--surface-2);
+  color: var(--text);
 }
 
-/* Right Interactive Character Container */
-.hero-avatar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+/* ---------- Photo ---------- */
+.bento__photo {
+  grid-area: photo;
+  padding: 0 !important;
+  min-height: 420px;
+  background: #ececec;
 }
 
-/* ==========================================================================
-   PRODUCTION 3D ISOMETRIC SOLAR SYSTEM GRAPHIC INTERFACE
-   ========================================================================== */
-
-.solar-viewport {
-    position: relative;
-    width: 56rem;
-    height: 56rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    perspective: 2500px; /* Deep perspective value for stronger depth translations */
-    overflow: visible;
-    line-height: 0;
+.bento__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 30%;
 }
 
-.solar-system-stage {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform-style: preserve-3d;
-    
-    /* MODIFIED: Base fallback properties mapped to inline script engine overrides */
-    transform: rotateX(68deg) rotateY(-8deg); 
-    
-    /* UPDATED: Cubic-bezier interpolation allows stage movement tracking to catch up elegantly */
-    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
-    will-change: transform;
+/* ---------- Jobs ---------- */
+.bento__job {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-/* Universal Track Blueprint */
-.planetary-track {
-    position: absolute;
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 50%;
-    transform-style: preserve-3d;
+.bento__job--now {
+  grid-area: now;
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--tone-2) 55%, transparent), transparent 60%),
+    linear-gradient(150deg, var(--tone), color-mix(in srgb, var(--tone) 70%, #001233));
+  color: #fff;
 }
 
-/* Individual Cosmic Body Core Settings */
-.cosmic-body {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    border-radius: 50%;
-    transform-style: preserve-3d;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    pointer-events: auto;
+.bento__job--now .bento__eyebrow {
+  color: rgba(255, 255, 255, 0.85);
 }
 
-/* Flat face-forward counter-rotation rules for spheres */
-.cosmic-body::before {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+.bento__job--prev {
+  grid-area: prev;
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--tone-2) 24%, transparent), transparent 60%),
+    color-mix(in srgb, var(--tone) 8%, var(--surface));
 }
 
-.cosmic-body:hover::before {
-    transform: scale(1.3);
+/* Logo plate (or monogram) for the previous company */
+.bento__job-mark {
+  align-self: flex-start;
+  height: 44px;
+  min-width: 44px;
+  margin: 16px 0 14px;
+  border-radius: 12px;
+  font-size: 12px;
 }
 
-/* Text Element Layout Parameters (Always Visible) */
-.cosmic-label {
-    position: absolute;
-    top: 145%;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: rgba(148, 163, 184, 0.7);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
-    letter-spacing: 0.05rem;
-    text-transform: uppercase;
-    white-space: nowrap;
-    pointer-events: none;
-    line-height: 1;
-    transition: color 0.3s ease;
+.bento__job-mark.company-mark--logo {
+  padding: 6px 10px;
 }
 
-.cosmic-body:hover .cosmic-label {
-    color: #38bdf8;
+.bento__job-company {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
-/* Central Star: The Sun */
-.solar-sun-core {
-    position: absolute;
-    width: 7rem;
-    height: 7rem;
-    background: radial-gradient(circle at 30% 30%, #fff7ed 0%, #f97316 60%, #ea580c 100%);
-    border-radius: 50%;
-    box-shadow: 0 0 40px 15px rgba(249, 115, 22, 0.4),
-                0 0 80px 30px rgba(234, 88, 12, 0.15);
-    transform: rotateX(-68deg);
-    z-index: 10;
-    cursor: pointer;
+.bento__job-role {
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0.9;
 }
 
-.solar-flare-ring {
-    position: absolute;
-    top: -15%;
-    left: -15%;
-    width: 130%;
-    height: 130%;
-    border-radius: 50%;
-    border: 1px solid rgba(253, 186, 116, 0.3);
-    animation: solarFlarePulse 3s infinite linear;
+.bento__job-meta {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: 13px;
+  opacity: 0.8;
+  font-variant-numeric: tabular-nums;
 }
 
-@keyframes solarFlarePulse {
-    0% {
-        transform: scale(0.9);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1.4);
-        opacity: 0;
-    }
+/* ---------- Stack ---------- */
+.bento__stack {
+  grid-area: stack;
 }
 
-/* ==========================================================================
-   PLANETARY TRACK SIZES, COLORS AND VELOCITY ENGINE
-   ========================================================================== */
-
-/* 1. MERCURY */
-.track-mercury {
-    width: 10rem;
-    height: 10rem;
-    animation: loopPlanet 3.5s linear infinite;
-    z-index: 18;
-}
-.planet-mercury {
-    width: 0.9rem;
-    height: 0.9rem;
-    margin-left: -0.45rem;
-    margin-top: -0.45rem;
-}
-.planet-mercury::before {
-    background: #a8a29e;
-    box-shadow: 0 0 8px #a8a29e;
-    animation: counterLoopPlanet 3.5s linear infinite;
-}
-.planet-mercury .cosmic-label {
-    animation: counterLoopPlanet 3.5s linear infinite;
+.bento__stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(66px, 1fr));
+  gap: 16px 4px;
+  margin-top: 22px;
 }
 
-/* 2. VENUS */
-.track-venus {
-    width: 15rem;
-    height: 15rem;
-    animation: loopPlanet 6.5s linear infinite;
-    z-index: 17;
-}
-.planet-venus {
-    width: 1.3rem;
-    height: 1.3rem;
-    margin-left: -0.65rem;
-    margin-top: -0.65rem;
-}
-.planet-venus::before {
-    background: #fdba74;
-    box-shadow: 0 0 10px #f59e0b;
-    animation: counterLoopPlanet 6.5s linear infinite;
-}
-.planet-venus .cosmic-label {
-    animation: counterLoopPlanet 6.5s linear infinite;
+.bento__stack-grid li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
 }
 
-/* 3. EARTH */
-.track-earth {
-    width: 20rem;
-    height: 20rem;
-    animation: loopPlanet 9s linear infinite;
-    z-index: 16;
-}
-.planet-earth {
-    width: 1.4rem;
-    height: 1.4rem;
-    margin-left: -0.7rem;
-    margin-top: -0.7rem;
-}
-.planet-earth::before {
-    background: #3b82f6;
-    box-shadow: 0 0 12px #06b6d4;
-    animation: counterLoopPlanet 9s linear infinite;
-}
-.planet-earth .cosmic-label {
-    animation: counterLoopPlanet 9s linear infinite;
+.bento__stack-grid .skill-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  box-shadow: none;
+  font-size: 24px;
 }
 
-/* 4. MARS */
-.track-mars {
-    width: 25rem;
-    height: 25rem;
-    animation: loopPlanet 13s linear infinite;
-    z-index: 15;
-}
-.planet-mars {
-    width: 1.1rem;
-    height: 1.1rem;
-    margin-left: -0.55rem;
-    margin-top: -0.55rem;
-}
-.planet-mars::before {
-    background: #ef4444;
-    box-shadow: 0 0 10px #f87171;
-    animation: counterLoopPlanet 13s linear infinite;
-}
-.planet-mars .cosmic-label {
-    animation: counterLoopPlanet 13s linear infinite;
+.bento__stack-grid .skill-icon img {
+  width: 30px;
+  height: 30px;
 }
 
-/* 5. JUPITER */
-.track-jupiter {
-    width: 32rem;
-    height: 32rem;
-    animation: loopPlanet 22s linear infinite;
-    z-index: 14;
-}
-.planet-jupiter {
-    width: 3.2rem;
-    height: 3.2rem;
-    margin-left: -1.6rem;
-    margin-top: -1.6rem;
-}
-.planet-jupiter::before {
-    background: radial-gradient(circle at 35% 35%, #fed7aa, #b45309);
-    box-shadow: 0 0 18px rgba(217, 119, 6, 0.5);
-    animation: counterLoopPlanet 22s linear infinite;
-}
-.planet-jupiter .cosmic-label {
-    animation: counterLoopPlanet 22s linear infinite;
+/* ---------- Stats ---------- */
+.bento__stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 200px;
 }
 
-/* 6. SATURN */
-.track-saturn {
-    width: 40rem;
-    height: 40rem;
-    animation: loopPlanet 34s linear infinite;
-    z-index: 13;
-}
-.planet-saturn {
-    width: 2.8rem;
-    height: 2.8rem;
-    margin-left: -1.4rem;
-    margin-top: -1.4rem;
-}
-.planet-saturn::before {
-    background: #fbbf24;
-    box-shadow: 0 0 14px rgba(251, 191, 36, 0.5);
-    animation: counterLoopPlanet 34s linear infinite;
-}
-.planet-saturn .cosmic-label {
-    animation: counterLoopPlanet 34s linear infinite;
-}
-.saturn-ring-system {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 4.8rem;
-    height: 1.4rem;
-    border: 4px solid rgba(217, 119, 6, 0.45);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) rotateX(25deg);
-    pointer-events: none;
-    animation: counterLoopPlanetRing 34s linear infinite;
+.bento__stat-value {
+  font-size: clamp(44px, 5vw, 60px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
 }
 
-/* 7. URANUS */
-.track-uranus {
-    width: 47rem;
-    height: 47rem;
-    animation: loopPlanet 48s linear infinite;
-    z-index: 12;
-}
-.planet-uranus {
-    width: 2rem;
-    height: 2rem;
-    margin-left: -1rem;
-    margin-top: -1rem;
-}
-.planet-uranus::before {
-    background: #22d3ee;
-    box-shadow: 0 0 12px #0891b2;
-    animation: counterLoopPlanet 48s linear infinite;
-}
-.planet-uranus .cosmic-label {
-    animation: counterLoopPlanet 48s linear infinite;
+.bento__stat-label {
+  margin-top: 6px;
+  color: var(--text-3);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
 }
 
-/* 8. NEPTUNE */
-.track-neptune {
-    width: 55rem;
-    height: 55rem;
-    animation: loopPlanet 64s linear infinite;
-    z-index: 11;
-}
-.planet-neptune {
-    width: 1.9rem;
-    height: 1.9rem;
-    margin-left: -0.95rem;
-    margin-top: -0.95rem;
-}
-.planet-neptune::before {
-    background: #2563eb;
-    box-shadow: 0 0 14px #1d4ed8;
-    animation: counterLoopPlanet 64s linear infinite;
-}
-.planet-neptune .cosmic-label {
-    animation: counterLoopPlanet 64s linear infinite;
+.bento__stat--projects {
+  grid-area: projects;
+  background: color-mix(in srgb, #30d158 12%, var(--surface));
 }
 
-/*CORE COSMIC MATRIX LOOPS*/
-
-@keyframes loopPlanet {
-    0% { transform: rotateZ(0deg); }
-    100% { transform: rotateZ(360deg); }
+.bento__stat-value,
+.bento__stat-label {
+  position: relative;
+  z-index: 1;
 }
 
-@keyframes counterLoopPlanet {
-    0% { transform: rotateZ(0deg) rotateY(8deg) rotateX(-68deg); }
-    100% { transform: rotateZ(-360deg) rotateY(8deg) rotateX(-68deg); }
+.bento__thumbs {
+  position: absolute;
+  top: 18px;
+  right: -12px;
+  width: 52%;
+  height: 80px;
 }
 
-@keyframes counterLoopPlanetRing {
-    0% { transform: translate(-50%, -50%) rotateZ(0deg) rotateY(8deg) rotateX(-43deg); }
-    100% { transform: translate(-50%, -50%) rotateZ(-360deg) rotateY(8deg) rotateX(-43deg); }
+.bento__thumbs img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: left top;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  transform-origin: bottom right;
 }
 
-/*INTERACTIVE FLOATING FACT BOX PANEL OVERLAY*/
+.bento__thumbs img:nth-child(1) { transform: rotate(-14deg) translate(-14px, 6px); }
+.bento__thumbs img:nth-child(2) { transform: rotate(-6deg) translate(-4px, 2px); }
+.bento__thumbs img:nth-child(3) { transform: rotate(2deg); }
 
-.space-fact-overlay-box {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 320px;
-    background: rgba(15, 23, 42, 0.9);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-top: 3px solid var(--accent-color, #3b82f6);
-    padding: 2rem;
-    border-radius: 2rem;
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
-    z-index: 100;
-    animation: panelSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.bento__stat--awards {
+  grid-area: awards;
+  background: linear-gradient(160deg, color-mix(in srgb, #ffcc00 22%, var(--surface)), color-mix(in srgb, #ff9500 14%, var(--surface)));
 }
 
-@keyframes panelSlideUp {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, 15px);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, 0);
-    }
+.bento__trophy {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(150deg, #ffd60a, #ff9f0a);
+  box-shadow: 0 8px 24px rgba(255, 159, 10, 0.35);
+  color: #fff;
+  font-size: 24px;
 }
 
-.close-fact-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-    background: transparent;
-    border: none;
-    color: #64748b;
-    font-size: 2rem;
-    cursor: pointer;
-    transition: color 0.2s ease;
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "intro intro"
+      "photo now"
+      "photo prev"
+      "stack stack"
+      "projects awards";
+  }
 }
 
-.close-fact-btn:hover {
-    color: #f8fafc;
-}
+@media (max-width: 640px) {
+  .bento {
+    gap: 12px;
+    grid-template-areas:
+      "intro intro"
+      "photo photo"
+      "now now"
+      "prev prev"
+      "projects awards"
+      "stack stack";
+  }
 
-.fact-badge {
-    display: inline-block;
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--accent-color, #3b82f6);
-    background: rgba(255, 255, 255, 0.03);
-    padding: 0.3rem 0.8rem;
-    border-radius: 0.6rem;
-    margin-bottom: 0.8rem;
-}
+  .bento > .tile {
+    padding: 22px;
+  }
 
-.space-fact-overlay-box h3 {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #f8fafc;
-    margin-bottom: 0.6rem;
-}
+  .bento__photo {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
 
-.space-fact-overlay-box p {
-    font-size: 1.2rem;
-    color: #94a3b8;
-    line-height: 1.5;
-}
+  .bento__stat {
+    min-height: 170px;
+  }
 
-.interactive-stage-card {
-    position: relative;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 3.5rem;
-    transition: border-color 0.4s, box-shadow 0.4s;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    overflow: visible;
-}
+  .bento__thumbs {
+    width: 70%;
+    height: 70px;
+    top: 16px;
+  }
 
-/* Responsive Scaling Overrides */
-@media screen and (max-width: 1200px) {
-    .hero-main-title {
-        font-size: 4.8rem;
-    }
-    .solar-viewport {
-        transform: scale(0.7);
-        margin: -6rem 0;
-    }
-}
-
-@media screen {
-    /* ── SHUT OFF PARALLAX TRANSFORMS SAFELY ON TABLET AND PHONE VIEWS ── */
-    @media (max-width: 992px) {
-        .solar-system-stage {
-            transform: rotateX(68deg) rotateY(-8deg) !important;
-            transition: none !important;
-        }
-    }
-}
-
-@media screen and (max-width: 992px) {
-    .header-container {
-        padding: 0 5rem;
-    }
-    .modern-home-hero {
-        padding: 10rem 5% 6rem 5%;
-        align-items: flex-start;
-        min-height: auto;
-    }
-    .hero-split-layout {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        text-align: center;
-    }
-    .hero-text-container {
-        align-items: center;
-    }
-    .welcome-tag {
-        margin: 5rem auto 2rem auto;
-    }
-    .hero-cta-group {
-        justify-content: center;
-        gap: 2.5rem;
-    }
-    .hero-avatar-container {
-        order: 2;
-        margin-top: -2rem;
-    }
-    .solar-viewport {
-        margin: -4rem 0;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .header-container {
-        padding: 0 5rem;
-    }
-    .hero-main-title {
-        font-size: 4rem;
-        letter-spacing: -0.1rem;
-    }
-    .dynamic-typing-row {
-        margin-bottom: 3rem;
-    }
-    .solar-viewport {
-        transform: scale(0.6);
-        margin: -8rem 0;
-    }
-}
-
-/* ==========================================================================
-   MOBILE & MOBILE SMALL FLUID OVERRIDES
-   ========================================================================== */
-
-@media screen and (max-width: 576px) {
-    .interactive-stage-card{
-        height: 40rem;
-    }
-    .header-container {
-        padding: 0 2rem;
-    }
-    .modern-home-hero {
-        padding: 10rem 1.5rem 4rem 1.5rem;
-        width: 100%;
-        overflow-x: hidden;
-    }
-    .hero-split-layout {
-        width: 100%;
-        gap: 1.5rem;
-    }
-    .hero-text-container {
-        align-items: center;
-        width: 100%; 
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-    .hero-main-title {
-        font-size: 3.6rem;
-        letter-spacing: -0.05rem;
-        line-height: 1.2;
-    }
-    .dynamic-typing-row p {
-        font-size: 1.2rem;
-    }
-    .hero-cta-group {
-        flex-direction: column;
-        width: 100%;
-        gap: 2rem;
-        margin-top: 3rem;
-    }
-    .premium-hero-btn {
-        padding: 1.2rem 2.4rem;
-        font-size: 1.2rem;
-        width: 100%;
-        max-width: 280px;
-        justify-content: center;
-    }
-    .hero-social-strip {
-        gap: 1.6rem;
-    }
-    .hero-social-strip a {
-        font-size: 1.8rem;
-    }
-    .hero-avatar-container {
-        width: 100%;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-    }
-    .solar-viewport {
-        margin: -14rem 0;
-        pointer-events: none;
-    }
-    .space-fact-overlay-box {
-        width: 90%;
-        padding: 1.25rem;
-        bottom: 0rem;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .hero-main-title {
-        font-size: 3.2rem;
-    }
-    .solar-viewport {
-        margin: -16rem 0;
-    }
+  .bento__trophy {
+    top: 18px;
+    right: 18px;
+    width: 46px;
+    height: 46px;
+    font-size: 20px;
+  }
 }

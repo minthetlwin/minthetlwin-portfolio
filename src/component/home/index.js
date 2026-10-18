@@ -1,289 +1,119 @@
-import React, { useRef, useEffect, useState } from "react";
-import Typed from "typed.js";
-import "../../assets/css/style.css";
-import "../../assets/css/floatingtext.css";
-import '../../assets/css/home.css';
+import React from "react";
+import "../../assets/css/home.css";
+import profileImg from "../../assets/image/profile.png";
+import SkillIcon from "../common/SkillIcon";
+import CompanyMark from "../common/CompanyMark";
+import { profile, socials } from "../../data/profile";
+import { roles, awards, formatMonth, formatRange, formatDuration } from "../../data/experience";
+import { projectList } from "../../data/projects";
+import { coreSkills } from "../../data/skills";
 
-// Local planet encyclopedia database with Sun integrated
-const PLANET_FACTS = {
-  Sun: { color: "#ea580c", title: "Sun", speed: "Solar Core", note: "The luminous star at the heart of our system, containing 99.8% of its total mass." },
-  Mercury: { color: "#a8a29e", title: "Mercury", speed: "Fastest Orbit", note: "The smallest planet in our solar system and closest to the Sun." },
-  Venus: { color: "#fdba74", title: "Venus", speed: "Extremely Hot", note: "Thick atmosphere traps heat in a runaway greenhouse effect." },
-  Earth: { color: "#3b82f6", title: "Earth", speed: "Life Oasis", note: "Our home planet is the only place known to harbor living ecosystems." },
-  Mars: { color: "#ef4444", title: "Mars", speed: "Desert World", note: "A cold, dusty desert world with a very thin atmosphere." },
-  Jupiter: { color: "#b45309", title: "Jupiter", speed: "Gas Giant", note: "More than twice as massive than all other planets combined." },
-  Saturn: { color: "#fbbf24", title: "Saturn", speed: "Ringed World", note: "Adorned with a dazzling, complex system of icy rings." },
-  Uranus: { color: "#22d3ee", title: "Uranus", speed: "Ice Giant", note: "An ice giant that uniquely rotates on an extreme 90-degree tilt." },
-  Neptune: { color: "#2563eb", title: "Neptune", speed: "Windy Planet", note: "The most distant major planet orbiting our solar system core." }
-};
+const [current, previous] = roles;
 
 export default function Home() {
-  const [activePlanet, setActivePlanet] = useState(null);
-  const canvasRef = useRef(null);
-  const typeRef = useRef(null);
-  
-  // ── PARALLAX ACCELERATOR REFS ──
-  const solarStageRef = useRef(null);
-
-  const handlePlanetSelect = (planetKey, e) => {
-    e.stopPropagation(); // Prevents layout bubbling conflict triggers
-    setActivePlanet(PLANET_FACTS[planetKey]);
-  };
-
-  const closeFactBox = (e) => {
-    e.stopPropagation();
-    setActivePlanet(null);
-  };
-
-  // 1. Core Dynamic Interactions (Typed & Favicon)
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      const favicon = document.getElementById("favicon");
-      if (document.visibilityState === "visible") {
-        document.title = "Min Thet Lwin | Portfolio";
-        if (favicon) favicon.href = "assets/images/favicon.png";
-      } else {
-        document.title = "Min Thet Lwin | Portfolio";
-        if (favicon) favicon.href = "assets/images/favhand.png";
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    const typed = new Typed(typeRef.current, {
-      strings: ["FullStack Developer", "React Engineer"],
-      loop: true,
-      typeSpeed: 60,
-      backSpeed: 30,
-      backDelay: 1200,
-    });
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      typed.destroy();
-    };
-  }, []);
-
-  // 2. High Performance Cursor 3D Parallax Engine
-  useEffect(() => {
-    const handleStageParallax = (e) => {
-      if (!solarStageRef.current || window.innerWidth <= 992) return;
-
-      // Locate cursor deviation from center viewport anchor points
-      const centerDeltaX = e.clientX - window.innerWidth / 2;
-      const centerDeltaY = e.clientY - window.innerHeight / 2;
-
-      // Map deviations smoothly onto your layout's core spatial angles: rotateX(68deg) rotateY(-8deg)
-      const targetTiltX = 68 - (centerDeltaY * 0.018); 
-      const targetTiltY = -8 + (centerDeltaX * 0.018);
-
-      // Direct GPU transformation injection bypassing React rendering cycles
-      solarStageRef.current.style.transform = `rotateX(${targetTiltX}deg) rotateY(${targetTiltY}deg)`;
-    };
-
-    window.addEventListener("mousemove", handleStageParallax, { passive: true });
-    return () => window.removeEventListener("mousemove", handleStageParallax);
-  }, []);
-
-  // 3. Ambient Canvas Geometry Animation Engine
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resizeCanvas();
-
-    const colors = ["#3b82f6", "#06b6d4", "#10b981", "#a78bfa"];
-    const particles = [];
-
-    function createParticles(count) {
-      for (let i = 0; i < count; i++) {
-        const type = ["plus", "circle", "hollow"][Math.floor(Math.random() * 3)];
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          size: Math.random() * 10 + 6,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          dx: (Math.random() - 0.5) * 0.3,
-          dy: (Math.random() - 0.5) * 0.3,
-          type,
-        });
-      }
-    }
-
-    function drawPlus(x, y, size, color) {
-      ctx.strokeStyle = color + "44";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(x - size / 2, y);
-      ctx.lineTo(x + size / 2, y);
-      ctx.moveTo(x, y - size / 2);
-      ctx.lineTo(x, y + size / 2);
-      ctx.stroke();
-    }
-
-    function drawCircle(x, y, size, color, hollow = false) {
-      ctx.beginPath();
-      ctx.arc(x, y, size / 2, 0, Math.PI * 2);
-      if (hollow) {
-        ctx.strokeStyle = color + "44";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      } else {
-        ctx.fillStyle = color + "22";
-        ctx.fill();
-      }
-    }
-
-    let animationId;
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p) => {
-        if (p.type === "plus") drawPlus(p.x, p.y, p.size, p.color);
-        if (p.type === "circle") drawCircle(p.x, p.y, p.size, p.color, false);
-        if (p.type === "hollow") drawCircle(p.x, p.y, p.size, p.color, true);
-
-        p.x += p.dx;
-        p.y += p.dy;
-
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-      });
-      animationId = requestAnimationFrame(animate);
-    }
-
-    createParticles(35);
-    animate();
-
-    window.addEventListener("resize", resizeCanvas);
-    return () => {
-      window.removeEventListener("resize", resizeCanvas);
-      cancelAnimationFrame(animationId);
-    };
-  }, []);
-
   return (
-    <section className="modern-home-hero" id="home" onClick={() => setActivePlanet(null)}>
-      <canvas ref={canvasRef} className="hero-geometry-canvas"></canvas>
-
-      <div className="hero-split-layout">
-        {/* Left Side: Typography Matrix */}
-        <div className="hero-text-container">
-          <div className="welcome-tag">
-            <span className="pulse-dot"></span> Available for New Opportunities
-          </div>
-          <h1 className="hero-main-title">
-            Hi, I'm <span className="gradient-name">Min Thet Lwin</span>
-          </h1>
-          <div className="dynamic-typing-row">
-            <p>Engineering robust applications as a <span ref={typeRef} className="typing-text"></span></p>
-          </div>
-
-          <div className="hero-cta-group">
-            <a href="#about" className="premium-hero-btn">
-              <span>Explore My Stack</span>
-              <i className="fas fa-arrow-right"></i>
-            </a>
-
-            <div className="hero-social-strip">
-              <a href="https://www.linkedin.com/in/min-thet-lwin-474298317/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
-              <a href="https://github.com/minthetlwin" target="_blank" rel="noreferrer" aria-label="GitHub"><i className="fab fa-github"></i></a>
-              <a href="https://t.me/sacrerex" target="_blank" rel="noreferrer" aria-label="Telegram"><i className="fab fa-telegram-plane"></i></a>
-              <a href="https://www.instagram.com/sacre_rex/" target="_blank" rel="noreferrer" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
-              <a href="https://www.facebook.com/sacrerex" target="_blank" rel="noreferrer" aria-label="Facebook"><i className="fab fa-facebook"></i></a>
-              <a href="https://www.tiktok.com/@minthetlwin71" target="_blank" rel="noreferrer" aria-label="TikTok"><i className="fab fa-tiktok"></i></a>
+    <section className="hero" id="home" aria-labelledby="hero-title">
+      <div className="container">
+        <div className="bento" data-scrub="exit">
+          {/* Intro */}
+          <article className="tile bento__intro rise" style={{ "--i": 0 }}>
+            <span className="bento__location">
+              <i className="fas fa-map-marker-alt" aria-hidden="true"></i> {profile.location}
+            </span>
+            <h1 className="bento__title" id="hero-title">
+              <span className="line"><span className="line__inner bento__hi">Hi, I'm</span></span>{" "}
+              <span className="line"><span className="line__inner bento__name">{profile.name}.</span></span>
+            </h1>
+            <p className="bento__lead">{profile.intro}</p>
+            <div className="bento__actions">
+              <a href="#work" className="btn btn--primary">
+                See my work <i className="fas fa-arrow-down" aria-hidden="true"></i>
+              </a>
+              <a href={profile.resume} target="_blank" rel="noreferrer" className="btn btn--secondary">
+                <i className="fas fa-file-alt" aria-hidden="true"></i> Résumé
+              </a>
             </div>
-          </div>
-        </div>
+            <ul className="bento__socials" aria-label="Social profiles">
+              {socials.map((s) => (
+                <li key={s.label}>
+                  <a href={s.href} target="_blank" rel="noreferrer" aria-label={s.label}>
+                    <i className={s.icon} aria-hidden="true"></i>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </article>
 
-        {/* Right Side: Interactive 3D Solar System Engine */}
-        <div className="hero-avatar-container">
-          <div className="interactive-stage-card">
+          {/* Photo — nothing is layered over it */}
+          <figure className="tile bento__photo rise rise--mask" style={{ "--i": 1 }}>
+            <img src={profileImg} alt={`Portrait of ${profile.name}`} draggable="false" />
+          </figure>
 
-            <main className="solar-viewport">
-              {/* Linked ref directly here for Parallax engine updates */}
-              <div className="solar-system-stage" ref={solarStageRef}>
+          {/* Current role */}
+          <a
+            href="#experience"
+            className="tile bento__job bento__job--now rise"
+            style={{ "--i": 2, "--tone": current.accent, "--tone-2": current.accent2 || current.accent }}
+          >
+            <span className="bento__eyebrow">
+              <span className="status-dot" aria-hidden="true"></span> Working at
+            </span>
+            <CompanyMark role={current} className="bento__job-mark" />
+            <span className="bento__job-company">{current.shortName}</span>
+            <span className="bento__job-role">{current.role}</span>
+            <span className="bento__job-meta">
+              Since {formatMonth(current.start)} · {formatDuration(current.start, current.end)}
+            </span>
+          </a>
 
-                {/* The Solar Core (Sun) */}
-                <div className="solar-sun-core" onClick={(e) => handlePlanetSelect("Sun", e)}>
-                  <div className="solar-flare-ring"></div>
-                </div>
+          {/* Previous role */}
+          <a
+            href="#experience"
+            className="tile bento__job bento__job--prev rise"
+            style={{ "--i": 3, "--tone": previous.accent, "--tone-2": previous.accent2 || previous.accent }}
+          >
+            <span className="bento__eyebrow">Previously</span>
+            <CompanyMark role={previous} className="bento__job-mark" />
+            <span className="bento__job-company">{previous.shortName}</span>
+            <span className="bento__job-role">{previous.role}</span>
+            <span className="bento__job-meta">
+              {formatRange(previous.start, previous.end)} · {formatDuration(previous.start, previous.end)}
+            </span>
+          </a>
 
-                {/* 1. Mercury */}
-                <div className="planetary-track track-mercury">
-                  <div className="cosmic-body planet-mercury" onClick={(e) => handlePlanetSelect("Mercury", e)}>
-                    <span className="cosmic-label">Mercury</span>
-                  </div>
-                </div>
+          {/* Core stack */}
+          <a href="#skills" className="tile bento__stack rise" style={{ "--i": 4 }}>
+            <span className="bento__eyebrow">Core stack</span>
+            <ul className="bento__stack-grid">
+              {coreSkills.map((skill) => (
+                <li key={skill.name}>
+                  <SkillIcon skill={skill} />
+                  <span>{skill.name}</span>
+                </li>
+              ))}
+            </ul>
+          </a>
 
-                {/* 2. Venus */}
-                <div className="planetary-track track-venus">
-                  <div className="cosmic-body planet-venus" onClick={(e) => handlePlanetSelect("Venus", e)}>
-                    <span className="cosmic-label">Venus</span>
-                  </div>
-                </div>
+          {/* Projects */}
+          <a href="#work" className="tile bento__stat bento__stat--projects rise" style={{ "--i": 5 }}>
+            <span className="bento__thumbs" aria-hidden="true">
+              {/* Last thumbnail renders on top, so reverse to put the newest project in front. */}
+              {projectList.filter((p) => p.img).slice(0, 3).reverse().map((p) => (
+                <img key={p.id} src={p.img} alt="" draggable="false" />
+              ))}
+            </span>
+            <span className="bento__stat-value" data-count>{projectList.length}</span>
+            <span className="bento__stat-label">Projects built</span>
+          </a>
 
-                {/* 3. Earth */}
-                <div className="planetary-track track-earth">
-                  <div className="cosmic-body planet-earth" onClick={(e) => handlePlanetSelect("Earth", e)}>
-                    <span className="cosmic-label">Earth</span>
-                  </div>
-                </div>
-
-                {/* 4. Mars */}
-                <div className="planetary-track track-mars">
-                  <div className="cosmic-body planet-mars" onClick={(e) => handlePlanetSelect("Mars", e)}>
-                    <span className="cosmic-label">Mars</span>
-                  </div>
-                </div>
-
-                {/* 5. Jupiter */}
-                <div className="planetary-track track-jupiter">
-                  <div className="cosmic-body planet-jupiter" onClick={(e) => handlePlanetSelect("Jupiter", e)}>
-                    <span className="cosmic-label">Jupiter</span>
-                  </div>
-                </div>
-
-                {/* 6. Saturn */}
-                <div className="planetary-track track-saturn">
-                  <div className="cosmic-body planet-saturn" onClick={(e) => handlePlanetSelect("Saturn", e)}>
-                    <div className="saturn-ring-system"></div>
-                    <span className="cosmic-label">Saturn</span>
-                  </div>
-                </div>
-
-                {/* 7. Uranus */}
-                <div className="planetary-track track-uranus">
-                  <div className="cosmic-body planet-uranus" onClick={(e) => handlePlanetSelect("Uranus", e)}>
-                    <span className="cosmic-label">Uranus</span>
-                  </div>
-                </div>
-
-                {/* 8. Neptune */}
-                <div className="planetary-track track-neptune">
-                  <div className="cosmic-body planet-neptune" onClick={(e) => handlePlanetSelect("Neptune", e)}>
-                    <span className="cosmic-label">Neptune</span>
-                  </div>
-                </div>
-
-              </div>
-            </main>
-
-            {/* Dynamic Planet Facts Panel Overlay */}
-            {activePlanet && (
-              <div className="space-fact-overlay-box" style={{ "--accent-color": activePlanet.color }} onClick={(e) => e.stopPropagation()}>
-                <button className="close-fact-btn" onClick={closeFactBox}>&times;</button>
-                <div className="fact-badge">{activePlanet.speed}</div>
-                <h3>{activePlanet.title}</h3>
-                <p>{activePlanet.note}</p>
-              </div>
-            )}
-
-          </div>
+          {/* Awards */}
+          <a href="#education" className="tile bento__stat bento__stat--awards rise" style={{ "--i": 6 }}>
+            <span className="bento__trophy" aria-hidden="true">
+              <i className="fas fa-trophy"></i>
+            </span>
+            <span className="bento__stat-value" data-count>{awards.length}×</span>
+            <span className="bento__stat-label">First Prize, university project competition</span>
+          </a>
         </div>
       </div>
     </section>

@@ -5,23 +5,20 @@ export default function ScrollToHash() {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    if (hash) {
-      // Find the element matching the hash (e.g., id="projects" or id="work")
-      const targetElement = document.getElementById(hash.replace("#", ""));
-      
-      if (targetElement) {
-        // Delay slightly to give the DOM/images time to load and render
-        const timer = setTimeout(() => {
-          targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 150);
-
-        return () => clearTimeout(timer);
-      }
-    } else {
-      // If navigating to a page without a hash, snap back to the very top
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    if (!hash) {
+      // New page without a hash: start at the top, instantly.
+      window.scrollTo({ top: 0, behavior: "auto" });
+      return undefined;
     }
-  }, [pathname, hash]); // Fires every time the route or hash changes
+
+    // Give the target route a moment to render before scrolling to the anchor.
+    // Sections set scroll-margin-top so the sticky nav never covers headings.
+    const timer = setTimeout(() => {
+      const target = document.getElementById(hash.slice(1));
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+    return () => clearTimeout(timer);
+  }, [pathname, hash]);
 
   return null;
 }

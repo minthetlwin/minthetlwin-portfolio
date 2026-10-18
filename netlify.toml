@@ -4,3 +4,17 @@
 
 [functions]
   node_bundler = "esbuild"
+
+# Single-page app: serve index.html for client-side routes like /project/sdos,
+# so shared links and page refreshes don't 404. Real files are still served first.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Build files have a content hash in their name, so they can be cached forever;
+# a new deploy produces new names. Repeat visits on slow networks load almost nothing.
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

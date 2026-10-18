@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <meta name="color-scheme" content="light dark" />
+  <!-- Browser UI follows the site theme (light by default); updated by the script below and the theme toggle -->
+  <meta name="theme-color" content="#f5f5f7" />
+  <meta name="color-scheme" content="light" />
   <meta name="author" content="Min Thet Lwin" />
   <meta
     name="description"
@@ -14,14 +14,19 @@
 
   <title>Min Thet Lwin | Portfolio</title>
 
-  <!-- Apply the saved theme before first paint to avoid a flash -->
+  <!-- Theme before first paint: light by default; dark only if the visitor chose it with the toggle -->
   <script>
-    try {
-      var savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "light" || savedTheme === "dark") {
-        document.documentElement.dataset.theme = savedTheme;
+    (function () {
+      var theme = "light";
+      try {
+        if (localStorage.getItem("theme") === "dark") theme = "dark";
+      } catch (e) {}
+      document.documentElement.dataset.theme = theme;
+      if (theme === "dark") {
+        document.querySelector('meta[name="theme-color"]').content = "#000000";
+        document.querySelector('meta[name="color-scheme"]').content = "dark";
       }
-    } catch (e) {}
+    })();
   </script>
 
   <!-- Favicon & Manifest -->
@@ -30,6 +35,170 @@
   <link rel="manifest" href="/manifest.json" />
 
   <!-- Fonts and icons are self-hosted (bundled in src/index.js): no third-party requests -->
+
+  <!-- Boot screen: inline so it paints with the first bytes, before the JS bundle loads -->
+  <script>
+    /* Refresh always starts at the top. Clicking nav links writes #section into the URL and the
+       browser restores scroll on reload; neither should apply to a refresh. A fresh visit to a
+       shared /#contact link is a "navigate", not a "reload", so deep links still work. */
+    (function () {
+      try {
+        var nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+        var reload = nav ? nav.type === "reload" : performance.navigation && performance.navigation.type === 1;
+        if (!reload) return;
+        if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+        if (location.hash) history.replaceState(history.state, "", location.pathname + location.search);
+        window.scrollTo(0, 0);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    html.is-loading, html.is-loading body { overflow: hidden; }
+
+    /* Cinematic boot screen. Follows the site theme: porcelain light by default, keynote black in dark */
+    .boot {
+      --bg: #f4f4f7;
+      --text: #1d1d1f;
+      --sub: rgba(29, 29, 31, 0.5);
+      --sub-strong: rgba(29, 29, 31, 0.85);
+      --track: rgba(0, 0, 0, 0.07);
+      --name-top: #1d1d1f;
+      --name-bottom: rgba(29, 29, 31, 0.66);
+      --a1: rgba(0, 113, 227, 0.32);
+      --a2: rgba(191, 90, 242, 0.26);
+      --a3: rgba(48, 209, 88, 0.2);
+      --aurora-blend: normal;
+      --aurora-opacity: 1;
+      --grain: 0.045;
+      --grain-blend: multiply;
+      --vignette: rgba(255, 255, 255, 0.55);
+      --glow: rgba(94, 92, 230, 0.45);
+      --core: rgba(94, 92, 230, 0.16);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+      --stage-y: 42%;
+      --ix: 50%; --iy: 42%;
+      position: fixed; inset: 0; z-index: 1000;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Aurora: three blurred light sources drifting slowly */
+    :root[data-theme="dark"] .boot {
+      --bg: #050507;
+      --text: #f5f5f7;
+      --sub: rgba(245, 245, 247, 0.5);
+      --sub-strong: rgba(245, 245, 247, 0.85);
+      --track: rgba(255, 255, 255, 0.08);
+      --name-top: #fff;
+      --name-bottom: rgba(255, 255, 255, 0.62);
+      --a1: rgba(0, 113, 227, 0.55);
+      --a2: rgba(191, 90, 242, 0.42);
+      --a3: rgba(48, 209, 88, 0.22);
+      --aurora-blend: screen;
+      --aurora-opacity: 0.9;
+      --grain: 0.07;
+      --grain-blend: overlay;
+      --vignette: rgba(0, 0, 0, 0.65);
+      --glow: rgba(94, 92, 230, 0.8);
+      --core: rgba(94, 92, 230, 0.28);
+    }
+
+    .boot__aurora { position: absolute; inset: -25%; filter: blur(70px) saturate(140%); opacity: var(--aurora-opacity); }
+    .boot__aurora i { position: absolute; border-radius: 50%; mix-blend-mode: var(--aurora-blend); }
+    .boot__aurora i:nth-child(1) { width: 46vmax; height: 46vmax; left: 46%; top: 8%; background: radial-gradient(closest-side, var(--a1), transparent); animation: boot-a 14s ease-in-out infinite alternate; }
+    .boot__aurora i:nth-child(2) { width: 40vmax; height: 40vmax; left: 12%; top: 40%; background: radial-gradient(closest-side, var(--a2), transparent); animation: boot-b 17s ease-in-out infinite alternate; }
+    .boot__aurora i:nth-child(3) { width: 30vmax; height: 30vmax; left: 58%; top: 58%; background: radial-gradient(closest-side, var(--a3), transparent); animation: boot-c 12s ease-in-out infinite alternate; }
+    @keyframes boot-a { to { transform: translate3d(-18%, 14%, 0) scale(1.15); } }
+    @keyframes boot-b { to { transform: translate3d(22%, -12%, 0) scale(0.9); } }
+    @keyframes boot-c { to { transform: translate3d(-12%, -20%, 0) scale(1.2); } }
+
+    .boot__grain { position: absolute; inset: 0; opacity: var(--grain); mix-blend-mode: var(--grain-blend); background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); pointer-events: none; }
+    .boot__vignette { position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 45%, transparent 40%, var(--vignette)); }
+
+    .boot__stage {
+      position: absolute; left: 50%; top: var(--stage-y);
+      display: flex; flex-direction: column; align-items: center;
+      transform: translate(-50%, -50%);
+      width: max-content; max-width: calc(100vw - 32px);
+    }
+
+    /* Monogram drawn as a gradient stroke inside a progress ring */
+    .boot__mark { position: relative; width: 132px; height: 132px; margin-bottom: 34px; transition: transform 1.1s var(--ease-io), opacity 0.8s ease; }
+    .boot__mark svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .boot__track { fill: none; stroke: var(--track); stroke-width: 1.5; }
+    .boot__ring { fill: none; stroke: url(#boot-g); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transform: rotate(-90deg); transform-origin: 50% 50%; filter: drop-shadow(0 0 6px var(--glow)); }
+    .boot__m { fill: none; stroke: url(#boot-g); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: boot-draw 1.4s var(--ease-io) 0.15s forwards; filter: drop-shadow(0 0 10px var(--glow)); }
+    .boot__core { position: absolute; inset: 22px; border-radius: 50%; background: radial-gradient(circle, var(--core), transparent 70%); animation: boot-breathe 2.8s ease-in-out infinite; }
+    @keyframes boot-draw { to { stroke-dashoffset: 0; } }
+    @keyframes boot-breathe { 50% { transform: scale(1.18); opacity: 0.6; } }
+
+    /* Keynote-size name: letters resolve out of blur */
+    .boot__name { display: flex; margin: 0; font-size: clamp(40px, 7.4vw, 104px); font-weight: 700; letter-spacing: -0.045em; line-height: 1; white-space: nowrap; }
+    .boot__l { display: inline-block; background: linear-gradient(180deg, var(--name-top) 30%, var(--name-bottom)); -webkit-background-clip: text; background-clip: text; color: transparent; opacity: 0; filter: blur(14px); transform: translate3d(0, 0.3em, 0) scale(1.08); animation: boot-letter 1.1s var(--ease) forwards; animation-delay: calc(0.35s + var(--c) * 45ms); }
+    .boot__sp { width: 0.26em; }
+    @keyframes boot-letter { to { opacity: 1; filter: blur(0); transform: none; } }
+
+    .boot__role { margin: 22px 0 0; color: var(--sub); font-size: 12px; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; opacity: 0; animation: boot-fade 1s var(--ease) 1.05s forwards; }
+    @keyframes boot-fade { from { opacity: 0; transform: translate3d(0, 8px, 0); } to { opacity: 1; transform: none; } }
+
+    /* Editorial footer: location left, big thin counter right */
+    .boot__foot { position: absolute; right: clamp(20px, 4vw, 48px); bottom: clamp(20px, 4vw, 40px); left: clamp(20px, 4vw, 48px); display: flex; align-items: flex-end; justify-content: space-between; opacity: 0; animation: boot-fade 1s var(--ease) 0.6s forwards; }
+    .boot__where { color: var(--sub); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.6; }
+    .boot__where b { display: block; color: var(--sub-strong); font-weight: 600; }
+    .boot__count { font-size: clamp(44px, 6vw, 72px); font-weight: 200; letter-spacing: -0.04em; line-height: 0.85; font-variant-numeric: tabular-nums; }
+    .boot__count small { margin-left: 4px; color: var(--sub); font-size: 0.32em; font-weight: 500; letter-spacing: 0; }
+
+    .boot__stage, .boot__foot { transition: opacity 0.6s ease, filter 0.6s ease, transform 0.8s var(--ease); }
+
+    /* Done: the ring flashes once */
+    .boot.is-done .boot__ring { animation: boot-flash 0.7s ease-out; }
+    @keyframes boot-flash { 40% { filter: drop-shadow(0 0 22px rgba(160, 150, 255, 1)); stroke-width: 4; } }
+
+    /* Exit: text dissolves, the monogram zooms through and an iris opens from it */
+    .boot.is-leaving .boot__name, .boot.is-leaving .boot__role, .boot.is-leaving .boot__foot { opacity: 0; filter: blur(12px); }
+    .boot.is-leaving .boot__name { transition: opacity 0.5s ease, filter 0.5s ease; }
+    .boot.is-leaving .boot__mark { transform: scale(2.6); opacity: 0; }
+    .boot.boot--iris {
+      -webkit-mask: radial-gradient(circle at var(--ix) var(--iy), transparent var(--hole), #000 calc(var(--hole) + 1.5px));
+      mask: radial-gradient(circle at var(--ix) var(--iy), transparent var(--hole), #000 calc(var(--hole) + 1.5px));
+      transition: --hole 1.15s cubic-bezier(0.7, 0, 0.2, 1) 0.32s;
+    }
+    .boot.boot--iris.is-leaving { --hole: var(--hole-max, 150vmax); }
+    .boot__rim {
+      position: absolute; left: var(--ix); top: var(--iy);
+      width: calc(var(--hole) * 2); height: calc(var(--hole) * 2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7), 0 0 28px 6px rgba(41, 151, 255, 0.35), 0 0 70px 18px rgba(191, 90, 242, 0.22);
+      opacity: 0; transition: opacity 0.3s ease 0.3s;
+      pointer-events: none;
+    }
+    .boot.boot--iris.is-leaving .boot__rim { opacity: 1; }
+    .boot.is-leaving:not(.boot--iris) { opacity: 0; transition: opacity 0.7s ease 0.3s; }
+
+    /* Reduced motion (set by the controller): no intro, a quick fade once ready */
+    .boot-quick .boot__m { animation: none; stroke-dashoffset: 0; }
+    .boot-quick .boot__l, .boot-quick .boot__role, .boot-quick .boot__foot { animation: none; opacity: 1; filter: none; transform: none; }
+    .boot-quick .boot.is-leaving { -webkit-mask: none; mask: none; opacity: 0; transition: opacity 0.35s ease; }
+    .boot-quick .boot.is-leaving .boot__mark { transform: none; }
+
+    @media (max-width: 520px) {
+      .boot__mark { width: 104px; height: 104px; margin-bottom: 26px; }
+      .boot__role { font-size: 10px; letter-spacing: 0.24em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .boot *, .boot { animation: none !important; }
+      .boot__m { stroke-dashoffset: 0; }
+      .boot__l, .boot__role, .boot__foot { opacity: 1; filter: none; transform: none; }
+      .boot.is-leaving { -webkit-mask: none; mask: none; opacity: 0; transition: opacity 0.3s ease; }
+      .boot.is-leaving .boot__mark { transform: none; }
+    }
+  </style>
+  <noscript><style>.boot { display: none; }</style></noscript>
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
@@ -49,6 +218,115 @@
 </head>
 <body>
   <noscript>You need to enable JavaScript to view this portfolio.</noscript>
+
+  <!-- Boot screen (styles in <head>). Removed by the script below once the app is ready. -->
+  <div id="boot" class="boot" role="status" aria-label="Loading Min Thet Lwin's portfolio">
+    <div class="boot__aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="boot__vignette" aria-hidden="true"></div>
+    <div class="boot__grain" aria-hidden="true"></div>
+    <span class="boot__rim" aria-hidden="true"></span>
+
+    <div class="boot__stage" aria-hidden="true">
+      <div class="boot__mark">
+        <span class="boot__core"></span>
+        <svg viewBox="0 0 132 132">
+          <defs>
+            <linearGradient id="boot-g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2997ff" />
+              <stop offset="0.55" stop-color="#5e5ce6" />
+              <stop offset="1" stop-color="#bf5af2" />
+            </linearGradient>
+          </defs>
+          <circle class="boot__track" cx="66" cy="66" r="62" />
+          <circle class="boot__ring" cx="66" cy="66" r="62" pathLength="1" />
+          <path class="boot__m" pathLength="1" d="M45 82 V50 L66 72 L87 50 V82" />
+        </svg>
+      </div>
+      <p class="boot__name"><span class="boot__l" style="--c:0">M</span><span class="boot__l" style="--c:1">i</span><span class="boot__l" style="--c:2">n</span><span class="boot__l boot__sp"> </span><span class="boot__l" style="--c:3">T</span><span class="boot__l" style="--c:4">h</span><span class="boot__l" style="--c:5">e</span><span class="boot__l" style="--c:6">t</span><span class="boot__l boot__sp"> </span><span class="boot__l" style="--c:7">L</span><span class="boot__l" style="--c:8">w</span><span class="boot__l" style="--c:9">i</span><span class="boot__l" style="--c:10">n</span></p>
+      <p class="boot__role">Mid-Senior Full Stack Developer</p>
+    </div>
+
+    <div class="boot__foot" aria-hidden="true">
+      <span class="boot__where"><b>Portfolio</b>Sanchaung, Yangon</span>
+      <span class="boot__count"><span class="boot__num">0</span><small>%</small></span>
+    </div>
+  </div>
+  <script>
+    /*
+     * Boot controller. Progress eases toward 90% while the app loads; when the app calls
+     * window.__bootDone() (styles, fonts and hero image ready, see src/boot.js) it runs to
+     * 100%, the ring flashes, and an iris opens from the monogram to reveal the page while
+     * html.is-loading is removed, starting the hero entrance underneath. The loader lasts at
+     * least MIN_LOADING_MS from the moment the page was opened (navigation start): faster loads
+     * are held to it and the bar is paced to reach 100% right then; slower loads wait for the
+     * app. Reduced-motion users get no minimum and a plain fade.
+     * Failsafe: if the app never signals, dismiss 3s after every file has downloaded,
+     * with a 30s hard cap.
+     */
+    (function () {
+      var html = document.documentElement;
+      var boot = document.getElementById("boot");
+      var ring = boot.querySelector(".boot__ring");
+      var num = boot.querySelector(".boot__num");
+      var mark = boot.querySelector(".boot__mark");
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var quick = reduce;
+      if (quick) html.classList.add("boot-quick");
+      html.classList.add("is-loading");
+
+      // Iris needs an animatable custom property; without it the exit falls back to a fade
+      var iris = !quick && window.CSS && CSS.registerProperty;
+      if (iris) {
+        try {
+          CSS.registerProperty({ name: "--hole", syntax: "<length>", inherits: true, initialValue: "-4px" });
+          boot.classList.add("boot--iris");
+        } catch (e) { iris = false; }
+      }
+
+      var MIN_LOADING_MS = quick ? 0 : 3000;
+      var shown = 0, ready = false, done = false;
+
+      function exit() {
+        if (done) return;
+        done = true;
+        if (iris) {
+          // Open the iris from the monogram's centre, wide enough to clear every corner
+          var r = mark.getBoundingClientRect();
+          var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+          var far = Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy));
+          boot.style.setProperty("--ix", cx + "px");
+          boot.style.setProperty("--iy", cy + "px");
+          boot.style.setProperty("--hole-max", Math.ceil(far + 4) + "px");
+        }
+        boot.classList.add("is-done");
+        setTimeout(function () {
+          boot.classList.add("is-leaving");
+          setTimeout(function () { html.classList.remove("is-loading"); }, quick ? 0 : 420);
+          setTimeout(function () { if (boot.parentNode) boot.parentNode.removeChild(boot); }, quick ? 400 : 1600);
+        }, quick ? 0 : 380);
+      }
+
+      function frame(now) {
+        // performance.now() counts from navigation start, i.e. from when the page was opened
+        var timeP = MIN_LOADING_MS ? Math.min(1, now / MIN_LOADING_MS) : 1;
+        var paced = 1 - Math.pow(1 - timeP, 1.6); // eases out, landing on 100% at the minimum
+        var loadP = ready ? 1 : 0.9 * (1 - Math.exp(-now / 1100));
+        var target = Math.min(paced, loadP);
+        shown += (target - shown) * 0.18;
+        if (ready && timeP === 1 && 1 - shown < 0.003) shown = 1;
+        ring.style.strokeDashoffset = (1 - shown).toFixed(4);
+        num.textContent = Math.round(shown * 100);
+        if (shown < 1) requestAnimationFrame(frame);
+        else exit();
+      }
+
+      window.__bootDone = function () { ready = true; };
+      window.addEventListener("load", function () { setTimeout(window.__bootDone, 3000); });
+      setTimeout(window.__bootDone, 30000);
+      requestAnimationFrame(frame);
+    })();
+  </script>
+
   <div id="root"></div>
 </body>
 </html>

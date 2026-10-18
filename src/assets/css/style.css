@@ -46,32 +46,6 @@
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --bg: #000000;
-    --bg-alt: #0a0a0a;
-    --surface: #1c1c1e;
-    --surface-2: #2c2c2e;
-    --surface-3: #3a3a3c;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.18);
-    --text: #f5f5f7;
-    --text-2: #d2d2d7;
-    --text-3: #a1a1a6;
-    --accent: #2997ff;
-    --accent-soft: rgba(41, 151, 255, 0.16);
-    --positive: #30d158;
-    --positive-soft: rgba(48, 209, 88, 0.16);
-    --danger: #ff6b81;
-    --gold: #ffcc4d;
-    --nav-bg: rgba(28, 28, 30, 0.72);
-    --shadow-sm: none;
-    --shadow-md: none;
-    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.6);
-  }
-}
-
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #000000;
@@ -394,12 +368,6 @@ a:hover .link-arrow i {
 /* Brand logos are drawn for light backgrounds, so give them a light plate in dark mode */
 :root[data-theme="dark"] .skill-icon.skill-icon--img {
   background: #f5f5f7;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .skill-icon.skill-icon--img {
-    background: #f5f5f7;
-  }
 }
 
 /* Laptop frame for website screenshots */
@@ -965,6 +933,14 @@ a:hover .link-arrow i {
   opacity: calc(1 - var(--p) * 0.75);
 }
 
+/* While the boot screen (public/index.html) is up, hold the hero entrance so it plays as the
+   screen lifts. Paused keyframes with a backwards fill stay on their first frame. */
+html.is-loading .rise,
+html.is-loading .line__inner,
+html.is-loading .rise--mask img {
+  animation-play-state: paused;
+}
+
 /* ---- One-shot reveals ---- */
 [data-reveal] {
   transition:
@@ -1182,12 +1158,6 @@ a:hover .link-arrow i {
 
 :root[data-theme="dark"] {
   --glow: rgba(255, 255, 255, 0.07);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --glow: rgba(255, 255, 255, 0.07);
-  }
 }
 
 @media (hover: hover) and (pointer: fine) {

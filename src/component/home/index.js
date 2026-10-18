@@ -1,6 +1,6 @@
 import React from "react";
 import "../../assets/css/home.css";
-import profileImg from "../../assets/image/profile.png";
+import profileImg from "../../assets/image/profile.jpg";
 import SkillIcon from "../common/SkillIcon";
 import CompanyMark from "../common/CompanyMark";
 import { profile, socials } from "../../data/profile";

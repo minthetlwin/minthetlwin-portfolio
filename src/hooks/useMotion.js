@@ -145,9 +145,13 @@ export default function useMotion(routeKey) {
         observe(el);
       });
     };
+    // One-shot reveals wait until the boot screen has lifted, so they're actually seen
+    const booting = () => root.classList.contains("is-loading");
     const scan = () => {
-      register("[data-reveal]", "data-m-reveal", (el) => revealIO.observe(el));
-      register("[data-stagger]", "data-m-stagger", (el) => revealIO.observe(el));
+      if (!booting()) {
+        register("[data-reveal]", "data-m-reveal", (el) => revealIO.observe(el));
+        register("[data-stagger]", "data-m-stagger", (el) => revealIO.observe(el));
+      }
       register("[data-count]", "data-m-count", (el) => {
         if (!el.closest("[data-reveal], [data-stagger]")) revealIO.observe(el);
       });
@@ -156,6 +160,8 @@ export default function useMotion(routeKey) {
     };
 
     scan();
+    const bootWatch = new MutationObserver(() => !booting() && (bootWatch.disconnect(), scan()));
+    if (booting()) bootWatch.observe(root, { attributes: true, attributeFilter: ["class"] });
     const mo = new MutationObserver(scan);
     mo.observe(document.getElementById("root") || document.body, { childList: true, subtree: true });
     window.addEventListener("scroll", schedule, { passive: true });
@@ -166,6 +172,7 @@ export default function useMotion(routeKey) {
       revealIO.disconnect();
       scrubIO.disconnect();
       mo.disconnect();
+      bootWatch.disconnect();
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       ["data-m-reveal", "data-m-stagger", "data-m-count", "data-m-scrub"].forEach((m) =>

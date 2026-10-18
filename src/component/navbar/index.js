@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../assets/css/navbar.css";
 import { profile } from "../../data/profile";
-import avatar from "../../assets/image/profile.png";
+import avatar from "../../assets/image/profile.jpg";
 import useScrollSpy from "../../hooks/useScrollSpy";
 
 const NAV_ITEMS = [
@@ -15,10 +15,17 @@ const NAV_ITEMS = [
 const SECTION_IDS = NAV_ITEMS.map((item) => item.id);
 const NAV_HEIGHT = 64; // keep in sync with --nav-height
 
+// Light by default; public/index.html stamps the saved choice on <html> before first paint.
 function getInitialTheme() {
-  const stamped = document.documentElement.dataset.theme;
-  if (stamped) return stamped;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
+
+// Keep the browser's own UI (address bar tint, scrollbars, form controls) in step with the theme
+function syncBrowserTheme(theme) {
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+  const colorScheme = document.querySelector('meta[name="color-scheme"]');
+  if (themeColor) themeColor.content = theme === "dark" ? "#000000" : "#f5f5f7";
+  if (colorScheme) colorScheme.content = theme;
 }
 
 export default function Navbar() {
@@ -83,6 +90,7 @@ export default function Navbar() {
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
+    syncBrowserTheme(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {

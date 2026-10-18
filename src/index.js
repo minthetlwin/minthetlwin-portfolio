@@ -9,6 +9,7 @@ import "@fontsource/inter/700.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import './index.css';
 import App from './App';
+import { signalReady } from './boot';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,4 +17,6 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+signalReady();
 

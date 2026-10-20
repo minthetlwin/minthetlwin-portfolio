@@ -33,8 +33,10 @@ const RANGES = {
   draw: (r, vh) => (vh * 0.7 - r.top) / r.height,
   // Word highlight: completes while the text moves from 90% to 45% of the viewport
   read: (r, vh) => (vh * 0.9 - r.top) / (vh * 0.45),
-  // Element leaving through the top (hero)
-  exit: (r) => -r.top / r.height,
+  // Element leaving through the top (hero). Measured from its bottom edge so it only recedes
+  // once its last content is on the way out: starts when the bottom rises past 60% of the
+  // viewport, completes as the bottom reaches the top. Content still being read stays put.
+  exit: (r, vh) => (vh * 0.6 - r.bottom) / (vh * 0.6),
 };
 // Section "sheet": completes as the section's top rises from the bottom to 35% of the viewport
 RANGES.sheet = (r, vh) => (vh - r.top) / (vh * 0.65);

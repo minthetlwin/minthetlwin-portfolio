@@ -423,7 +423,10 @@ a:hover .link-arrow i {
 /* Desktop monitor frame (Studio Display style) for app screenshots.
    Sizes use container units (cqw = 1% of the frame's width). */
 .desktop {
+  width: 100%;
   margin: 0;
+  /* Container units size the frame from its own width, so the width must come from outside:
+     without width: 100%, a shrink-to-fit parent (e.g. align-self: center) collapses it to 0. */
   container-type: inline-size;
 }
 
@@ -926,11 +929,15 @@ a:hover .link-arrow i {
   animation-delay: 0.28s;
 }
 
-/* Hero recedes as you scroll past it */
-.bento[data-scrub="exit"] {
-  transform-origin: 50% 0;
-  transform: translate3d(0, calc(var(--p) * 60px), 0) scale(calc(1 - var(--p) * 0.08));
-  opacity: calc(1 - var(--p) * 0.75);
+/* Hero recedes as you scroll past it: only where the bento is one screen-sized block.
+   Below 1000px it stacks into a long column whose lower tiles are still being read while
+   the top has scrolled away, so receding there would fade content that's in view. */
+@media (min-width: 1001px) {
+  .bento[data-scrub="exit"] {
+    transform-origin: 50% 0;
+    transform: translate3d(0, calc(var(--p) * 60px), 0) scale(calc(1 - var(--p) * 0.08));
+    opacity: calc(1 - var(--p) * 0.75);
+  }
 }
 
 /* While the boot screen (public/index.html) is up, hold the hero entrance so it plays as the

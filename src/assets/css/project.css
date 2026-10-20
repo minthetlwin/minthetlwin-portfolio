@@ -210,6 +210,7 @@
   }
 
   .work__item--wide .project-card__shot--device {
+    align-self: stretch;
     padding: 32px clamp(28px, 3.5vw, 40px);
   }
 }

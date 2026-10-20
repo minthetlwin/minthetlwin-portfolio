@@ -16,6 +16,8 @@ export const socials = [
   { label: "GitHub", icon: "fab fa-github", href: "https://github.com/minthetlwin" },
   { label: "LinkedIn", icon: "fab fa-linkedin-in", href: "https://www.linkedin.com/in/min-thet-lwin-474298317/" },
   { label: "Telegram", icon: "fab fa-telegram-plane", href: "https://t.me/sacrerex" },
+  // WhatsApp @sacrerex; click-to-chat links are reliable by number, not username
+  { label: "WhatsApp", icon: "fab fa-whatsapp", href: "https://wa.me/959787950760" },
   { label: "Instagram", icon: "fab fa-instagram", href: "https://www.instagram.com/sacre_rex/" },
   { label: "Facebook", icon: "fab fa-facebook-f", href: "https://www.facebook.com/sacrerex" },
   { label: "TikTok", icon: "fab fa-tiktok", href: "https://www.tiktok.com/@minthetlwin71" },

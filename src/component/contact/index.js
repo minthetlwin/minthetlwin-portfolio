@@ -9,7 +9,7 @@ const PRIMARY = [
   { id: "phone", icon: "fas fa-phone-alt", label: "Phone", value: profile.phone, href: profile.phoneHref, copy: profile.phone },
 ];
 
-const SOCIAL = socials.filter((s) => ["GitHub", "LinkedIn", "Telegram"].includes(s.label));
+const SOCIAL = socials.filter((s) => ["GitHub", "LinkedIn", "Telegram", "WhatsApp"].includes(s.label));
 
 const TOPICS = ["Full-time role", "Freelance project", "Collaboration", "Just saying hi"];
 
